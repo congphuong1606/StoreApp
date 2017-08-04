@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:title="Store"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_topStore"
+            android:icon="@drawable/ic_store"
+            android:title="Top store" />
+        <item
+            android:id="@+id/nav_note"
+            android:icon="@drawable/ic_note"
+            android:title="Lịch sử" />
+        <item
+            android:id="@+id/nav_love"
+            android:icon="@drawable/ic_love"
+            android:title="Yêu thích" />
+
+    </group>
+
+    <item android:title="Tài Khoản">
+        <menu>
+            <item
+                android:id="@+id/nav_account"
+                android:icon="@drawable/ic_account"
+                android:title="Thông tin" />
+
+        </menu>
+    </item>
+    <item android:title="Ứng dụng">
+        <menu>
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_setting"
+                android:title="Cài đặt" />
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_share"
+                android:title="Chia sẻ" />
+            <item
+                android:id="@+id/nav_email"
+                android:icon="@drawable/ic_email"
+                android:title="Phản hồi" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_about"
+                android:title="Giới thiệu" />
+        </menu>
+    </item>
+
+</menu>
