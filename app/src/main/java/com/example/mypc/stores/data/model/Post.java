@@ -7,7 +7,7 @@ public class Post {
 
     @SerializedName("postId")
     @Expose
-    private String postId;
+    private long postId;
     @SerializedName("postContent")
     @Expose
     private String postContent;
@@ -22,7 +22,7 @@ public class Post {
     private String postLove;
     @SerializedName("postStoreId")
     @Expose
-    private String postStoreId;
+    private long postStoreId;
     @SerializedName("postStoreAvatar")
     @Expose
     private String postStoreAvatar;
@@ -37,18 +37,14 @@ public class Post {
     public Post() {
     }
 
-    /**
-     *
-     * @param postLove
-     * @param postStoreName
-     * @param postComment
-     * @param postContent
-     * @param postStoreAvatar
-     * @param postStoreId
-     * @param postId
-     * @param postTime
-     */
-    public Post(String postId, String postContent, String postTime, String postStoreName, String postLove, String postStoreId, String postStoreAvatar, String postComment) {
+    public Post(long postId,
+                String postContent,
+                String postTime,
+                String postComment,
+                String postLove,
+                long postStoreId,
+                String postStoreName,
+                String postStoreAvatar) {
         super();
         this.postId = postId;
         this.postContent = postContent;
@@ -60,11 +56,11 @@ public class Post {
         this.postComment = postComment;
     }
 
-    public String getPostId() {
+    public long getPostId() {
         return postId;
     }
 
-    public void setPostId(String postId) {
+    public void setPostId(long postId) {
         this.postId = postId;
     }
 
@@ -100,11 +96,11 @@ public class Post {
         this.postLove = postLove;
     }
 
-    public String getPostStoreId() {
+    public long getPostStoreId() {
         return postStoreId;
     }
 
-    public void setPostStoreId(String postStoreId) {
+    public void setPostStoreId(long postStoreId) {
         this.postStoreId = postStoreId;
     }
 

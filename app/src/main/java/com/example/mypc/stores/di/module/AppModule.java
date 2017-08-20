@@ -2,6 +2,9 @@ package com.example.mypc.stores.di.module;
 
 import android.content.Context;
 
+import com.example.mypc.stores.network.ApiService;
+import com.example.mypc.stores.network.ApiUtils;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -20,4 +23,5 @@ public class AppModule {
     public Context getContext() {
         return context;
     }
+
 }

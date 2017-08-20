@@ -5,5 +5,18 @@ package com.example.mypc.stores.utils;
  */
 
 public class Constants {
-    public static final String BASE_URL = "http://192.168.0.49/stores/";
+    public static final String BASE_URL = "http://192.168.1.56:8081/data/";
+    public static final String SPF_NAME = "storeacc";
+
+
+    //SharePref..
+    public static final String LOGIN_NAME = "accName";
+    public static final String LOGIN_PASS = "accPass";
+    public static final String PREF_ACC_ID = "accId";
+    public static final String PREF_ACC_TYPE = "accType";
+    public static final String PREF_ACC_NUMBER = "accNumber";
+    public static final String PREF_ACC_NAME = "accName";
+    public static final String PREF_ACC_PASS="accPass";
+    public static final String PREF_ACC_FULLNAME = "accFullName";
+    public static final String PREF_ACC_AVATAR = "AccAvatar";
 }

@@ -1,56 +1,72 @@
 package com.example.mypc.stores.data.model;
-
-/**
- * Created by MyPC on 02/08/2017.
- */
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Comment {
-    String cmtId;
-    String cmtUser;
-    String cmtAvatarUser;
-    String cmtPost;
-    String cmtContent;
-    String cmtTime;
 
-    public Comment(String cmtId, String cmtUser,String cmtAvatarUser, String cmtPost, String cmtContent, String cmtTime) {
+    @SerializedName("cmtId")
+    @Expose
+    private long cmtId;
+    @SerializedName("cmtAccId")
+    @Expose
+    private long cmtAccId;
+    @SerializedName("cmtAccAvatar")
+    @Expose
+    private String cmtAccAvatar;
+    @SerializedName("cmtPostId")
+    @Expose
+    private long cmtPostId;
+    @SerializedName("cmtContent")
+    @Expose
+    private String cmtContent;
+    @SerializedName("cmtTime")
+    @Expose
+    private String cmtTime;
+
+    public Comment() {
+    }
+
+    public Comment(long cmtId, long cmtAccId, String cmtAccAvatar,
+                   long cmtPostId, String cmtContent, String cmtTime) {
         this.cmtId = cmtId;
-        this.cmtUser = cmtUser;
-        this.cmtAvatarUser=cmtAvatarUser;
-        this.cmtPost = cmtPost;
+        this.cmtAccId = cmtAccId;
+        this.cmtAccAvatar = cmtAccAvatar;
+        this.cmtPostId = cmtPostId;
         this.cmtContent = cmtContent;
         this.cmtTime = cmtTime;
     }
 
-    public String getCmtAvatarUser() {
-        return cmtAvatarUser;
-    }
 
-    public void setCmtAvatarUser(String cmtAvatarUser) {
-        this.cmtAvatarUser = cmtAvatarUser;
-    }
-
-    public String getCmtId() {
+    public long getCmtId() {
         return cmtId;
     }
 
-    public void setCmtId(String cmtId) {
+    public void setCmtId(long cmtId) {
         this.cmtId = cmtId;
     }
 
-    public String getCmtUser() {
-        return cmtUser;
+    public long getCmtAccId() {
+        return cmtAccId;
     }
 
-    public void setCmtUser(String cmtUser) {
-        this.cmtUser = cmtUser;
+    public void setCmtAccId(long cmtAccId) {
+        this.cmtAccId = cmtAccId;
     }
 
-    public String getCmtPost() {
-        return cmtPost;
+    public String getCmtAccAvatar() {
+        return cmtAccAvatar;
     }
 
-    public void setCmtPost(String cmtPost) {
-        this.cmtPost = cmtPost;
+    public void setCmtAccAvatar(String cmtAccAvatar) {
+        this.cmtAccAvatar = cmtAccAvatar;
+    }
+
+    public long getCmtPostId() {
+        return cmtPostId;
+    }
+
+    public void setCmtPostId(long cmtPostId) {
+        this.cmtPostId = cmtPostId;
     }
 
     public String getCmtContent() {
@@ -68,5 +84,4 @@ public class Comment {
     public void setCmtTime(String cmtTime) {
         this.cmtTime = cmtTime;
     }
-
 }

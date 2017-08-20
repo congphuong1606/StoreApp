@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HomeActivity extends BaseActivity implements HomeView, NavigationView.OnNavigationItemSelectedListener {
@@ -47,8 +46,9 @@ public class HomeActivity extends BaseActivity implements HomeView, NavigationVi
     @BindView(R.id.layout_cmt)
     FrameLayout layoutFragment;
     private PostAdapter postAdapter;
-    boolean isOpenFragment=false;
-
+    boolean isOpenFragment = false;
+    ArrayList<Post> posts;
+    PostAdapter mAdapter;
     @Inject
     HomePresenter mainPresenter;
 
@@ -65,6 +65,9 @@ public class HomeActivity extends BaseActivity implements HomeView, NavigationVi
 
     @Override
     protected void initData() {
+        posts = new ArrayList<>();
+        mAdapter = new PostAdapter(posts);
+        rcvPost.setAdapter(mAdapter);
         mainPresenter.getPost();
     }
 
@@ -85,14 +88,22 @@ public class HomeActivity extends BaseActivity implements HomeView, NavigationVi
 
     @Override
     public void onBackPressed() {
-        if(isOpenFragment){
-            layoutFragment.setVisibility(View.GONE);
+        if (isOpenFragment) {
+            unInitViewFragment();
         } else if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
 
+    }
+
+    private void unInitViewFragment() {
+        layoutFragment.setVisibility(View.GONE);
+        rcvPost.setVisibility(View.VISIBLE);
+        toolbar.setVisibility(View.VISIBLE);
+        fbtNewPost.setVisibility(View.VISIBLE);
+        isOpenFragment = false;
     }
 
     @Override
@@ -114,25 +125,21 @@ public class HomeActivity extends BaseActivity implements HomeView, NavigationVi
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_topStore) {
-            // Handle the camera action
-        } else if (id == R.id.nav_love) {
-
-        } else if (id == R.id.nav_note) {
-
-        } else if (id == R.id.nav_account) {
-
-        } else if (id == R.id.nav_setting) {
-
-        } else if (id == R.id.nav_email) {
-
-        } else if (id == R.id.nav_about) {
-
-        } else if (id == R.id.nav_share) {
-
+        switch (item.getItemId()) {
+            case R.id.nav_topStore:
+                break;
+            case R.id.nav_love:
+                break;
+            case R.id.nav_account:
+                break;
+            case R.id.nav_setting:
+                break;
+            case R.id.nav_email:
+                break;
+            case R.id.nav_about:
+                break;
+            case R.id.nav_share:
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -140,38 +147,41 @@ public class HomeActivity extends BaseActivity implements HomeView, NavigationVi
 
     @OnClick(R.id.fbt_new_post)
     public void onViewClicked() {
-        setView();
+        initViewFragment();
         setNewFragment(new NewPostFragment());
 
     }
-    public void onLoadCmtFragment(){
-        setView();
-        setNewFragment(new CmtFragment());
 
+    public void onLoadCmtFragment(long postId) {
+        initViewFragment();
+        CmtFragment cmtFragment = new CmtFragment();
+        setNewFragment(cmtFragment);
+        Bundle bundle = new Bundle();
+        bundle.putLong("postId", postId);
+        cmtFragment.setArguments(bundle);
     }
 
-    private void setView() {
+    private void initViewFragment() {
         layoutFragment.setVisibility(View.VISIBLE);
         rcvPost.setVisibility(View.GONE);
         toolbar.setVisibility(View.GONE);
         fbtNewPost.setVisibility(View.GONE);
+        isOpenFragment = true;
     }
-
 
 
     private void setNewFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager()
-                .beginTransaction();
+                .beginTransaction().addToBackStack(null);
         transaction.add(R.id.layout_cmt, fragment);
 //        transaction.addToBackStack(tagFragment);
         transaction.commit();
     }
 
     @Override
-    public void onUpdatePostsSuccess(ArrayList<Post> posts) {
-
-        postAdapter = new PostAdapter(posts);
-        rcvPost.setAdapter(postAdapter);
+    public void onLoadPostsSuccess(ArrayList<Post> posts) {
+        this.posts.addAll(posts);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -179,6 +189,15 @@ public class HomeActivity extends BaseActivity implements HomeView, NavigationVi
         onShowBuider(msg);
     }
 
+    @Override
+    protected void onDestroyComposi() {
+        mainPresenter.onDestroy();
+    }
 
 
+    public void setNewPost(Post post) {
+        posts.add(post);
+        mAdapter.notifyDataSetChanged();
+
+    }
 }

@@ -10,6 +10,6 @@ import java.util.List;
  */
 
 public interface HomeView {
-    void onUpdatePostsSuccess(ArrayList<Post> posts);
+    void onLoadPostsSuccess(ArrayList<Post> posts);
     void onFail(String msg);
 }

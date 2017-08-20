@@ -44,7 +44,7 @@
     <FrameLayout
         android:id="@+id/layout_cmt"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

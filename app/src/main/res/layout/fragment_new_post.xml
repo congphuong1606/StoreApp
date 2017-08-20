@@ -40,12 +40,11 @@
 
             <EditText
                 android:id="@+id/edt_new_post"
-                android:text="..."
-                android:gravity="top|left"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/btn_sent_post"
-                />
+                android:gravity="top|left"
+                android:hint="Hãy Đăng cho mọi người biết về cửa hàng của bạn" />
 
             <Button
                 android:id="@+id/btn_sent_post"

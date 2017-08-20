@@ -26,7 +26,6 @@ public class CmtAdapter extends RecyclerView.Adapter<CmtAdapter.CmtViewHolder> {
     View v;
     Context context;
     ArrayList<Comment> comments;
-
     public CmtAdapter(ArrayList<Comment> comments) {
         this.comments = comments;
 
@@ -43,7 +42,7 @@ public class CmtAdapter extends RecyclerView.Adapter<CmtAdapter.CmtViewHolder> {
     @Override
     public void onBindViewHolder(CmtViewHolder holder, int position) {
         Comment comment = comments.get(position);
-        Glide.with(context).load(comment.getCmtAvatarUser()).into(holder.imvCmtUser);
+        Glide.with(context).load(comment.getCmtAccAvatar()).into(holder.imvCmtUser);
         holder.tvCmtContent.setText(comment.getCmtContent());
         holder.tvCmtTime.setText(comment.getCmtTime());
     }

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import butterknife.Unbinder;
 
@@ -16,34 +17,53 @@ import butterknife.Unbinder;
 
 public abstract class BaseFragment extends Fragment {
     private Unbinder mUnbinder;
+    private View view;
 
-    protected abstract void initView();
+    protected abstract void initView(View view);
     protected abstract void initData();
     public abstract Unbinder bindingView(View view);
     protected abstract int getLayoutID();
+    protected abstract void onDestroyComposi();
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        initView();
         initData();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutID(), container, false);
+        view = inflater.inflate(getLayoutID(), container, false);
+        injectDependence(view);
         mUnbinder = bindingView(view);
+        initView(view);
         return view;
     }
 
-    @Override
-    public void onDestroy() {
+    protected abstract void injectDependence(View view);
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
         if (mUnbinder != null) {
             mUnbinder.unbind();
         }
-        super.onDestroy();
+        onDestroyComposi();
     }
+    public void hideKeyboard() {
+        View v = getActivity().getCurrentFocus();
+        if (v != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity()
+                    .getSystemService(view.getContext().INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
 
 
 }

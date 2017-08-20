@@ -37,6 +37,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
     }
 
 
+
+
     @Override
     public PostviewHoder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -57,7 +59,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         holder.btnCmt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((HomeActivity)mContext).onLoadCmtFragment();
+                ((HomeActivity)mContext).onLoadCmtFragment(post.getPostId());
             }
         });
     }

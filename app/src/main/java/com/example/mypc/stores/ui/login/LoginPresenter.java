@@ -1,0 +1,71 @@
+package com.example.mypc.stores.ui.login;
+
+import android.content.SharedPreferences;
+
+import com.example.mypc.stores.data.model.Account;
+import com.example.mypc.stores.network.ApiService;
+import com.example.mypc.stores.utils.Constants;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
+/**
+ * Created by MyPC on 04/08/2017.
+ */
+
+public class LoginPresenter {
+    private String mAccName;
+    private String mAccPass;
+    private CompositeDisposable mDisposable;
+    private ApiService mApiService;
+    private LoginView mView;
+    boolean isCheckAccount = true;
+    int i = 0;
+
+    @Inject
+    public LoginPresenter(CompositeDisposable mDisposable,
+                          ApiService apiService,
+                          LoginView mView) {
+        this.mDisposable = mDisposable;
+        this.mApiService = apiService;
+        this.mView = mView;
+    }
+
+    public void onLogin(String accName, String accPass) {
+        mAccName=accName;
+        mAccPass=accPass;
+        mApiService.getAccounts().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onSuccess, this::onFail);
+
+    }
+    private void onFail(Throwable throwable) {
+        mView.onFail(String.valueOf(throwable));
+    }
+
+    private void onSuccess(ArrayList<Account> accounts) {
+        int cout = accounts.size();
+        i=0;
+        for (Account account : accounts) {
+            i++;
+            if ((account.getAccName()).equals(mAccName) &&
+                    (account.getAccPass()).equals(mAccPass)) {
+                mView.onLoginSuccess(account);
+                isCheckAccount = true;
+                break;
+            } else isCheckAccount = false;
+        }
+        if (i == cout && !isCheckAccount) {
+            mView.onFail("tài khỏan hoặc mật khẩu không chính xác !");
+        }
+    }
+    public void onDestroy() {
+        mDisposable.dispose();
+    }
+}

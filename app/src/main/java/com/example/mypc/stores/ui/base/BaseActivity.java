@@ -11,9 +11,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.example.mypc.stores.R;
+import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.events.OnEventclickListener;
 
 import butterknife.ButterKnife;
@@ -47,7 +49,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             mUnbinder.unbind();
         }
         super.onDestroy();
+        onDestroyComposi();
     }
+
+    protected abstract void onDestroyComposi();
     protected abstract void injectDependence();
     protected abstract int getContentLayoutID();
     protected abstract void initData();
@@ -111,9 +116,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
         builder.create().show();
     }
-
-
-
-
+    public void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)
+                    getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
 }
