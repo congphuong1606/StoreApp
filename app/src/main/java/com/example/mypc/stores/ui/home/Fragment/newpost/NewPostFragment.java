@@ -1,10 +1,23 @@
 package com.example.mypc.stores.ui.home.Fragment.newpost;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mypc.stores.MyApplication;
@@ -15,6 +28,9 @@ import com.example.mypc.stores.ui.base.BaseFragment;
 import com.example.mypc.stores.ui.home.HomeActivity;
 import com.example.mypc.stores.utils.Constants;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -22,6 +38,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.app.Activity.RESULT_OK;
 
 public class NewPostFragment extends BaseFragment implements NewPostView {
 
@@ -33,16 +51,31 @@ public class NewPostFragment extends BaseFragment implements NewPostView {
     EditText edtNewPost;
     @BindView(R.id.btn_sent_post)
     Button btnSentPost;
+    Context mContext;
 
     @Inject
     SharedPreferences mPreferences;
 
     @Inject
     NewPostPresenter mPresenter;
+    @BindView(R.id.fb_camera)
+    FloatingActionButton fbCamera;
+    @BindView(R.id.fb_garely)
+    FloatingActionButton fbGarely;
+    Unbinder unbinder;
+    @BindView(R.id.imv_post_image)
+    ImageView imvPostImage;
+    @BindView(R.id.rl5)
+    RelativeLayout rl5;
+    Unbinder unbinder1;
 
     private String avatar;
     private String accFullName;
+    private String postImage = null;
     private long accId;
+    private static final int REQUEST_TAKE_PHOTO = 0;
+    private static final int REQUEST_CHOOSE_PHOTO = 1;
+    private byte[] picByte;
 
 
     @Override
@@ -53,6 +86,7 @@ public class NewPostFragment extends BaseFragment implements NewPostView {
 
     @Override
     protected void initView(View view) {
+        mContext = view.getContext();
 
     }
 
@@ -60,7 +94,7 @@ public class NewPostFragment extends BaseFragment implements NewPostView {
     protected void initData() {
         avatar = mPreferences.getString(Constants.PREF_ACC_AVATAR, "");
         accFullName = mPreferences.getString(Constants.PREF_ACC_FULLNAME, "");
-        accId = mPreferences.getLong(Constants.PREF_ACC_ID,0);
+        accId = mPreferences.getLong(Constants.PREF_ACC_ID, 0);
 
         Glide.with(getContext()).load(avatar).into(imvStorePostAvatar);
         tvStorePost.setText(accFullName);
@@ -84,21 +118,104 @@ public class NewPostFragment extends BaseFragment implements NewPostView {
 
     @Override
     public void onLoadPostSuccess(Post post) {
+        edtNewPost.setText("");
         getActivity().onBackPressed();
-        ((HomeActivity)getActivity()).setNewPost(post);
+        ((HomeActivity) getActivity()).setNewPost(post);
 
     }
 
     @Override
     public void onFail(String s) {
+        Log.i("TAG onFail: ",s);
 
     }
 
-    @OnClick(R.id.btn_sent_post)
-    public void onViewClicked() {
+    @Override
+    public void onUploadPicSuccess(String picUrl) {
+        postImage = picUrl;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @OnClick({R.id.fb_camera, R.id.fb_garely, R.id.btn_sent_post})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.fb_camera:
+                takePicture();
+                break;
+            case R.id.fb_garely:
+                choosePhoto();
+                break;
+            case R.id.btn_sent_post:
+                hideKeyboard();
+                if (picByte == null) {
+                    senPost();
+                } else {
+                    if (postImage != null) {
+                        senPost();
+                    } else {
+                        Toast.makeText(getContext(), "up anh len file base chua thanh cong", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                break;
+        }
+    }
+
+    private void senPost() {
         String postContent = edtNewPost.getText().toString().trim();
-        mPresenter.onUploadPost(accId,avatar,accFullName,postContent);
-        edtNewPost.setText("");
-        hideKeyboard();
+        mPresenter.onUploadPost(accId, avatar, accFullName, postContent, postImage);
+
+    }
+
+    private void choosePhoto() {
+        startActivityForResult(new Intent(Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                , REQUEST_CHOOSE_PHOTO);
+
+    }
+
+    private void takePicture() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+        }
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Bitmap bitmap = null;
+        if (resultCode == RESULT_OK && requestCode == REQUEST_TAKE_PHOTO) {
+            Bundle extras = data.getExtras();
+            bitmap = (Bitmap) extras.get("data");
+        } else if (resultCode == RESULT_OK && requestCode == REQUEST_CHOOSE_PHOTO && data != null) {
+            Uri uri = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(
+                        getActivity().getContentResolver(), uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (bitmap != null) {
+            ByteArrayOutputStream imageByte = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, imageByte);
+            picByte = imageByte.toByteArray();
+            uploadToFireBase(picByte);
+        }
+        Glide.with(mContext.getApplicationContext()).load(picByte).into(imvPostImage);
+
+
+    }
+
+    private void uploadToFireBase(byte[] picByte) {
+        mPresenter.uploadPic(picByte);
+
+
     }
 }

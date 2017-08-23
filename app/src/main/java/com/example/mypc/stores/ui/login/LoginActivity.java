@@ -137,6 +137,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
             accName = edtInputAcc.getText().toString().trim();
             accPass = edtInputPass.getText().toString().trim();
             mPresenter.onLogin(accName, accPass);
+            mPresenter.onloginFirebase();
         }
     }
 }

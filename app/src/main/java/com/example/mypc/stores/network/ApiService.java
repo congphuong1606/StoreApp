@@ -24,24 +24,27 @@ public interface ApiService {
     @GET("post/{type}")
     Observable<ArrayList<Post>> getListPost(@Path("type") String type);
 
-    @GET("posts")
+    @GET("/posts/all")
     Observable<ArrayList<Post>> getListAllPost();
 
-    @POST("post")
-    Observable<Object> loadPost();
 
-    @GET("cmts/{cmtPostId}")
-    Observable<ArrayList<Comment>> getPostCmts(
-            @Path("cmtPostId") long cmtPostId);
+    @GET("/cmts/{cmtPostId}")
+    Observable<ArrayList<Comment>> getPostCmts(@Path("cmtPostId") long cmtPostId);
 
-    @GET("accs")
+    @GET("/accs/all")
     Observable<ArrayList<Account>> getAccounts();
 
-    @POST("accs")
+    @POST("/accs/add")
     Observable<Account> saveNewAccount(@Body Account account);
 
-    @POST("posts")
+    @POST("/posts/add")
     Observable<Post> saveNewPost(@Body Post post);
-    @POST("cmts")
+
+    @POST("/cmts/add")
     Observable<Comment> saveNewCmt(@Body Comment cmt);
+
+    @GET("/posts/{postStoreId}")
+    Observable<ArrayList<Post>> getListPostStore(@Path("postStoreId") long postStoreId);
+
+
 }

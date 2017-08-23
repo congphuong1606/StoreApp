@@ -1,9 +1,16 @@
 package com.example.mypc.stores.ui.home.Fragment.newpost;
 
+import android.support.annotation.NonNull;
+
 import com.example.mypc.stores.data.model.Account;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.network.ApiService;
+import com.example.mypc.stores.utils.Constants;
 import com.example.mypc.stores.utils.TimeControler;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import javax.inject.Inject;
 
@@ -20,17 +27,19 @@ public class NewPostPresenter {
     private ApiService mApiService;
     private NewPostView mPostView;
     private CompositeDisposable mDisposable;
+    private StorageReference mStorageReference;
 
     @Inject
-    public NewPostPresenter(ApiService mApiService, NewPostView mPostView, CompositeDisposable compositeDisposable) {
+    public NewPostPresenter(StorageReference mStorageReference,ApiService mApiService, NewPostView mPostView, CompositeDisposable compositeDisposable) {
+        this.mStorageReference=mStorageReference;
         this.mPostView = mPostView;
         this.mApiService = mApiService;
         this.mDisposable = compositeDisposable;
     }
-    public void onUploadPost(long accId, String accAvatar, String accFullName, String postContent) {
+    public void onUploadPost(long accId, String accAvatar, String accFullName, String postContent,String postImage) {
         long postId = accId + timeControler.getLongCurentTime();
         String postTime = timeControler.getCurentTime() + "";
-        Post post = new Post(postId, postContent, postTime, "0", "0", accId, accFullName, accAvatar);
+        Post post = new Post(postId, postContent, postTime, "0", "0", accId, accFullName, accAvatar,postImage);
         mDisposable.add(mApiService.saveNewPost(post)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -45,4 +54,22 @@ public class NewPostPresenter {
         mPostView.onFail(String.valueOf(throwable));
     }
 
+    public void uploadPic(byte[] picByte) {
+        String picName=String.valueOf(System.currentTimeMillis());
+        StorageReference mSto = mStorageReference.child(Constants.IMAGE_PIC_PATH).child(picName + ".jpg");
+        UploadTask uploadTask = mSto.putBytes(picByte);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                String picUrl = String.valueOf(taskSnapshot.getDownloadUrl());
+                mPostView.onUploadPicSuccess(picUrl);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                mPostView.onFail(String.valueOf(exception));
+            }
+        });
+    }
 }

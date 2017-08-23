@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import com.example.mypc.stores.data.model.Account;
 import com.example.mypc.stores.network.ApiService;
 import com.example.mypc.stores.utils.Constants;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
@@ -27,11 +29,15 @@ public class LoginPresenter {
     private LoginView mView;
     boolean isCheckAccount = true;
     int i = 0;
+    private FirebaseAuth mAuth;
+    private DatabaseReference reference;
 
     @Inject
-    public LoginPresenter(CompositeDisposable mDisposable,
+    public LoginPresenter(FirebaseAuth mAuth,DatabaseReference reference,CompositeDisposable mDisposable,
                           ApiService apiService,
                           LoginView mView) {
+        this.mAuth=mAuth;
+        this.reference=reference;
         this.mDisposable = mDisposable;
         this.mApiService = apiService;
         this.mView = mView;
@@ -67,5 +73,9 @@ public class LoginPresenter {
     }
     public void onDestroy() {
         mDisposable.dispose();
+    }
+
+    public void onloginFirebase() {
+        mAuth.signInAnonymously();
     }
 }

@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -38,21 +39,78 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/edt_new_post"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/btn_sent_post"
-                android:gravity="top|left"
-                android:hint="Hãy Đăng cho mọi người biết về cửa hàng của bạn" />
+                android:layout_above="@+id/rl5">
 
-            <Button
-                android:id="@+id/btn_sent_post"
-                android:layout_width="wrap_content"
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#fff">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/edt_new_post"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="top|left"
+                            android:hint="Hãy Đăng cho mọi người biết về cửa hàng của bạn"
+                            android:minLines="15" />
+
+                        <ImageView
+                            android:id="@+id/imv_post_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+
+                </ScrollView>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rl5"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:text="sent post" />
+                android:background="#f7f6f6">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fb_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignTop="@+id/fb_garely"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginStart="11dp"
+                    android:src="@drawable/ic_add_image"
+                    app:backgroundTint="#fff" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fb_garely"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@+id/fb_camera"
+                    android:src="@drawable/ic_gallery"
+                    app:backgroundTint="#fff" />
+
+                <Button
+                    android:id="@+id/btn_sent_post"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/ic_send" />
+            </RelativeLayout>
+
+
         </RelativeLayout>
     </LinearLayout>
 

@@ -5,7 +5,7 @@ package com.example.mypc.stores.utils;
  */
 
 public class Constants {
-    public static final String BASE_URL = "http://192.168.1.56:8081/data/";
+    public static final String BASE_URL = "http://192.168.1.2:8080";
     public static final String SPF_NAME = "storeacc";
 
 
@@ -19,4 +19,5 @@ public class Constants {
     public static final String PREF_ACC_PASS="accPass";
     public static final String PREF_ACC_FULLNAME = "accFullName";
     public static final String PREF_ACC_AVATAR = "AccAvatar";
+    public static final String IMAGE_PIC_PATH = "Image";
 }

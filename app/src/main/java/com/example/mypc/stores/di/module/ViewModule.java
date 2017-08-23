@@ -1,6 +1,8 @@
 package com.example.mypc.stores.di.module;
 
 import com.example.mypc.stores.ui.Register.RegisView;
+import com.example.mypc.stores.ui.StoreDetail.StoreDetailActivity;
+import com.example.mypc.stores.ui.StoreDetail.StoreDetailView;
 import com.example.mypc.stores.ui.home.Fragment.cmt.CmtFragmentView;
 import com.example.mypc.stores.ui.home.Fragment.newpost.NewPostFragment;
 import com.example.mypc.stores.ui.home.Fragment.newpost.NewPostView;
@@ -20,22 +22,35 @@ public class ViewModule {
     CmtFragmentView cmtFragmentView;
     LoginView loginView;
     RegisView regisView;
+    StoreDetailView storeDetailView;
 
     public ViewModule(RegisView regisView) {
         this.regisView = regisView;
     }
+
     public ViewModule(LoginView loginView) {
         this.loginView = loginView;
     }
+
     public ViewModule(CmtFragmentView cmtFragmentView) {
         this.cmtFragmentView = cmtFragmentView;
     }
+
     public ViewModule(NewPostView newPostView) {
         this.newPostView = newPostView;
     }
 
     public ViewModule(HomeView view) {
         this.homeView = view;
+    }
+
+    public ViewModule(StoreDetailView storeDetailView) {
+        this.storeDetailView = storeDetailView;
+    }
+
+    @Provides
+    public StoreDetailView getStoreDetailView() {
+        return storeDetailView;
     }
 
     @Provides

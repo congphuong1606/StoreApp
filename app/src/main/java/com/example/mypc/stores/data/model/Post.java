@@ -3,7 +3,9 @@ package com.example.mypc.stores.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Post {
+import java.io.Serializable;
+
+public class Post implements Serializable {
 
     @SerializedName("postId")
     @Expose
@@ -29,6 +31,9 @@ public class Post {
     @SerializedName("postComment")
     @Expose
     private String postComment;
+    @SerializedName("postImage")
+    @Expose
+    private String postImage;
 
     /**
      * No args constructor for use in serialization
@@ -44,7 +49,8 @@ public class Post {
                 String postLove,
                 long postStoreId,
                 String postStoreName,
-                String postStoreAvatar) {
+                String postStoreAvatar,
+                String postImage) {
         super();
         this.postId = postId;
         this.postContent = postContent;
@@ -54,6 +60,15 @@ public class Post {
         this.postStoreId = postStoreId;
         this.postStoreAvatar = postStoreAvatar;
         this.postComment = postComment;
+            this.postImage=postImage;
+    }
+
+    public String getPostImage() {
+        return postImage;
+    }
+
+    public void setPostImage(String postImage) {
+        this.postImage = postImage;
     }
 
     public long getPostId() {
