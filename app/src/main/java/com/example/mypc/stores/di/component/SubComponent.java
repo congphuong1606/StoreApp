@@ -2,8 +2,8 @@ package com.example.mypc.stores.di.component;
 
 import com.example.mypc.stores.di.module.StorageModule;
 import com.example.mypc.stores.di.module.ViewModule;
-import com.example.mypc.stores.ui.Register.RegisActivity;
-import com.example.mypc.stores.ui.StoreDetail.StoreDetailActivity;
+import com.example.mypc.stores.ui.register.RegisActivity;
+import com.example.mypc.stores.ui.storedetail.StoreDetailActivity;
 import com.example.mypc.stores.ui.home.fragment.cmt.CmtFragment;
 import com.example.mypc.stores.ui.home.fragment.newpost.NewPostFragment;
 import com.example.mypc.stores.ui.home.HomeActivity;

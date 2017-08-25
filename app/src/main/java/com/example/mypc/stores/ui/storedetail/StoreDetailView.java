@@ -1,4 +1,4 @@
-package com.example.mypc.stores.ui.StoreDetail;
+package com.example.mypc.stores.ui.storedetail;
 
 import com.example.mypc.stores.data.model.Post;
 

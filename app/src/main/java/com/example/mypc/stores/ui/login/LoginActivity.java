@@ -11,7 +11,7 @@ import com.example.mypc.stores.MyApplication;
 import com.example.mypc.stores.R;
 import com.example.mypc.stores.data.model.Account;
 import com.example.mypc.stores.di.module.ViewModule;
-import com.example.mypc.stores.ui.Register.RegisActivity;
+import com.example.mypc.stores.ui.register.RegisActivity;
 import com.example.mypc.stores.ui.base.BaseActivity;
 import com.example.mypc.stores.ui.home.HomeActivity;
 import com.example.mypc.stores.utils.Constants;

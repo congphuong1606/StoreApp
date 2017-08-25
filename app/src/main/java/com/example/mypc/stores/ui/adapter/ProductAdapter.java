@@ -1,11 +1,8 @@
 package com.example.mypc.stores.ui.adapter;
 
 import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.mypc.stores.R;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.events.ProductAdapterClickListener;
-import com.example.mypc.stores.ui.StoreDetail.StoreDetailActivity;
+import com.example.mypc.stores.ui.storedetail.StoreDetailActivity;
 
 import java.util.ArrayList;
 

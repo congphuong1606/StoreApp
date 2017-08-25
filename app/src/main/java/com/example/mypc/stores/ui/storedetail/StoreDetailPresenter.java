@@ -1,9 +1,7 @@
-package com.example.mypc.stores.ui.StoreDetail;
+package com.example.mypc.stores.ui.storedetail;
 
-import com.example.mypc.stores.data.model.Comment;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.network.ApiService;
-import com.example.mypc.stores.ui.home.HomeView;
 
 import java.util.ArrayList;
 

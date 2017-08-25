@@ -1,4 +1,4 @@
-package com.example.mypc.stores.ui.Register;
+package com.example.mypc.stores.ui.register;
 
 import android.util.Log;
 import android.view.View;

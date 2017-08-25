@@ -1,4 +1,4 @@
-package com.example.mypc.stores.ui.StoreDetail;
+package com.example.mypc.stores.ui.storedetail;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
@@ -14,8 +14,7 @@ import com.example.mypc.stores.MyApplication;
 import com.example.mypc.stores.R;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.di.module.ViewModule;
-import com.example.mypc.stores.ui.adapter.PostAdapter;
-import com.example.mypc.stores.ui.StoreDetail.fagment.MapFragment;
+import com.example.mypc.stores.ui.storedetail.fagment.MapFragment;
 import com.example.mypc.stores.ui.adapter.ProductAdapter;
 import com.example.mypc.stores.ui.base.BaseActivity;
 

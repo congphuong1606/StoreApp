@@ -1,11 +1,10 @@
-package com.example.mypc.stores.ui.Register;
+package com.example.mypc.stores.ui.register;
 
 import com.example.mypc.stores.data.model.Account;
 import com.example.mypc.stores.network.ApiService;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;

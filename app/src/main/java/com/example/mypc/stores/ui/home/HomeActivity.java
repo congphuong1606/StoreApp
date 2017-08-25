@@ -22,7 +22,7 @@ import com.example.mypc.stores.R;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.di.module.ViewModule;
 import com.example.mypc.stores.events.PostAdapterClickListener;
-import com.example.mypc.stores.ui.StoreDetail.StoreDetailActivity;
+import com.example.mypc.stores.ui.storedetail.StoreDetailActivity;
 import com.example.mypc.stores.ui.adapter.PostAdapter;
 import com.example.mypc.stores.ui.home.fragment.cmt.CmtFragment;
 import com.example.mypc.stores.ui.base.BaseActivity;

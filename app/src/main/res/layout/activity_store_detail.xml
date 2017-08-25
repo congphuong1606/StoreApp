@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.mypc.stores.ui.StoreDetail.StoreDetailActivity">
+    tools:context="com.example.mypc.stores.ui.storedetail.StoreDetailActivity">
 
     <RelativeLayout
         android:id="@+id/rl1"
@@ -141,8 +141,8 @@
     </RelativeLayout>
 
     <FrameLayout
-
         android:id="@+id/fl_map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl1"></FrameLayout>
 </RelativeLayout>

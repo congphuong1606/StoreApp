@@ -1,7 +1,7 @@
 package com.example.mypc.stores.di.module;
 
-import com.example.mypc.stores.ui.Register.RegisView;
-import com.example.mypc.stores.ui.StoreDetail.StoreDetailView;
+import com.example.mypc.stores.ui.register.RegisView;
+import com.example.mypc.stores.ui.storedetail.StoreDetailView;
 import com.example.mypc.stores.ui.home.fragment.cmt.CmtFragmentView;
 import com.example.mypc.stores.ui.home.fragment.newpost.NewPostView;
 import com.example.mypc.stores.ui.home.HomeView;

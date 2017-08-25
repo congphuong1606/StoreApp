@@ -1,4 +1,4 @@
-package com.example.mypc.stores.ui.Register;
+package com.example.mypc.stores.ui.register;
 
 /**
  * Created by MyPC on 05/08/2017.
