@@ -32,8 +32,7 @@ public class StoreDetailPresenter {
 
     public void getPostStoreData(long postStoreId) {
         Observable<ArrayList<Post>> posts = mApiService.getListPostStore(postStoreId);
-        mDisposable.add(posts
-                .subscribeOn(Schedulers.io())
+        mDisposable.add(posts.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onLoadPostsSuccess, this::onError));
 

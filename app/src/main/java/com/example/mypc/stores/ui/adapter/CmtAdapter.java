@@ -1,4 +1,4 @@
-package com.example.mypc.stores.ui.Adapter;
+package com.example.mypc.stores.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -22,8 +22,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class CmtAdapter extends RecyclerView.Adapter<CmtAdapter.CmtViewHolder> {
-
-    View v;
     Context context;
     ArrayList<Comment> comments;
     public CmtAdapter(ArrayList<Comment> comments) {
@@ -33,7 +31,7 @@ public class CmtAdapter extends RecyclerView.Adapter<CmtAdapter.CmtViewHolder> {
 
     @Override
     public CmtViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        v = LayoutInflater.from(parent.
+        View v = LayoutInflater.from(parent.
                 getContext()).inflate(R.layout.item_cmt_layout, parent, false);
         context = v.getContext();
         return new CmtViewHolder(v);

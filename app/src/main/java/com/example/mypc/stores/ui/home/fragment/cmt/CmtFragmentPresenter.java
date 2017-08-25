@@ -1,4 +1,4 @@
-package com.example.mypc.stores.ui.home.Fragment.cmt;
+package com.example.mypc.stores.ui.home.fragment.cmt;
 
 import com.example.mypc.stores.data.model.Comment;
 import com.example.mypc.stores.network.ApiService;
@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -57,6 +56,17 @@ public class CmtFragmentPresenter {
 
     private void onUpCmtSuccess(Comment comment) {
         mView.onUploadNewCmtSuccess(comment);
+    }
+
+
+    public void onUpdatePost(long postId) {
+        mDisposable.add(mApiService.updatePostCmt(postId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updatePostCmtSuccsess, this::onError));
+    }
+
+    private void updatePostCmtSuccsess(Integer countPostCmt) {
+        mView.onUpdateCountPostCmtSuccess(countPostCmt);
     }
 
 

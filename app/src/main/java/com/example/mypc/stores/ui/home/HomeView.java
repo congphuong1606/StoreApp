@@ -12,4 +12,5 @@ import java.util.List;
 public interface HomeView {
     void onLoadPostsSuccess(ArrayList<Post> posts);
     void onFail(String msg);
+    void onUpdatePostLoveSuccess(Integer postLove);
 }

@@ -9,12 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mypc.stores.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback,GoogleMap.OnMapLongClickListener {
 
+    private static final LatLng SYDNEY = new LatLng(-33.85704, 151.21522);
+    private GoogleMap mMap;
 
     public static MapFragment newInstance() {
         MapFragment fragment = new MapFragment();
@@ -37,6 +42,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.addMarker(new MarkerOptions().position(SYDNEY)
+                .title("Sydney Opera House"));
+        mMap.setOnMapLongClickListener(this);
+        // Move the camera to show the marker.
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SYDNEY, 10));
+    }
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
 
     }
 }

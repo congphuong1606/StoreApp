@@ -1,5 +1,6 @@
 package com.example.mypc.stores.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -20,10 +21,12 @@ import com.example.mypc.stores.MyApplication;
 import com.example.mypc.stores.R;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.di.module.ViewModule;
-import com.example.mypc.stores.ui.Adapter.PostAdapter;
-import com.example.mypc.stores.ui.home.Fragment.cmt.CmtFragment;
+import com.example.mypc.stores.events.PostAdapterClickListener;
+import com.example.mypc.stores.ui.StoreDetail.StoreDetailActivity;
+import com.example.mypc.stores.ui.adapter.PostAdapter;
+import com.example.mypc.stores.ui.home.fragment.cmt.CmtFragment;
 import com.example.mypc.stores.ui.base.BaseActivity;
-import com.example.mypc.stores.ui.home.Fragment.newpost.NewPostFragment;
+import com.example.mypc.stores.ui.home.fragment.newpost.NewPostFragment;
 
 import java.util.ArrayList;
 
@@ -32,7 +35,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class HomeActivity extends BaseActivity implements HomeView, NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends BaseActivity implements HomeView, NavigationView.OnNavigationItemSelectedListener, PostAdapterClickListener {
+    private static ArrayList<Post> posts;
+    private static PostAdapter mAdapter;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.fbt_new_post)
@@ -45,17 +50,18 @@ public class HomeActivity extends BaseActivity implements HomeView, NavigationVi
     RecyclerView rcvPost;
     @BindView(R.id.layout_cmt)
     FrameLayout layoutFragment;
-    private PostAdapter postAdapter;
     boolean isOpenFragment = false;
-    ArrayList<Post> posts;
-    PostAdapter mAdapter;
+
     @Inject
     HomePresenter mainPresenter;
+    private int mPosition;
+    private long mPostId;
+
 
 
     @Override
     protected void injectDependence() {
-        MyApplication.get().getAppComponent().plus(new ViewModule(this)).InjectTo(this);
+        MyApplication.get().getAppComponent().plus(new ViewModule(this)).injectTo(this);
     }
 
     @Override
@@ -69,6 +75,7 @@ public class HomeActivity extends BaseActivity implements HomeView, NavigationVi
         mAdapter = new PostAdapter(posts);
         rcvPost.setAdapter(mAdapter);
         mainPresenter.getPost();
+        mAdapter.setClickListener(this);
     }
 
     @Override
@@ -111,14 +118,12 @@ public class HomeActivity extends BaseActivity implements HomeView, NavigationVi
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -152,14 +157,6 @@ public class HomeActivity extends BaseActivity implements HomeView, NavigationVi
 
     }
 
-    public void onLoadCmtFragment(long postId) {
-        initViewFragment();
-        CmtFragment cmtFragment = new CmtFragment();
-        setNewFragment(cmtFragment);
-        Bundle bundle = new Bundle();
-        bundle.putLong("postId", postId);
-        cmtFragment.setArguments(bundle);
-    }
 
     private void initViewFragment() {
         layoutFragment.setVisibility(View.VISIBLE);
@@ -190,6 +187,16 @@ public class HomeActivity extends BaseActivity implements HomeView, NavigationVi
     }
 
     @Override
+    public void onUpdatePostLoveSuccess(Integer countPostLove) {
+        for (Post p : posts) {
+            if (mPostId == p.getPostId()) {
+                p.setPostLove(countPostLove + "");
+            }
+        }
+        mAdapter.notifyItemChanged(mPosition);
+    }
+
+    @Override
     protected void onDestroyComposi() {
         mainPresenter.onDestroy();
     }
@@ -200,4 +207,39 @@ public class HomeActivity extends BaseActivity implements HomeView, NavigationVi
         mAdapter.notifyDataSetChanged();
 
     }
+
+    public static void updateCountPostCmt(Integer countPostCmt, long postId, int position) {
+        for (Post p : posts) {
+            if (postId == p.getPostId()) {
+                p.setPostComment(countPostCmt + "");
+            }
+        }
+        mAdapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void onClickImvAvatarPostStore(long postStoreId) {
+        Intent intent = new Intent(this, StoreDetailActivity.class);
+        intent.putExtra("storeId", postStoreId);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClickBtnCmt(long postId, int adapterPosition) {
+        initViewFragment();
+        CmtFragment cmtFragment = new CmtFragment();
+        setNewFragment(cmtFragment);
+        Bundle bundle = new Bundle();
+        bundle.putLong("postId", postId);
+        bundle.putInt("postPosition", adapterPosition);
+        cmtFragment.setArguments(bundle);
+    }
+
+    @Override
+    public void onClickBtnLove(long postId, int position) {
+        mPostId=postId;
+        mainPresenter.updateCountPostLove(postId);
+        mPosition=position;
+    }
+
 }

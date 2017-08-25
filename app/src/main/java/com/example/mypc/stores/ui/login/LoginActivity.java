@@ -1,8 +1,6 @@
 package com.example.mypc.stores.ui.login;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.Button;
@@ -62,7 +60,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     protected void injectDependence() {
         MyApplication.get().getAppComponent()
                 .plus(new ViewModule(this))
-                .InjectTo(this);
+                .injectTo(this);
     }
 
     @Override

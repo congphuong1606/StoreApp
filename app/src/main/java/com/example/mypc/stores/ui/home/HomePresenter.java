@@ -11,25 +11,25 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class HomePresenter {
+public class HomePresenter  {
     private ApiService mApiService;
     private CompositeDisposable mDisposable;
     private HomeView view;
 
     @Inject
-    public HomePresenter(HomeView view,ApiService apiService,
+    public HomePresenter(HomeView view, ApiService apiService,
                          CompositeDisposable mDisposable) {
-        this.mApiService=apiService;
+        this.mApiService = apiService;
         this.view = view;
-        this.mDisposable=mDisposable;
+        this.mDisposable = mDisposable;
     }
+
+
     public void getPost() {
-//        mDisposable=new CompositeDisposable();
         mDisposable.add(mApiService.getListAllPost()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onSuccess, this::onError));
-
     }
 
     private void onError(Throwable throwable) {
@@ -43,5 +43,16 @@ public class HomePresenter {
 
     public void onDestroy() {
         mDisposable.dispose();
+    }
+
+
+    public void updateCountPostLove(long postId) {
+        mDisposable.add(mApiService.updatePostLove(postId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updatePostLoveSuccsess, this::onError));
+    }
+
+    private void updatePostLoveSuccsess(Integer countPostLove) {
+        view.onUpdatePostLoveSuccess(countPostLove);
     }
 }

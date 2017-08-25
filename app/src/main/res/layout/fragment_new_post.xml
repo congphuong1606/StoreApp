@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    tools:context="com.example.mypc.stores.ui.home.Fragment.newpost.NewPostFragment">
+    tools:context="com.example.mypc.stores.ui.home.fragment.newpost.NewPostFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

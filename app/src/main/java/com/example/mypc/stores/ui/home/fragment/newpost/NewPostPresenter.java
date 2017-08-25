@@ -1,8 +1,7 @@
-package com.example.mypc.stores.ui.home.Fragment.newpost;
+package com.example.mypc.stores.ui.home.fragment.newpost;
 
 import android.support.annotation.NonNull;
 
-import com.example.mypc.stores.data.model.Account;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.network.ApiService;
 import com.example.mypc.stores.utils.Constants;

@@ -1,4 +1,4 @@
-package com.example.mypc.stores.ui.home.Fragment.newpost;
+package com.example.mypc.stores.ui.home.fragment.newpost;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -81,7 +79,7 @@ public class NewPostFragment extends BaseFragment implements NewPostView {
     @Override
     protected void injectDependence(View view) {
         MyApplication.get().getAppComponent()
-                .plus(new ViewModule(this)).InjectTo(this);
+                .plus(new ViewModule(this)).injectTo(this);
     }
 
     @Override
@@ -204,7 +202,7 @@ public class NewPostFragment extends BaseFragment implements NewPostView {
         }
         if (bitmap != null) {
             ByteArrayOutputStream imageByte = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, imageByte);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 60, imageByte);
             picByte = imageByte.toByteArray();
             uploadToFireBase(picByte);
         }

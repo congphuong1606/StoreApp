@@ -14,8 +14,9 @@ import com.example.mypc.stores.MyApplication;
 import com.example.mypc.stores.R;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.di.module.ViewModule;
-import com.example.mypc.stores.ui.Adapter.PostAdapter;
+import com.example.mypc.stores.ui.adapter.PostAdapter;
 import com.example.mypc.stores.ui.StoreDetail.fagment.MapFragment;
+import com.example.mypc.stores.ui.adapter.ProductAdapter;
 import com.example.mypc.stores.ui.base.BaseActivity;
 
 import java.util.ArrayList;
@@ -47,14 +48,14 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailView
     FrameLayout flMap;
     private long storeId;
 
-    private ArrayList posts;
-    private PostAdapter mAdapter;
+    private ArrayList storePosts;
+    private ProductAdapter mAdapter;
 
     @Inject
     StoreDetailPresenter mPresenter;
     @Override
     protected void injectDependence() {
-        MyApplication.get().getAppComponent().plus(new ViewModule(this)).InjectTo(this);
+        MyApplication.get().getAppComponent().plus(new ViewModule(this)).injectTo(this);
     }
 
     @Override
@@ -64,7 +65,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailView
 
     @Override
     protected void initView() {
-        rcvPostStore.setLayoutManager(new GridLayoutManager(this, 1));
+        rcvPostStore.setLayoutManager(new GridLayoutManager(this, 2));
         rcvPostStore.setHasFixedSize(true);
         Intent intent = getIntent();
         storeId = intent.getLongExtra("storeId", 0);
@@ -73,16 +74,16 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailView
 
     @Override
     protected void initData() {
-        posts = new ArrayList<>();
-        mAdapter = new PostAdapter(posts);
+        storePosts = new ArrayList<>();
+        mAdapter = new ProductAdapter(storePosts);
         rcvPostStore.setAdapter(mAdapter);
         mPresenter.getPostStoreData(storeId);
 
     }
 
     @Override
-    public void onLoadDataSuccess(ArrayList<Post> posts) {
-        this.posts.addAll(posts);
+    public void onLoadDataSuccess(ArrayList<Post> storePosts) {
+        this.storePosts.addAll(storePosts);
         mAdapter.notifyDataSetChanged();
     }
 

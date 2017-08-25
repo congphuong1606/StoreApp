@@ -1,11 +1,9 @@
 package com.example.mypc.stores.di.module;
 
 import com.example.mypc.stores.ui.Register.RegisView;
-import com.example.mypc.stores.ui.StoreDetail.StoreDetailActivity;
 import com.example.mypc.stores.ui.StoreDetail.StoreDetailView;
-import com.example.mypc.stores.ui.home.Fragment.cmt.CmtFragmentView;
-import com.example.mypc.stores.ui.home.Fragment.newpost.NewPostFragment;
-import com.example.mypc.stores.ui.home.Fragment.newpost.NewPostView;
+import com.example.mypc.stores.ui.home.fragment.cmt.CmtFragmentView;
+import com.example.mypc.stores.ui.home.fragment.newpost.NewPostView;
 import com.example.mypc.stores.ui.home.HomeView;
 import com.example.mypc.stores.ui.login.LoginView;
 

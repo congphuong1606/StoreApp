@@ -1,4 +1,4 @@
-package com.example.mypc.stores.ui.home.Fragment.newpost;
+package com.example.mypc.stores.ui.home.fragment.newpost;
 
 import com.example.mypc.stores.data.model.Post;
 

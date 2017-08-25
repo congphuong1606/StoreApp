@@ -1,4 +1,4 @@
-package com.example.mypc.stores.ui.home.Fragment.cmt;
+package com.example.mypc.stores.ui.home.fragment.cmt;
 
 import com.example.mypc.stores.data.model.Comment;
 
@@ -12,4 +12,5 @@ public interface CmtFragmentView {
     void onLoadCmtSuccess(ArrayList<Comment> comments);
     void onFail(String s);
     void onUploadNewCmtSuccess(Comment cmt);
+    void onUpdateCountPostCmtSuccess(Integer countPostCmt);
 }

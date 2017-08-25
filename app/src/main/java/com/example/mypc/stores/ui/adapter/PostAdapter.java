@@ -1,7 +1,6 @@
-package com.example.mypc.stores.ui.Adapter;
+package com.example.mypc.stores.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +12,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.mypc.stores.R;
 import com.example.mypc.stores.data.model.Post;
-import com.example.mypc.stores.ui.StoreDetail.StoreDetailActivity;
-import com.example.mypc.stores.ui.home.HomeActivity;
+import com.example.mypc.stores.events.PostAdapterClickListener;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -30,13 +27,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder> {
     ArrayList<Post> posts;
     Context mContext;
+    PostAdapterClickListener mListener;
 
-
+    public void setClickListener(PostAdapterClickListener itemClickListener) {
+        this.mListener = itemClickListener;
+    }
 
     public PostAdapter(ArrayList<Post> posts) {
         this.posts = posts;
-    }
 
+
+    }
 
     @Override
     public PostviewHoder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,10 +53,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         return posts.size();
     }
 
-    @OnClick(R.id.imv_post_image)
-    public void onViewClicked() {
-    }
-
 
 
     @Override
@@ -66,7 +63,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         holder.tvPostTime.setText(post.getPostTime() + "");
         holder.tvPostLove.setText(post.getPostLove() + " yêu thích");
         Glide.with(mContext).load(post.getPostStoreAvatar()).into(holder.imvAvatarPostStore);
-        if(post.getPostImage()!=null){
+        if (post.getPostImage() != null) {
             Glide.with(mContext).load(post.getPostImage()).into(holder.imvPostImage);
         }
         holder.tvPostCmt.setText(post.getPostComment() + " comment");
@@ -74,18 +71,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         holder.imvAvatarPostStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, StoreDetailActivity.class);
-                intent.putExtra("storeId", post.getPostStoreId());
-                mContext.startActivity(intent);
+                mListener.onClickImvAvatarPostStore(post.getPostStoreId());
+
             }
         });
         holder.btnCmt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((HomeActivity) mContext).onLoadCmtFragment(post.getPostId());
+                mListener.onClickBtnCmt(post.getPostId(),position);
             }
         });
+        holder.btnLove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onClickBtnLove(post.getPostId(),position);
+            }
+        });
+
     }
+
     public class PostviewHoder extends RecyclerView.ViewHolder {
         @BindView(R.id.imv_post_image)
         ImageView imvPostImage;
@@ -112,10 +116,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         public PostviewHoder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
+//            btnShare.setOnClickListener(this);
+//            btnCmt.setOnClickListener(this);
+//            btnLove.setOnClickListener(this);
+////            imvAvatarPostStore.setOnClickListener(this);
 
         }
 
     }
+
+
+
 
 }

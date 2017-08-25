@@ -13,6 +13,7 @@ import retrofit2.http.Body;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -46,5 +47,9 @@ public interface ApiService {
     @GET("/posts/{postStoreId}")
     Observable<ArrayList<Post>> getListPostStore(@Path("postStoreId") long postStoreId);
 
+    @PUT("/posts/coundCmt/{postId}")
+    Observable<Integer> updatePostCmt(@Path("postId") long postId);
 
+    @PUT("/posts/coundlove/{postId}")
+    Observable<Integer> updatePostLove(@Path("postId") long postId);
 }

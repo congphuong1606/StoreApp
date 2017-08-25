@@ -1,7 +1,5 @@
 package com.example.mypc.stores.ui.Register;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +14,6 @@ import com.example.mypc.stores.ui.base.BaseActivity;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class RegisActivity extends BaseActivity implements RegisView {
@@ -41,7 +38,7 @@ public class RegisActivity extends BaseActivity implements RegisView {
 
     @Override
     protected void injectDependence() {
-        MyApplication.get().getAppComponent().plus(new ViewModule(this)).InjectTo(this);
+        MyApplication.get().getAppComponent().plus(new ViewModule(this)).injectTo(this);
     }
 
     @Override
