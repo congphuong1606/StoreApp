@@ -1,10 +1,12 @@
 package com.example.mypc.stores.di.module;
 
+import com.example.mypc.stores.ui.main.MainView;
+import com.example.mypc.stores.ui.main.fragment.listpost.ListPostView;
+import com.example.mypc.stores.ui.main.usermanager.UserManagerView;
 import com.example.mypc.stores.ui.register.RegisView;
 import com.example.mypc.stores.ui.storedetail.StoreDetailView;
-import com.example.mypc.stores.ui.home.fragment.cmt.CmtFragmentView;
-import com.example.mypc.stores.ui.home.fragment.newpost.NewPostView;
-import com.example.mypc.stores.ui.home.HomeView;
+import com.example.mypc.stores.ui.main.fragment.cmt.CmtFragmentView;
+import com.example.mypc.stores.ui.main.fragment.newpost.NewPostView;
 import com.example.mypc.stores.ui.login.LoginView;
 
 import dagger.Module;
@@ -15,12 +17,22 @@ import dagger.Provides;
  */
 @Module
 public class ViewModule {
-    HomeView homeView;
+    MainView mainView;
     NewPostView newPostView;
     CmtFragmentView cmtFragmentView;
     LoginView loginView;
     RegisView regisView;
     StoreDetailView storeDetailView;
+    ListPostView listPostView;
+    UserManagerView userManagerView;
+
+    public ViewModule(UserManagerView userManagerView) {
+        this.userManagerView = userManagerView;
+    }
+
+    public ViewModule(ListPostView listPostView) {
+        this.listPostView = listPostView;
+    }
 
     public ViewModule(RegisView regisView) {
         this.regisView = regisView;
@@ -38,12 +50,22 @@ public class ViewModule {
         this.newPostView = newPostView;
     }
 
-    public ViewModule(HomeView view) {
-        this.homeView = view;
+    public ViewModule(MainView view) {
+        this.mainView = view;
     }
 
     public ViewModule(StoreDetailView storeDetailView) {
         this.storeDetailView = storeDetailView;
+    }
+
+    @Provides
+    public UserManagerView getUserManagerView() {
+        return userManagerView;
+    }
+
+    @Provides
+    public ListPostView getListPostView() {
+        return listPostView;
     }
 
     @Provides
@@ -67,8 +89,8 @@ public class ViewModule {
     }
 
     @Provides
-    public HomeView getHomeView() {
-        return homeView;
+    public MainView getMainView() {
+        return mainView;
     }
 
     @Provides

@@ -2,14 +2,17 @@ package com.example.mypc.stores.network;
 
 import com.example.mypc.stores.data.model.Account;
 import com.example.mypc.stores.data.model.Comment;
+import com.example.mypc.stores.data.model.Location;
 import com.example.mypc.stores.data.model.Post;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -52,4 +55,13 @@ public interface ApiService {
 
     @PUT("/posts/coundlove/{postId}")
     Observable<Integer> updatePostLove(@Path("postId") long postId);
+
+    @DELETE("/posts/{postId}")
+    Observable<Long> deletePost(@Path("postId") long postId);
+
+    @GET("locations/{locationStoreId}")
+    Observable<Location> getLocation(@Path("locationStoreId") long accId);
+
+    @PUT("/accs/{accId}")
+    Observable<Account> updateIsOnline(@Path("accId") long accId);
 }

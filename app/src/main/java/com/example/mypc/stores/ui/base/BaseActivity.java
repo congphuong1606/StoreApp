@@ -34,13 +34,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentLayoutID());
-        mUnbinder= ButterKnife.bind(this);
+        mUnbinder = ButterKnife.bind(this);
         injectDependence();
         initView();
         initData();
     }
-
-
 
 
     @Override
@@ -53,10 +51,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected abstract void onDestroyComposi();
+
     protected abstract void injectDependence();
+
     protected abstract int getContentLayoutID();
+
     protected abstract void initData();
-    protected abstract void  initView();
+
+    protected abstract void initView();
 
     public void showLoading() {
         if (dialog != null) {
@@ -83,7 +85,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         builder.setMessage(msg);
         builder.setIcon(R.drawable.logo_app);
         builder.setCancelable(true);
-        final AlertDialog  dialog =builder.create();
+        final AlertDialog dialog = builder.create();
         builder.setNegativeButton("ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -93,7 +95,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void onShowBuiderEvent(final String item1, final String item2, final OnEventclickListener eventClick) {
+    public void onShowBuiderDelete(final OnEventclickListener eventClick, Post post) {
+        final CharSequence[] items = {"xóa", "chỉnh sửa"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int i) {
+                if (items[i].equals("xóa")) {
+                    eventClick.onClickDelete(post.getPostId());
+                } else if (items[i].equals("chỉnh sửa")) {
+                    eventClick.onClickEdit(post);
+                }
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void onShowBuider(final String item1, final String item2, final OnEventclickListener eventClick) {
         final CharSequence[] items = {item1, item2};
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.titleavatar));
@@ -102,9 +120,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (items[i].equals(item1)) {
-                   // eventClick.eventChoosePhoto();
+                    // eventClick.eventChoosePhoto();
                 } else if (items[i].equals(item2)) {
-                   // eventClick.eventTakePicture();
+                    // eventClick.eventTakePicture();
                 }
             }
         });
@@ -116,6 +134,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
         builder.create().show();
     }
+
     public void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -124,5 +143,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
-
 }
+
+
+

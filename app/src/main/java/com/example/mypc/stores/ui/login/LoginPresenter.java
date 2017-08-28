@@ -78,4 +78,16 @@ public class LoginPresenter {
     public void onloginFirebase() {
         mAuth.signInAnonymously();
     }
+
+    public void updateIsOnine(long accId) {
+        mApiService.updateIsOnline(accId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onlineSuccess, this::onFail);
+    }
+
+    private void onlineSuccess(Account account) {
+
+    }
+
+
 }

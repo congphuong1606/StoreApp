@@ -2,11 +2,14 @@ package com.example.mypc.stores.di.component;
 
 import com.example.mypc.stores.di.module.StorageModule;
 import com.example.mypc.stores.di.module.ViewModule;
+import com.example.mypc.stores.ui.main.fragment.listpost.ListPostFragment;
+import com.example.mypc.stores.ui.main.usermanager.UserManagerFragment;
+import com.example.mypc.stores.ui.main.usermanager.UserManagerView;
 import com.example.mypc.stores.ui.register.RegisActivity;
 import com.example.mypc.stores.ui.storedetail.StoreDetailActivity;
-import com.example.mypc.stores.ui.home.fragment.cmt.CmtFragment;
-import com.example.mypc.stores.ui.home.fragment.newpost.NewPostFragment;
-import com.example.mypc.stores.ui.home.HomeActivity;
+import com.example.mypc.stores.ui.main.fragment.cmt.CmtFragment;
+import com.example.mypc.stores.ui.main.fragment.newpost.NewPostFragment;
+import com.example.mypc.stores.ui.main.MainActivity;
 import com.example.mypc.stores.ui.login.LoginActivity;
 
 import dagger.Subcomponent;
@@ -16,10 +19,12 @@ import dagger.Subcomponent;
  */
 @Subcomponent(modules = {ViewModule.class, StorageModule.class})
 public interface SubComponent {
-    void injectTo(HomeActivity activity);
+    void injectTo(MainActivity activity);
     void injectTo(NewPostFragment newPostFragment);
     void injectTo(CmtFragment cmtFragment);
     void injectTo(LoginActivity loginActivity);
     void injectTo(RegisActivity regisActivity);
     void injectTo(StoreDetailActivity storeDetailActivity);
+    void injectTo(ListPostFragment listPostFragment);
+    void injectTo(UserManagerFragment userManagerFragment);
 }

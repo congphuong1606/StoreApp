@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
@@ -16,12 +17,11 @@ import butterknife.Unbinder;
  */
 
 public abstract class BaseFragment extends Fragment {
-    private Unbinder mUnbinder;
     private View view;
+    private Unbinder unbinder;
 
     protected abstract void initView(View view);
     protected abstract void initData();
-    public abstract Unbinder bindingView(View view);
     protected abstract int getLayoutID();
     protected abstract void onDestroyComposi();
 
@@ -35,7 +35,7 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(getLayoutID(), container, false);
         injectDependence(view);
-        mUnbinder = bindingView(view);
+        unbinder = ButterKnife.bind(this, view);
         initView(view);
         return view;
     }
@@ -50,8 +50,8 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
+        if (unbinder != null) {
+            unbinder.unbind();
         }
         onDestroyComposi();
     }

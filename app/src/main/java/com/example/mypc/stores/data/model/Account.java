@@ -28,6 +28,9 @@ public class Account implements Serializable {
     @SerializedName("accAvatar")
     @Expose
     private String accAvatar;
+    @SerializedName("accIsOnline")
+    @Expose
+    private boolean accIsOnline;
 
     /**
      * No args constructor for use in serialization
@@ -44,7 +47,7 @@ public class Account implements Serializable {
      * @param accPass
      * @param accAvatar
      */
-    public Account(long accId, String accType, String accNumber, String accName, String accFullName, String accPass, String accAvatar) {
+    public Account(long accId, String accType, String accNumber, String accName, String accFullName, String accPass, String accAvatar, boolean accIsOnline) {
         super();
         this.accId = accId;
         this.accType = accType;
@@ -53,19 +56,16 @@ public class Account implements Serializable {
         this.accFullName = accFullName;
         this.accPass = accPass;
         this.accAvatar = accAvatar;
+        this.accIsOnline = accIsOnline;
+
     }
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "accId='" + accId + '\'' +
-                ", accType='" + accType + '\'' +
-                ", accNumber=" + accNumber + '\'' +
-                ", accName=" + accName + '\'' +
-                ", accFullName=" + accFullName + '\'' +
-                ", accPass=" + accPass + '\'' +
-                ", accAvatar=" + accAvatar +
-                '}';
+    public boolean getAccIsOnline() {
+        return accIsOnline;
+    }
+
+    public void setAccIsOnline(boolean accIsOnline) {
+        this.accIsOnline = accIsOnline;
     }
 
     public long getAccId() {

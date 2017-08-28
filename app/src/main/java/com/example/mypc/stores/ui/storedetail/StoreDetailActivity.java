@@ -1,7 +1,6 @@
 package com.example.mypc.stores.ui.storedetail;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +13,11 @@ import com.example.mypc.stores.MyApplication;
 import com.example.mypc.stores.R;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.di.module.ViewModule;
-import com.example.mypc.stores.ui.storedetail.fagment.MapFragment;
+import com.example.mypc.stores.events.ProductAdapterClickListener;
+import com.example.mypc.stores.ui.storedetail.fagment.mapfragment.MapsFragment;
 import com.example.mypc.stores.ui.adapter.ProductAdapter;
 import com.example.mypc.stores.ui.base.BaseActivity;
+import com.example.mypc.stores.ui.storedetail.fagment.postdetail.PostDetailFragment;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class StoreDetailActivity extends BaseActivity implements StoreDetailView {
+public class StoreDetailActivity extends BaseActivity implements StoreDetailView, ProductAdapterClickListener {
 
 
     @BindView(R.id.ic_back)
@@ -52,6 +53,9 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailView
 
     @Inject
     StoreDetailPresenter mPresenter;
+    private FragmentTransaction transaction;
+
+
     @Override
     protected void injectDependence() {
         MyApplication.get().getAppComponent().plus(new ViewModule(this)).injectTo(this);
@@ -73,10 +77,12 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailView
 
     @Override
     protected void initData() {
+        transaction = getSupportFragmentManager().beginTransaction();
         storePosts = new ArrayList<>();
         mAdapter = new ProductAdapter(storePosts);
         rcvPostStore.setAdapter(mAdapter);
         mPresenter.getPostStoreData(storeId);
+        mAdapter.setClickListener(this);
 
     }
 
@@ -109,13 +115,15 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailView
             case R.id.btn_msg:
                 break;
             case R.id.btn_location:
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.add(R.id.fl_map, MapFragment.newInstance());
+                transaction.add(R.id.fl_map, MapsFragment.newInstance());
                 transaction.commit();
                 break;
         }
     }
 
-
+    @Override
+    public void onItemClick(Post post) {
+        transaction.add(R.id.fl_map, PostDetailFragment.newInstance());
+        transaction.commit();
+    }
 }

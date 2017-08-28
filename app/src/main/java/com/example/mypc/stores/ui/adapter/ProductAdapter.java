@@ -73,15 +73,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Productv
             Glide.with(mContext).load(s).into(holder.imvPostStoreImage);
         }
         holder.tvTitlePost.setText(post.getPostContent() + "");
-        holder.imvPostStoreImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onImvClick(post.getPostId());
-
-            }
-        });
-
-
     }
 
     public class ProductviewHoder extends RecyclerView.ViewHolder {
@@ -93,7 +84,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Productv
         public ProductviewHoder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onItemClick(posts.get(getAdapterPosition()));
+                }
+            });
         }
 
     }

@@ -31,16 +31,18 @@ public class RegisPresenter {
         long accId =Long.valueOf(accNumber);
         String accFullname = accName;
         String accAvatar = "";
-        Account account = new Account(accId, accType, accNumber, accName, accFullname, pass, accAvatar);
+        Account account = new Account(accId, accType, accNumber, accName, accFullname, pass, accAvatar,false);
         mDisposable.add(mApiService.saveNewAccount(account)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onSaveSuccess, this::onSavaFail));
 
     }
-    private void onSaveSuccess(Object o) {
+
+    private void onSaveSuccess(Account account) {
         mRegisView.onSigupSuccess();
     }
+
     private void onSavaFail(Throwable throwable) {
         mRegisView.onFail("đăng ký không thành công");
     }

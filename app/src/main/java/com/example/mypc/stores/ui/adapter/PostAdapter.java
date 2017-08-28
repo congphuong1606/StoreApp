@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -28,6 +29,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
     ArrayList<Post> posts;
     Context mContext;
     PostAdapterClickListener mListener;
+
 
     public void setClickListener(PostAdapterClickListener itemClickListener) {
         this.mListener = itemClickListener;
@@ -54,7 +56,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
     }
 
 
-
     @Override
     public void onBindViewHolder(PostviewHoder holder, int position) {
 
@@ -75,22 +76,31 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
 
             }
         });
-        holder.btnCmt.setOnClickListener(new View.OnClickListener() {
+        holder.tvPostCmt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onClickBtnCmt(post.getPostId(),position);
+                mListener.onClickBtnCmt(post, position);
             }
         });
-        holder.btnLove.setOnClickListener(new View.OnClickListener() {
+        holder.tvPostLove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onClickBtnLove(post.getPostId(),position);
+                mListener.onClickBtnLove(post.getPostId(), position);
+            }
+        });
+        holder.btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onclickBtnMenu(post, position);
             }
         });
 
     }
 
+
     public class PostviewHoder extends RecyclerView.ViewHolder {
+        @BindView(R.id.btn_menu)
+        TextView btnMenu;
         @BindView(R.id.imv_post_image)
         ImageView imvPostImage;
         @BindView(R.id.imv_avatar_post_store)
@@ -103,10 +113,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         TextView tvPostLove;
         @BindView(R.id.tv_post_cmt)
         TextView tvPostCmt;
-        @BindView(R.id.btn_love)
-        Button btnLove;
-        @BindView(R.id.btn_cmt)
-        Button btnCmt;
         @BindView(R.id.btn_share)
         Button btnShare;
         @BindView(R.id.tv_post_content)
@@ -124,8 +130,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         }
 
     }
-
-
 
 
 }

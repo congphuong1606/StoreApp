@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    tools:context="com.example.mypc.stores.ui.home.fragment.newpost.NewPostFragment">
+    android:clipToPadding="false"
+    android:paddingTop="?actionBarSize"
+    tools:context="com.example.mypc.stores.ui.main.fragment.newpost.NewPostFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,15 +50,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#fff">
+
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
                         <EditText
                             android:id="@+id/edt_new_post"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="top|left"
+                            android:background="@null"
                             android:hint="Hãy Đăng cho mọi người biết về cửa hàng của bạn"
                             android:minLines="15" />
 
@@ -76,15 +81,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:background="#f7f6f6">
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/fb_camera"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_alignTop="@+id/fb_garely"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="11dp"
                     android:layout_marginStart="11dp"
                     android:src="@drawable/ic_add_image"
@@ -92,8 +98,8 @@
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/fb_garely"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_toRightOf="@+id/fb_camera"
@@ -102,8 +108,8 @@
 
                 <Button
                     android:id="@+id/btn_sent_post"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"

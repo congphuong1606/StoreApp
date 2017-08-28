@@ -10,6 +10,8 @@ import com.example.mypc.stores.data.model.Post;
 
 public interface PostAdapterClickListener {
     void onClickImvAvatarPostStore(long postStoreId);
-    void onClickBtnCmt(long postId, int adapterPosition);
+    void onClickBtnCmt(Post post, int adapterPosition);
     void onClickBtnLove(long postId, int position);
+
+    void onclickBtnMenu(Post post, int position);
 }
