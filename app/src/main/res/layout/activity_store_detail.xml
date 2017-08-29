@@ -1,138 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.mypc.stores.ui.storedetail.StoreDetailActivity">
-
-    <RelativeLayout
-        android:id="@+id/rl1"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.Toolbar
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="#489ed4">
-
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <RelativeLayout
+                android:clipToPadding="false"
+                android:paddingTop="?actionBarSize"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="20dp">
+                android:layout_height="130dp"
+                >
 
-                <Button
-                    android:id="@+id/ic_back"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/ic_go_back"
-                    android:backgroundTint="#fff" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/side_nav_bar" />
 
-
-                <TextView
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="Store detail"
-                    android:textColor="#fff" />
+                    android:layout_centerInParent="true">
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/civ_avatar_store"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/image_bia" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_toRightOf="@+id/civ_avatar_store">
+
+                        <RelativeLayout
+                            android:id="@+id/rl3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tv_store_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:text="Cơ Khí Minh Ái"
+                                android:textColor="#fff"
+                                android:textSize="20sp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/rl3"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp">
+
+                            <Button
+                                android:id="@+id/btn_call"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/ic_phone"
+                                android:backgroundTint="#fff" />
+
+                            <Button
+                                android:id="@+id/btn_msg"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginLeft="15dp"
+                                android:layout_toRightOf="@+id/btn_call"
+                                android:background="@drawable/ic_msg"
+                                android:backgroundTint="#fff" />
+
+                            <Button
+                                android:id="@+id/btn_location"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginLeft="15dp"
+                                android:layout_toRightOf="@+id/btn_msg"
+                                android:background="@drawable/ic_locaion"
+                                android:backgroundTint="#fff" />
+
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </RelativeLayout>
             </RelativeLayout>
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <Button
+                android:id="@+id/ic_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_go_back"
+                android:backgroundTint="#fff" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Store detail"
+                android:textColor="#fff" />
+
 
 
         </android.support.v7.widget.Toolbar>
-    </RelativeLayout>
+        </android.support.design.widget.CollapsingToolbarLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl2"
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:layout_below="@+id/rl1">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/side_nav_bar" />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+        </android.support.design.widget.AppBarLayout>
 
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/civ_avatar_store"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/image_bia" />
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@+id/civ_avatar_store">
-
-                <RelativeLayout
-                    android:id="@+id/rl3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/tv_store_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="Cơ Khí Minh Ái"
-                        android:textColor="#fff"
-                        android:textSize="20sp" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl3"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp">
-
-                    <Button
-                        android:id="@+id/btn_call"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:background="@drawable/ic_phone"
-                        android:backgroundTint="#fff" />
-
-                    <Button
-                        android:id="@+id/btn_msg"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_toRightOf="@+id/btn_call"
-                        android:background="@drawable/ic_msg"
-                        android:backgroundTint="#fff" />
-
-                    <Button
-                        android:id="@+id/btn_location"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_toRightOf="@+id/btn_msg"
-                        android:background="@drawable/ic_locaion"
-                        android:backgroundTint="#fff" />
-
-
-                </RelativeLayout>
-
-            </RelativeLayout>
-        </RelativeLayout>
-    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/rl2">
+        >
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rcv_post_store"
@@ -145,4 +150,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rl1"></FrameLayout>
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -32,7 +32,6 @@ public class ListPostFragment extends BaseFragment implements ListPostView ,Post
 
     private static ArrayList<Post> posts;
     private static PostAdapter mAdapter;
-    private boolean ischeck = true;
     @Inject
     SharedPreferences mPreferences;
     @Inject
@@ -155,15 +154,27 @@ public class ListPostFragment extends BaseFragment implements ListPostView ,Post
 
     public static void updateCountPostCmt(Integer countPostCmt, long cmtPostId, int mPostPosition) {
         for (Post p : posts) {
-            if (cmtPostId == p.getPostId()) {
+            if (p.getPostId()==cmtPostId) {
                 p.setPostComment(countPostCmt + "");
             }
         }
         mAdapter.notifyItemChanged(mPostPosition);
     }
 
-    public void deletePost(long postId) {
-        listPostPresenter.deletePost(postId);
+    public static void notifyPostAdapter(Long postId) {
+        boolean isCheck=false;
+        int mPostition = 0;
+        int dem=-1;
+        for (Post p : posts) {
+            dem++;
+            if (p.getPostId()==postId) {
+                mPostition=dem;
+               isCheck=true;
+            }
+        }
+        if(isCheck){
+            posts.remove(mPostition);
+        }
+        mAdapter.notifyDataSetChanged();
     }
-
 }

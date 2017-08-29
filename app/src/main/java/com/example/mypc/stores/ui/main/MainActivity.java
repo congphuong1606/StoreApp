@@ -108,8 +108,7 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
 
     @Override
     public void onClickDelete(long postId) {
-        ListPostFragment postFragment = new ListPostFragment();
-        postFragment.deletePost(postId);
+        mainPresenter.deletePost(postId);
     }
 
     @Override
@@ -171,6 +170,16 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
     @Override
     public void onGetAvatarUserSuccess(String avatarUser) {
         Glide.with(getApplicationContext()).load(avatarUser).into(cimvAccAvatar);
+    }
+
+    @Override
+    public void onDeletePostSuccess(Long postId) {
+        ListPostFragment.notifyPostAdapter(postId);
+    }
+
+    @Override
+    public void onRequestFailure(String s) {
+        onShowDialogFail(s);
     }
 
 

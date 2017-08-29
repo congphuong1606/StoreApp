@@ -61,13 +61,5 @@ public class ListPostPresenter {
         mListPostView.onUpdatePostLoveSuccess(countPostLove);
     }
 
-    public void deletePost(long postId) {
-        mDisposable.add(mApiService.deletePost(postId).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onDeletePostSuccess, this::onError));
-    }
 
-    private void onDeletePostSuccess(Long postId) {
-        mListPostView.onDeletePostSuccess(postId);
-    }
 }

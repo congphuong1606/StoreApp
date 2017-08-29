@@ -5,7 +5,7 @@ package com.example.mypc.stores.utils;
  */
 
 public class Constants {
-    public static final String BASE_URL = "http://192.168.1.228:8080";
+    public static final String BASE_URL = "http://192.168.43.174:8080";
     public static final String SPF_NAME = "storeacc";
     //SharePref..
     public static final String LOGIN_NAME = "accName";

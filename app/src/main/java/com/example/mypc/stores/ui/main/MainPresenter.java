@@ -18,15 +18,32 @@ import io.reactivex.schedulers.Schedulers;
 public class MainPresenter {
     SharedPreferences mPreferences;
     MainView mainView;
-
+    CompositeDisposable mDisposable;
+    ApiService mApiService;
     @Inject
-    public MainPresenter(SharedPreferences mPreferences, MainView mainView) {
+    public MainPresenter(SharedPreferences mPreferences, MainView mainView, CompositeDisposable mDisposable, ApiService mApiService) {
         this.mPreferences = mPreferences;
         this.mainView = mainView;
+        this.mDisposable = mDisposable;
+        this.mApiService = mApiService;
     }
 
     public void setAvatarUser() {
         String avatarUser = mPreferences.getString(Constants.PREF_ACC_AVATAR, "");
         mainView.onGetAvatarUserSuccess(avatarUser);
+    }
+
+    public void deletePost(long postId) {
+        mDisposable.add(mApiService.deletePost(postId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onDeletePostSuccess, this::onError));
+    }
+
+    private void onError(Throwable throwable) {
+        mainView.onRequestFailure(String.valueOf(throwable));
+    }
+
+    private void onDeletePostSuccess(Long postId) {
+        mainView.onDeletePostSuccess(postId);
     }
 }
