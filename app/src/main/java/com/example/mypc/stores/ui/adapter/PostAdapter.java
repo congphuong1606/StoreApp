@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mypc.stores.R;
+import com.example.mypc.stores.data.model.IsLike;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.events.PostAdapterClickListener;
 
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -31,12 +31,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
     PostAdapterClickListener mListener;
 
 
-    public void setClickListener(PostAdapterClickListener itemClickListener) {
-        this.mListener = itemClickListener;
+
+    public void setPostAdapter(PostAdapterClickListener mListener) {
+        this.mListener = mListener;
+
     }
 
     public PostAdapter(ArrayList<Post> posts) {
         this.posts = posts;
+
 
 
     }
@@ -63,12 +66,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         holder.tvStoreName.setText(post.getPostStoreName() + "");
         holder.tvPostTime.setText(post.getPostTime() + "");
         holder.tvPostLove.setText(post.getPostLove() + " yêu thích");
+        holder.tvPostCmt.setText(post.getPostComment() + " comment");
+        holder.tvPostContent.setText(post.getPostContent() + "");
         Glide.with(mContext).load(post.getPostStoreAvatar()).into(holder.imvAvatarPostStore);
         if (post.getPostImage() != null) {
             Glide.with(mContext).load(post.getPostImage()).into(holder.imvPostImage);
         }
-        holder.tvPostCmt.setText(post.getPostComment() + " comment");
-        holder.tvPostContent.setText(post.getPostContent() + "");
         holder.imvAvatarPostStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +88,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         holder.tvPostLove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onClickBtnLove(post.getPostId(), position);
+                mListener.onClickBtnLike(post.getPostId(), position);
             }
         });
         holder.btnMenu.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +97,36 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
                 mListener.onclickBtnMenu(post, position);
             }
         });
+        holder.tvPostContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.tvPostContent.setMaxLines(200);
+            }
+        });
+        holder.imvPostImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onClickImvPost(post);
+            }
+        });
+//        //set màu cho like
+//        int islike=holder.itemView.getContext().getResources().getColor(R.color.red);
+//        int dislike=holder.itemView.getContext().getResources().getColor(R.color.text);
+//        long islikeId = Long.valueOf(String.valueOf(accId).concat(String.valueOf(post.getPostId())));
+//        for (IsLike isLike : isLikes) {
+//            if (isLike.getIslikeId() == islikeId) {
+//                holder.tvPostLove.setTextColor(islike);
+//            }else holder.tvPostLove.setTextColor(dislike);
+//        }
+
+//      /*
+//        int islike=holder.itemView.getContext().getResources().getColor(R.color.red);
+//        int dislike=holder.itemView.getContext().getResources().getColor(R.color.text);
+//        long islikeId = Long.valueOf(String.valueOf(accId).concat(String.valueOf(post.getPostId())));
+//        mListener.checkLike(islikeId);
+//        if (mListener.isCheckIsLikePost()) {
+//            holder.tvPostLove.setTextColor(islike);
+//        }else holder.tvPostLove.setTextColor(dislike);*/
 
     }
 

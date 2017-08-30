@@ -24,8 +24,8 @@
                 android:id="@+id/cimv_acc_avatar"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_gravity="right"
-                android:layout_marginRight="15dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="15dp"
                 android:src="@drawable/ic_noavatar" />
 
             <Button
@@ -35,16 +35,25 @@
                 android:layout_gravity="left"
                 android:background="@drawable/ic_go_back"
                 android:backgroundTint="#fff" />
+            <TextView
+                android:text="Stores"
+                android:id="@+id/tv_toolbar_title"
+                android:textColor="#fff"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
 
             <Button
-
                 android:visibility="gone"
-                android:layout_gravity="right"
+                android:layout_gravity="right|center"
                 android:backgroundTint="#fff"
+                android:layout_marginRight="15dp"
                 android:background="@drawable/ic_tick"
                 android:id="@+id/btn_save"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_width="25dp"
+                android:layout_height="25dp" />
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

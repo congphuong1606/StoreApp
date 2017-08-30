@@ -11,7 +11,11 @@ import com.example.mypc.stores.data.model.Post;
 public interface PostAdapterClickListener {
     void onClickImvAvatarPostStore(long postStoreId);
     void onClickBtnCmt(Post post, int adapterPosition);
-    void onClickBtnLove(long postId, int position);
+    void onClickBtnLike(long postId, int position);
 
     void onclickBtnMenu(Post post, int position);
+    void onClickImvPost(Post post);
+   /* boolean isCheckIsLikePost();
+
+    void checkLike(long islikeId);*/
 }

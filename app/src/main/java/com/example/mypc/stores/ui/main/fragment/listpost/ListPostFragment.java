@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.example.mypc.stores.MyApplication;
 import com.example.mypc.stores.R;
+import com.example.mypc.stores.data.model.IsLike;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.di.module.ViewModule;
 import com.example.mypc.stores.events.PostAdapterClickListener;
@@ -29,8 +30,8 @@ public class ListPostFragment extends BaseFragment implements ListPostView ,Post
     @BindView(R.id.rcv_post)
     RecyclerView rcvPost;
 
-
     private static ArrayList<Post> posts;
+    private static ArrayList<IsLike> isLikes;
     private static PostAdapter mAdapter;
     @Inject
     SharedPreferences mPreferences;
@@ -38,6 +39,10 @@ public class ListPostFragment extends BaseFragment implements ListPostView ,Post
     ListPostPresenter listPostPresenter;
     private long mPostId;
     private int mPosition;
+    private long accid;
+    private Long islikeId;
+    private boolean isCheck;
+
 
 
     @Override
@@ -48,11 +53,13 @@ public class ListPostFragment extends BaseFragment implements ListPostView ,Post
 
     @Override
     protected void initData() {
+        accid=mPreferences.getLong(Constants.PREF_ACC_ID,0);
         posts = new ArrayList<>();
         mAdapter = new PostAdapter(posts);
         rcvPost.setAdapter(mAdapter);
+//        listPostPresenter.getIsLike(accid);
         listPostPresenter.getPost();
-        mAdapter.setClickListener(this);
+        mAdapter.setPostAdapter(this);
     }
 
 
@@ -117,6 +124,35 @@ public class ListPostFragment extends BaseFragment implements ListPostView ,Post
     }
 
     @Override
+    public void islikeSuccess(Integer integer) {
+        if(integer==1){
+            listPostPresenter.deleteIsLikePost(islikeId);
+        }else if(integer==0){
+            listPostPresenter.uploadIsLikePost(islikeId,accid,mPostId);
+        }
+    }
+
+    @Override
+    public void onUploadIsLikeSuccess() {
+        listPostPresenter.updateCountPostLove(mPostId,0);
+    }
+
+    @Override
+    public void onDeleteIsLikePostSuccess() {
+        listPostPresenter.updateCountPostLove(mPostId,1);
+    }
+
+    @Override
+    public void isLikePostsSuccess(boolean islike) {
+        isCheck=islike;
+    }
+
+//    @Override
+//    public void onGetAllIsLikeByAccSuccsess(ArrayList<IsLike> isLikes) {
+//        this.isLikes.addAll(isLikes);
+//    }
+
+    @Override
     public void onClickImvAvatarPostStore(long postStoreId) {
         Intent intent = new Intent(getContext(), StoreDetailActivity.class);
         intent.putExtra("storeId", postStoreId);
@@ -125,14 +161,16 @@ public class ListPostFragment extends BaseFragment implements ListPostView ,Post
 
     @Override
     public void onClickBtnCmt(Post post, int adapterPosition) {
-        ((MainActivity) getActivity()).initCmtFragment(post,adapterPosition);
+        ((MainActivity) getActivity()).showFragmentCmt(post,adapterPosition);
     }
 
     @Override
-    public void onClickBtnLove(long postId, int position) {
+    public void onClickBtnLike(long postId, int position) {
         mPostId = postId;
-        listPostPresenter.updateCountPostLove(postId);
         mPosition = position;
+        islikeId=Long.valueOf(String.valueOf(accid).concat(String.valueOf(postId)));
+        listPostPresenter.isLike(islikeId);
+
     }
 
     @Override
@@ -145,10 +183,30 @@ public class ListPostFragment extends BaseFragment implements ListPostView ,Post
             //
         }
     }
+
+    @Override
+    public void onClickImvPost(Post post) {
+//        Intent intent=new Intent(getContext(), ImageViewActivity.class);
+//        intent.putExtra("urlPostImage",postImage);
+//        startActivity(intent);
+//        startActivity(new Intent());
+    ((MainActivity) getActivity()).showFragmentImaeViewer(post);
+    }
+
+//    @Override
+//    public boolean isCheckIsLikePost() {
+//        return isCheck;
+//    }
+//
+//    @Override
+//    public void checkLike(long islikeId) {
+//        listPostPresenter.isLikePosts(islikeId);
+//    }
+
     public void setNewPost(Post post) {
-        posts.add(post);
+        posts.add(0,post);
         mAdapter.notifyDataSetChanged();
-        rcvPost.smoothScrollToPosition(posts.size());
+        rcvPost.smoothScrollToPosition(0);
 
     }
 

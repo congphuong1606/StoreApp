@@ -1,6 +1,7 @@
 package com.example.mypc.stores.ui.base;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -55,12 +57,17 @@ public abstract class BaseFragment extends Fragment {
         }
         onDestroyComposi();
     }
-    public void hideKeyboard() {
-        View v = getActivity().getCurrentFocus();
-        if (v != null) {
-            InputMethodManager imm = (InputMethodManager) getActivity()
-                    .getSystemService(view.getContext().INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+    public void showKeyboard(EditText editText,boolean isShow) {
+        editText.requestFocus();
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager)
+                    getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if(isShow){
+                inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+            }else  inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
         }
     }
 

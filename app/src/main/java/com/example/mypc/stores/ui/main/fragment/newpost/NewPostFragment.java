@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +21,7 @@ import com.example.mypc.stores.MyApplication;
 import com.example.mypc.stores.R;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.di.module.ViewModule;
+import com.example.mypc.stores.events.BtnSaveClickListenner;
 import com.example.mypc.stores.ui.base.BaseFragment;
 import com.example.mypc.stores.ui.main.MainActivity;
 import com.example.mypc.stores.ui.main.fragment.listpost.ListPostFragment;
@@ -33,14 +33,12 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
-public class NewPostFragment extends BaseFragment implements NewPostView {
+public class NewPostFragment extends BaseFragment implements NewPostView, BtnSaveClickListenner {
 
     @BindView(R.id.imv_store_post_avatar)
     CircleImageView imvStorePostAvatar;
@@ -48,25 +46,22 @@ public class NewPostFragment extends BaseFragment implements NewPostView {
     TextView tvStorePost;
     @BindView(R.id.edt_new_post)
     EditText edtNewPost;
-    @BindView(R.id.btn_sent_post)
-    Button btnSentPost;
     Context mContext;
 
     @Inject
     SharedPreferences mPreferences;
-
     @Inject
     NewPostPresenter mPresenter;
-    @BindView(R.id.fb_camera)
-    FloatingActionButton fbCamera;
-    @BindView(R.id.fb_garely)
-    FloatingActionButton fbGarely;
-    Unbinder unbinder;
     @BindView(R.id.imv_post_image)
     ImageView imvPostImage;
     @BindView(R.id.rl5)
     RelativeLayout rl5;
-    Unbinder unbinder1;
+    @BindView(R.id.btn_camera)
+    Button btnCamera;
+    @BindView(R.id.btn_garely)
+    Button btnGarely;
+
+
 
     private String avatar;
     private String accFullName;
@@ -86,11 +81,13 @@ public class NewPostFragment extends BaseFragment implements NewPostView {
     @Override
     protected void initView(View view) {
         mContext = view.getContext();
+        showKeyboard(edtNewPost,true);
 
     }
 
     @Override
     protected void initData() {
+        ((MainActivity) getActivity()).setClickSaveListener(this);
         avatar = mPreferences.getString(Constants.PREF_ACC_AVATAR, "");
         accFullName = mPreferences.getString(Constants.PREF_ACC_FULLNAME, "");
         accId = mPreferences.getLong(Constants.PREF_ACC_ID, 0);
@@ -98,7 +95,6 @@ public class NewPostFragment extends BaseFragment implements NewPostView {
         Glide.with(getContext()).load(avatar).into(imvStorePostAvatar);
         tvStorePost.setText(accFullName);
     }
-
 
 
     @Override
@@ -116,7 +112,7 @@ public class NewPostFragment extends BaseFragment implements NewPostView {
     public void onLoadPostSuccess(Post post) {
         edtNewPost.setText("");
         getActivity().onBackPressed();
-        ListPostFragment postFragment=new ListPostFragment();
+        ListPostFragment postFragment = new ListPostFragment();
         postFragment.setNewPost(post);
 
 
@@ -124,7 +120,7 @@ public class NewPostFragment extends BaseFragment implements NewPostView {
 
     @Override
     public void onFail(String s) {
-        Log.i("TAG onFail: ",s);
+        Log.i("TAG onFail: ", s);
 
     }
 
@@ -134,27 +130,14 @@ public class NewPostFragment extends BaseFragment implements NewPostView {
     }
 
 
-    @OnClick({R.id.fb_camera, R.id.fb_garely, R.id.btn_sent_post})
+    @OnClick({R.id.btn_camera, R.id.btn_garely})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.fb_camera:
+            case R.id.btn_camera:
                 takePicture();
                 break;
-            case R.id.fb_garely:
+            case R.id.btn_garely:
                 choosePhoto();
-                break;
-            case R.id.btn_sent_post:
-                hideKeyboard();
-                if (picByte == null) {
-                    senPost();
-                } else {
-                    if (postImage != null) {
-                        senPost();
-                    } else {
-                        Toast.makeText(getContext(), "up anh len file base chua thanh cong", Toast.LENGTH_LONG).show();
-                    }
-                }
-
                 break;
         }
     }
@@ -211,4 +194,20 @@ public class NewPostFragment extends BaseFragment implements NewPostView {
 
 
     }
+
+    @Override
+    public void onclick() {
+        showKeyboard(edtNewPost,false);
+        if (picByte == null) {
+            senPost();
+        } else {
+            if (postImage != null) {
+                senPost();
+            } else {
+                Toast.makeText(getContext(), "up anh len file base chua thanh cong", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
 }

@@ -1,11 +1,9 @@
 package com.example.mypc.stores.ui.main.usermanager;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,6 +17,8 @@ import com.example.mypc.stores.R;
 import com.example.mypc.stores.data.model.Location;
 import com.example.mypc.stores.di.module.ViewModule;
 import com.example.mypc.stores.ui.base.BaseFragment;
+import com.example.mypc.stores.ui.login.LoginActivity;
+import com.example.mypc.stores.ui.main.MainActivity;
 import com.example.mypc.stores.ui.main.utils.BitmapUtils;
 import com.example.mypc.stores.utils.Constants;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,9 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -44,6 +42,9 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
     SharedPreferences mPreferences;
     @Inject
     UserManagerPresenter mPresenter;
+    @Inject
+    SharedPreferences.Editor editor;
+
     @BindView(R.id.imv_avatar)
     CircleImageView imvAvatar;
     @BindView(R.id.tv_acc_name)
@@ -64,15 +65,20 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
     LinearLayout layoutStore;
     @BindView(R.id.btn_store_folow)
     Button btnStoreFolow;
-    @BindView(R.id.btn_lich_su)
-    Button btnLichSu;
+    @BindView(R.id.btn_save_post_history)
+    Button btnSavePostHistory;
     @BindView(R.id.layout_user)
     LinearLayout layoutUser;
     @BindView(R.id.btn_setting)
     Button btnSetting;
     @BindView(R.id.btn_sign_out)
     Button btnSignOut;
-    Unbinder unbinder;
+    @BindView(R.id.btn_save_number)
+    Button btnSaveNumber;
+    @BindView(R.id.btn_save_acc_name)
+    Button btnSaveAccName;
+
+
     //map
 
     private GoogleMap mMap;
@@ -81,16 +87,19 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
 
     private SupportMapFragment mapFragment;
     private String accFullname;
-    private Bitmap bitmap;
     private String accAvatar;
     private String accType;
     private long accId;
     private String accName;
     private String accNumber;
+
+
     @Override
     protected void initView(View view) {
         mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.store_map);
+        btnSaveAccName.setVisibility(View.GONE);
+        btnSaveNumber.setVisibility(View.GONE);
 
 
     }
@@ -169,29 +178,47 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
 
     @OnClick({R.id.btn_edit_number, R.id.btn_edit_acc_name,
             R.id.btn_edit_acc_location, R.id.btn_store_folow,
-            R.id.btn_lich_su, R.id.btn_setting, R.id.btn_sign_out})
+            R.id.btn_save_post_history, R.id.btn_setting, R.id.btn_sign_out,
+            R.id.btn_save_number,R.id.btn_save_acc_name
+    })
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btn_edit_number:
-                edtEditAccNumber.setEnabled(true);
-                edtEditAccNumber.setClickable(true);
+            case  R.id.btn_save_number:
 
+                btnEditNumber.setVisibility(View.VISIBLE);
+                showKeyboard(edtEditAccNumber,false);
+                btnSaveNumber.setVisibility(View.GONE);
+                break;
+            case R.id.btn_save_acc_name:
+                btnEditAccName.setVisibility(View.VISIBLE);
+                btnSaveAccName.setVisibility(View.GONE);
+                showKeyboard(edtEditAccName,false);
+                break;
+            case R.id.btn_edit_number:
+                showKeyboard(edtEditAccNumber, true);
+                btnEditNumber.setVisibility(View.GONE);
+                btnSaveNumber.setVisibility(View.VISIBLE);
                 break;
             case R.id.btn_edit_acc_name:
-                edtEditAccName.setEnabled(true);
-                edtEditAccNumber.setClickable(true);
+                showKeyboard(edtEditAccName, true);
+                btnEditAccName.setVisibility(View.GONE);
+                btnSaveAccName.setVisibility(View.VISIBLE);
                 break;
             case R.id.btn_edit_acc_location:
 
                 break;
             case R.id.btn_store_folow:
                 break;
-            case R.id.btn_lich_su:
+            case R.id.btn_save_post_history:
+                ((MainActivity) getActivity()).showFagmentSaveHistory();
                 break;
             case R.id.btn_setting:
                 break;
             case R.id.btn_sign_out:
-                mPresenter.signOut(accId);
+                editor.remove(Constants.PREF_TOKEN).commit();
+                startActivity(new Intent(getContext(), LoginActivity.class));
+                ((MainActivity) getActivity()).finish();
+
                 break;
         }
     }

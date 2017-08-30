@@ -2,11 +2,14 @@ package com.example.mypc.stores.network;
 
 import com.example.mypc.stores.data.model.Account;
 import com.example.mypc.stores.data.model.Comment;
+import com.example.mypc.stores.data.model.IsLike;
 import com.example.mypc.stores.data.model.Location;
 import com.example.mypc.stores.data.model.Post;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -25,9 +28,6 @@ import retrofit2.http.Query;
  */
 
 public interface ApiService {
-    @GET("post/{type}")
-    Observable<ArrayList<Post>> getListPost(@Path("type") String type);
-
     @GET("/posts/all")
     Observable<ArrayList<Post>> getListAllPost();
 
@@ -54,7 +54,7 @@ public interface ApiService {
     Observable<Integer> updatePostCmt(@Path("postId") long postId);
 
     @PUT("/posts/coundlove/{postId}")
-    Observable<Integer> updatePostLove(@Path("postId") long postId);
+    Observable<Integer> updatePostLove(@Path("postId") long postId, @Body int i);
 
     @DELETE("/posts/{postId}")
     Observable<Long> deletePost(@Path("postId") long postId);
@@ -64,4 +64,17 @@ public interface ApiService {
 
     @PUT("/accs/{accId}")
     Observable<Account> updateIsOnline(@Path("accId") long accId);
+
+    @PUT("/posts/update")
+    Observable<Post> updatePost(@Body Post post);
+
+    @GET("/islike/one/{islikeId}")
+    Observable<Integer> isLike(@Path("islikeId") long islikeId);
+
+    @POST("/islike/liked")
+    Observable<Integer> uploadIsLike(@Body IsLike isLike);
+
+    @DELETE("/islike/{islikeId}")
+    Observable<Integer> deleteIsLikePost(@Path("islikeId") long islikeId);
+
 }

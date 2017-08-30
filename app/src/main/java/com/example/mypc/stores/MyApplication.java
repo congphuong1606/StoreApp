@@ -5,6 +5,10 @@ import android.app.Application;
 import com.example.mypc.stores.di.component.AppComponent;
 import com.example.mypc.stores.di.component.DaggerAppComponent;
 import com.example.mypc.stores.di.module.AppModule;
+import com.facebook.cache.disk.DiskCacheConfig;
+import com.facebook.common.util.ByteConstants;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 
 /**
  * Created by MyPC on 02/08/2017.
@@ -21,6 +25,25 @@ public class MyApplication extends Application {
         appComponent= DaggerAppComponent.builder().appModule(new AppModule(this))
                 .build();
 
+
+        DiskCacheConfig diskCacheConfig = DiskCacheConfig.newBuilder(this)
+                .setBaseDirectoryName("ChatBase")
+                .setMaxCacheSize(100 * ByteConstants.MB)
+                .setMaxCacheSizeOnLowDiskSpace(10 * ByteConstants.MB)
+                .setMaxCacheSizeOnVeryLowDiskSpace(3 * ByteConstants.MB)
+                .setVersion(1)
+                .build();
+
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+                .setResizeAndRotateEnabledForNetwork(false)
+                .setMainDiskCacheConfig(diskCacheConfig)
+                .setDownsampleEnabled(true)
+                .build();
+
+
+        Fresco.initialize(this,config);
+        appComponent= DaggerAppComponent.builder().appModule(new AppModule(this))
+                .build();
 
 
     }

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.network.ApiService;
 import com.example.mypc.stores.utils.Constants;
+import com.example.mypc.stores.utils.TimeControler;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,7 @@ public class MainPresenter {
     MainView mainView;
     CompositeDisposable mDisposable;
     ApiService mApiService;
+
     @Inject
     public MainPresenter(SharedPreferences mPreferences, MainView mainView, CompositeDisposable mDisposable, ApiService mApiService) {
         this.mPreferences = mPreferences;
@@ -46,4 +48,5 @@ public class MainPresenter {
     private void onDeletePostSuccess(Long postId) {
         mainView.onDeletePostSuccess(postId);
     }
+
 }

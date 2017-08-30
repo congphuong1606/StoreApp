@@ -24,6 +24,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CmtAdapter extends RecyclerView.Adapter<CmtAdapter.CmtViewHolder> {
     Context context;
     ArrayList<Comment> comments;
+
+
     public CmtAdapter(ArrayList<Comment> comments) {
         this.comments = comments;
 
@@ -43,6 +45,7 @@ public class CmtAdapter extends RecyclerView.Adapter<CmtAdapter.CmtViewHolder> {
         Glide.with(context).load(comment.getCmtAccAvatar()).into(holder.imvCmtUser);
         holder.tvCmtContent.setText(comment.getCmtContent());
         holder.tvCmtTime.setText(comment.getCmtTime());
+        holder.tvCmtAccName.setText(comment.getCmtAccName());
     }
 
     @Override
@@ -57,7 +60,8 @@ public class CmtAdapter extends RecyclerView.Adapter<CmtAdapter.CmtViewHolder> {
         TextView tvCmtContent;
         @BindView(R.id.tv_cmt_time)
         TextView tvCmtTime;
-
+        @BindView(R.id.tv_cmt_acc_name)
+        TextView tvCmtAccName;
 
         public CmtViewHolder(View itemView) {
             super(itemView);

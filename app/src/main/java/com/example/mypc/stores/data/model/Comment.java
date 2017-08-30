@@ -22,20 +22,31 @@ public class Comment {
     @SerializedName("cmtTime")
     @Expose
     private String cmtTime;
+    @SerializedName("cmtAccName")
+    @Expose
+    private String cmtAccName;
 
     public Comment() {
     }
 
     public Comment(long cmtId, long cmtAccId, String cmtAccAvatar,
-                   long cmtPostId, String cmtContent, String cmtTime) {
+                   long cmtPostId, String cmtContent, String cmtTime,String cmtAccName) {
         this.cmtId = cmtId;
         this.cmtAccId = cmtAccId;
         this.cmtAccAvatar = cmtAccAvatar;
         this.cmtPostId = cmtPostId;
         this.cmtContent = cmtContent;
         this.cmtTime = cmtTime;
+        this.cmtAccName=cmtAccName;
     }
 
+    public String getCmtAccName() {
+        return cmtAccName;
+    }
+
+    public void setCmtAccName(String cmtAccName) {
+        this.cmtAccName = cmtAccName;
+    }
 
     public long getCmtId() {
         return cmtId;

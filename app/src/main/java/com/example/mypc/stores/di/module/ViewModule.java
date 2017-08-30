@@ -1,6 +1,10 @@
 package com.example.mypc.stores.di.module;
 
 import com.example.mypc.stores.ui.main.MainView;
+import com.example.mypc.stores.ui.main.fragment.editpost.EditPostFragment;
+import com.example.mypc.stores.ui.main.fragment.editpost.EditPostview;
+import com.example.mypc.stores.ui.main.fragment.imageviewer.ImageViewFragment;
+import com.example.mypc.stores.ui.main.fragment.imageviewer.ImvView;
 import com.example.mypc.stores.ui.main.fragment.listpost.ListPostView;
 import com.example.mypc.stores.ui.main.usermanager.UserManagerView;
 import com.example.mypc.stores.ui.register.RegisView;
@@ -25,6 +29,12 @@ public class ViewModule {
     StoreDetailView storeDetailView;
     ListPostView listPostView;
     UserManagerView userManagerView;
+    EditPostview editPostview;
+    ImvView imvView;
+
+    public ViewModule(ImvView imvView) {
+        this.imvView = imvView;
+    }
 
     public ViewModule(UserManagerView userManagerView) {
         this.userManagerView = userManagerView;
@@ -56,6 +66,21 @@ public class ViewModule {
 
     public ViewModule(StoreDetailView storeDetailView) {
         this.storeDetailView = storeDetailView;
+    }
+
+
+    public ViewModule(EditPostview editPostview) {
+        this.editPostview = editPostview;
+    }
+
+    @Provides
+    public ImvView getImvView() {
+        return imvView;
+    }
+
+    @Provides
+    public EditPostview getEditPostview() {
+        return editPostview;
     }
 
     @Provides

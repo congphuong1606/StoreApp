@@ -1,5 +1,6 @@
 package com.example.mypc.stores.ui.main.fragment.listpost;
 
+import com.example.mypc.stores.data.model.IsLike;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.network.ApiService;
 import com.example.mypc.stores.ui.main.MainView;
@@ -31,10 +32,10 @@ public class ListPostPresenter {
 
 
     public void getPost() {
-        mDisposable.add(mApiService.getListAllPost()
+       mApiService.getListAllPost()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onSuccess, this::onError));
+                .subscribe(this::onSuccess, this::onError);
     }
 
     private void onError(Throwable throwable) {
@@ -51,15 +52,54 @@ public class ListPostPresenter {
     }
 
 
-    public void updateCountPostLove(long postId) {
-        mDisposable.add(mApiService.updatePostLove(postId).subscribeOn(Schedulers.io())
+    public void updateCountPostLove(long postId, int i) {
+        mApiService.updatePostLove(postId,i).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::updatePostLoveSuccsess, this::onError));
+                .subscribe(this::updatePostLoveSuccsess, this::onError);
     }
 
     private void updatePostLoveSuccsess(Integer countPostLove) {
         mListPostView.onUpdatePostLoveSuccess(countPostLove);
     }
+
+
+    public void uploadIsLikePost(Long islikeId, long accId, long postId) {
+        IsLike isLike=new IsLike(islikeId,accId,postId);
+       mApiService.uploadIsLike(isLike).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::uploadIsLikeSuccsess, this::onError);
+    }
+
+    private void uploadIsLikeSuccsess(Integer integer) {
+        if(integer==1){
+            mListPostView.onUploadIsLikeSuccess();
+        }
+
+    }
+
+    public void isLike(long islikeId) {
+        mApiService.isLike(islikeId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::isLikeSuccsess, this::onError);
+    }
+
+    private void isLikeSuccsess(Integer integer) {
+            mListPostView.islikeSuccess(integer);
+    }
+
+    public void deleteIsLikePost(long islikeId) {
+        mApiService.deleteIsLikePost(islikeId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::deleteIsLikeSuccsess, this::onError);
+    }
+
+    private void deleteIsLikeSuccsess(Integer integer) {
+mListPostView.onDeleteIsLikePostSuccess();
+    }
+
+
+
+
 
 
 }

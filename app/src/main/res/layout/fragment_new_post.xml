@@ -14,6 +14,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:paddingBottom="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#d7e9e8"
@@ -41,15 +42,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RelativeLayout
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/rl5">
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
 
-                <ScrollView
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#fff">
+                    android:layout_above="@+id/rl5">
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -57,26 +62,28 @@
                         android:orientation="vertical">
 
                         <EditText
+                            android:windowSoftInputMode="stateAlwaysVisible"
                             android:id="@+id/edt_new_post"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="top|left"
+                            android:layout_height="wrap_content"
                             android:background="@null"
-                            android:hint="Hãy Đăng cho mọi người biết về cửa hàng của bạn"
-                            android:minLines="15" />
+                            android:gravity="top|left"
+                            android:hint="Hãy Đăng gì đó để mọi người có thể biết nhiều hơn về cửa hàng của bạn"
+                            android:maxLines="15" />
 
                         <ImageView
+                            android:layout_marginTop="30dp"
                             android:id="@+id/imv_post_image"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
 
 
-                </ScrollView>
-            </RelativeLayout>
-
+                </RelativeLayout>
+            </ScrollView>
 
             <RelativeLayout
+                android:padding="10dp"
                 android:id="@+id/rl5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,35 +92,37 @@
                 android:layout_alignParentStart="true"
                 android:background="#f7f6f6">
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fb_camera"
+                <Button
+                    android:id="@+id/btn_camera"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_alignTop="@+id/fb_garely"
+                    android:layout_alignTop="@+id/btn_garely"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="11dp"
                     android:layout_marginStart="11dp"
-                    android:src="@drawable/ic_add_image"
-                    app:backgroundTint="#fff" />
+                    android:background="@drawable/ic_add_image"
+                    />
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fb_garely"
+                <Button
+                    android:id="@+id/btn_garely"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
-                    android:layout_toRightOf="@+id/fb_camera"
-                    android:src="@drawable/ic_gallery"
-                    app:backgroundTint="#fff" />
-
-                <Button
-                    android:id="@+id/btn_sent_post"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@+id/btn_camera"
+                    android:background="@drawable/ic_gallery"
+                     />
+                <TextView
+                    android:gravity="center"
+                    android:text="thêm ảnh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/ic_send" />
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@+id/btn_garely"
+                    />
+
+
             </RelativeLayout>
 
 

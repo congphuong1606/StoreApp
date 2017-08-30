@@ -1,25 +1,30 @@
 package com.example.mypc.stores.ui.login;
 
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import com.example.mypc.stores.MyApplication;
 import com.example.mypc.stores.R;
 import com.example.mypc.stores.data.model.Account;
 import com.example.mypc.stores.di.module.ViewModule;
+import com.example.mypc.stores.ui.base.BaseActivity;
 import com.example.mypc.stores.ui.main.MainActivity;
 import com.example.mypc.stores.ui.register.RegisActivity;
-import com.example.mypc.stores.ui.base.BaseActivity;
 import com.example.mypc.stores.utils.Constants;
 import com.example.mypc.stores.utils.UtilDatas;
+import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements LoginView {
@@ -47,6 +52,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     SharedPreferences mPreferences;
     @Inject
     SharedPreferences.Editor editor;
+
     private String accName;
     private String accPass;
 
@@ -70,6 +76,11 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @Override
     protected void initData() {
+
+        if (!mPreferences.getString(Constants.PREF_TOKEN, "").isEmpty()) {
+            onStartActivity(MainActivity.class);
+            finish();
+        }
         edtInputAcc.setText(mPreferences
                 .getString(Constants.LOGIN_NAME, ""));
         edtInputPass.setText(mPreferences
@@ -77,16 +88,20 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     }
 
+
     @Override
     protected void initView() {
+
         if (!mPreferences.getString(Constants.LOGIN_NAME, "").isEmpty()) {
             rempasswordcheckbox.setChecked(true);
         }
+
     }
 
 
     @Override
     public void onLoginSuccess(Account account) {
+
         editor.putLong(Constants.PREF_ACC_ID, account.getAccId())
                 .putString(Constants.PREF_ACC_TYPE, account.getAccType())
                 .putString(Constants.PREF_ACC_NUMBER, account.getAccNumber())
@@ -94,8 +109,9 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 .putString(Constants.PREF_ACC_FULLNAME, account.getAccFullName())
                 .putString(Constants.PREF_ACC_PASS, account.getAccPass())
                 .putString(Constants.PREF_ACC_AVATAR, account.getAccAvatar())
+                .putString(Constants.PREF_TOKEN, getResources().getString(R.string.token))
                 .commit();
-        mPresenter.updateIsOnine(account.getAccId());
+
         onStartActivity(MainActivity.class);
         finish();
     }
@@ -106,10 +122,11 @@ public class LoginActivity extends BaseActivity implements LoginView {
         onShowBuider(msg);
     }
 
-    @OnClick({R.id.btn_quit,R.id.rempasswordcheckbox, R.id.btn_register, R.id.btn_login})
+    @OnClick({R.id.btn_quit, R.id.rempasswordcheckbox, R.id.btn_register, R.id.btn_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
+
                 actionLogin();
                 break;
             case R.id.rempasswordcheckbox:
@@ -137,6 +154,8 @@ public class LoginActivity extends BaseActivity implements LoginView {
             accPass = edtInputPass.getText().toString().trim();
             mPresenter.onLogin(accName, accPass);
             mPresenter.onloginFirebase();
+
         }
     }
+
 }

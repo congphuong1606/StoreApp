@@ -40,7 +40,4 @@ public class UserManagerPresenter {
 
     }
 
-    public void signOut(long accId) {
-
-    }
 }

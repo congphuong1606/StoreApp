@@ -14,7 +14,6 @@ import com.example.mypc.stores.data.model.Comment;
 import com.example.mypc.stores.di.module.ViewModule;
 import com.example.mypc.stores.ui.adapter.CmtAdapter;
 import com.example.mypc.stores.ui.base.BaseFragment;
-import com.example.mypc.stores.ui.main.MainActivity;
 import com.example.mypc.stores.ui.main.fragment.listpost.ListPostFragment;
 import com.example.mypc.stores.utils.Constants;
 import com.example.mypc.stores.utils.TimeControler;
@@ -24,9 +23,7 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 public class CmtFragment extends BaseFragment implements CmtFragmentView {
     ArrayList<Comment> comments;
@@ -49,6 +46,7 @@ public class CmtFragment extends BaseFragment implements CmtFragmentView {
     private long cmtId;
     private CmtAdapter mAdapter;
     private int mPostPosition;
+    private String cmtAccName;
 
 
     @Override
@@ -56,16 +54,19 @@ public class CmtFragment extends BaseFragment implements CmtFragmentView {
         LinearLayoutManager manager = new LinearLayoutManager(view.getContext());
         rcvCmt.setLayoutManager(manager);
         rcvCmt.setHasFixedSize(true);
+
     }
 
     @Override
     protected void initData() {
+        showKeyboard(edtNewCmt,true);
         comments = new ArrayList<>();
         mAdapter = new CmtAdapter(comments);
         rcvCmt.setAdapter(mAdapter);
         cmtPostId = getArguments().getLong("postId");
         mPostPosition = getArguments().getInt("postPosition");
         mPresenter.onLoadPostCmts(cmtPostId);
+        cmtAccName=mPreferences.getString(Constants.PREF_ACC_FULLNAME,"");
 
 
     }
@@ -74,6 +75,7 @@ public class CmtFragment extends BaseFragment implements CmtFragmentView {
         comments.add(comment);
         mAdapter.notifyDataSetChanged();
         mPresenter.onUpdatePost(cmtPostId);
+        rcvCmt.smoothScrollToPosition(comments.size()-1);
     }
 
     @Override
@@ -105,6 +107,7 @@ public class CmtFragment extends BaseFragment implements CmtFragmentView {
     public void onLoadCmtSuccess(ArrayList<Comment> cmts) {
         comments.addAll(cmts);
         mAdapter.notifyDataSetChanged();
+        rcvCmt.smoothScrollToPosition(comments.size()-1);
 
     }
 
@@ -120,10 +123,11 @@ public class CmtFragment extends BaseFragment implements CmtFragmentView {
     public void onViewClicked() {
         initNewCmt();
         Comment cmt = new Comment(cmtId, cmtAccId, cmtAccAvatar, cmtPostId,
-                cmtContent, cmtTime);
+                cmtContent, cmtTime,cmtAccName);
         mPresenter.onUploadNewCmt(cmt);
         edtNewCmt.setText("");
-        hideKeyboard();
+        showKeyboard(edtNewCmt,false);
+
     }
 
     private void initNewCmt() {

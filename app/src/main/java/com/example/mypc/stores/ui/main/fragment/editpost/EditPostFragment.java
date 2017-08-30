@@ -7,9 +7,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.mypc.stores.MyApplication;
 import com.example.mypc.stores.R;
 import com.example.mypc.stores.data.model.Post;
+import com.example.mypc.stores.di.module.ViewModule;
+import com.example.mypc.stores.events.BtnSaveClickListenner;
 import com.example.mypc.stores.ui.base.BaseFragment;
+import com.example.mypc.stores.ui.main.MainActivity;
+import com.example.mypc.stores.utils.TimeControler;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,7 +24,8 @@ import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class EditPostFragment extends BaseFragment {
+public class EditPostFragment extends BaseFragment implements EditPostview,BtnSaveClickListenner {
+
     @BindView(R.id.imv_edit_avatar_post_store)
     CircleImageView imvEditAvatarPostStore;
     @BindView(R.id.tv_edit_store_name)
@@ -29,6 +37,9 @@ public class EditPostFragment extends BaseFragment {
     @BindView(R.id.imv_edit_post_image)
     ImageView imvEditPostImage;
     private Post post;
+
+    @Inject
+    EditPostPresenter mEditPostPresenter;
 
 
     public static EditPostFragment newInstance() {
@@ -45,13 +56,16 @@ public class EditPostFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+        ((MainActivity) getActivity()).setClickSaveListener(this);
         post = (Post) getArguments().getSerializable("post");
         tvEditStoreName.setText(post.getPostStoreName());
         tvEditPostTime.setText(post.getPostTime());
         edtEditPostContent.setText(post.getPostContent());
-        Glide.with(getActivity()).load(post.getPostStoreAvatar()).into(imvEditAvatarPostStore);
+        Glide.with(getActivity().getApplicationContext()).load(post.getPostStoreAvatar()).into(imvEditAvatarPostStore);
+        if (post.getPostImage() != null) {
+            Glide.with(getActivity().getApplicationContext()).load(post.getPostImage()).into(imvEditPostImage);
+        }
     }
-
 
 
     @Override
@@ -66,7 +80,30 @@ public class EditPostFragment extends BaseFragment {
 
     @Override
     protected void injectDependence(View view) {
+        MyApplication.get().getAppComponent().plus(new ViewModule(this)).injectTo(this);
+    }
+
+    public static void updatePost() {
 
     }
 
+    @Override
+    public void onRequestFailure(String s) {
+
+    }
+
+    @Override
+    public void onUpdatePostSuccess(Post post) {
+
+    }
+
+    @Override
+    public void onclick() {
+        TimeControler timeControler = new TimeControler();
+        String postTime = timeControler.getCurentTime() + "";
+        String postContent=edtEditPostContent.getText().toString().trim();
+        post.setPostTime(postTime);
+        post.setPostContent(postContent);
+        mEditPostPresenter.updatePost(post);
+    }
 }

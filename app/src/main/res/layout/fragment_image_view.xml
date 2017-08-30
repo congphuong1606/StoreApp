@@ -1,0 +1,86 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f7f9f8"
+    tools:context="com.example.mypc.stores.ui.main.fragment.imageviewer.ImageViewFragment">
+
+    <me.relex.photodraweeview.PhotoDraweeView
+        android:id="@+id/photoDraweeView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:actualImageScaleType="fitCenter"
+        app:placeholderImage="@drawable/ic_no_image"
+        app:placeholderImageScaleType="fitCenter" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@drawable/backgroud_botom"
+        android:paddingLeft="15dp"
+        android:paddingBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+            <TextView
+                android:textColor="@color/black"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="100dp"
+                android:id="@+id/tv_post_content_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:textSize="16sp"
+                android:ellipsize="end"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btn_like_image"
+                android:background="@drawable/ic_like"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+            <Button
+                android:layout_marginLeft="15dp"
+                android:id="@+id/btn_cmt_image"
+                android:background="@drawable/ic_comment"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
+            <Button
+                android:layout_marginLeft="15dp"
+                android:id="@+id/btn_share_image"
+                android:background="@drawable/ic_sha"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
+            <LinearLayout
+                android:layout_marginLeft="20dp"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="15 coment"
+                    android:layout_gravity="bottom"
+                    android:id="@+id/tv_count_cmt_image"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:text="15 yêu thích"
+                    android:layout_gravity="bottom"
+                    android:id="@+id/tv_count_like_post"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</FrameLayout>

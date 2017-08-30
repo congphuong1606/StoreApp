@@ -2,6 +2,8 @@ package com.example.mypc.stores.di.component;
 
 import com.example.mypc.stores.di.module.StorageModule;
 import com.example.mypc.stores.di.module.ViewModule;
+import com.example.mypc.stores.ui.main.fragment.editpost.EditPostFragment;
+import com.example.mypc.stores.ui.main.fragment.imageviewer.ImageViewFragment;
 import com.example.mypc.stores.ui.main.fragment.listpost.ListPostFragment;
 import com.example.mypc.stores.ui.main.usermanager.UserManagerFragment;
 import com.example.mypc.stores.ui.main.usermanager.UserManagerView;
@@ -27,4 +29,6 @@ public interface SubComponent {
     void injectTo(StoreDetailActivity storeDetailActivity);
     void injectTo(ListPostFragment listPostFragment);
     void injectTo(UserManagerFragment userManagerFragment);
+    void injectTo(EditPostFragment editPostFragment);
+    void injectTo(ImageViewFragment imageViewFragment);
 }
