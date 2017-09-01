@@ -1,11 +1,10 @@
-package com.example.mypc.stores.ui.main.usermanager;
+package com.example.mypc.stores.ui.main.fragment.usermanager;
 
 import com.example.mypc.stores.data.model.Location;
 import com.example.mypc.stores.network.ApiService;
 
 import javax.inject.Inject;
 
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -37,7 +36,7 @@ public class UserManagerPresenter {
     }
 
     private void onloadFail(Throwable throwable) {
-
+userManagerView.onRequestFailure(String.valueOf(throwable));
     }
 
 }

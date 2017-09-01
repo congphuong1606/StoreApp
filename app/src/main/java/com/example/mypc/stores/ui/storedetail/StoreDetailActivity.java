@@ -102,6 +102,11 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailView
 
     }
 
+    @Override
+    public void onRequestFailure(String s) {
+        onShowErorr(s);
+    }
+
 
     @Override
     protected void onDestroyComposi() {

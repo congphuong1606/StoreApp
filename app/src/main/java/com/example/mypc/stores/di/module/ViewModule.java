@@ -1,12 +1,13 @@
 package com.example.mypc.stores.di.module;
 
+import com.example.mypc.stores.ui.base.BaseActivity;
+import com.example.mypc.stores.ui.base.BaseActivityView;
+import com.example.mypc.stores.ui.login.LoginActivity;
 import com.example.mypc.stores.ui.main.MainView;
-import com.example.mypc.stores.ui.main.fragment.editpost.EditPostFragment;
 import com.example.mypc.stores.ui.main.fragment.editpost.EditPostview;
-import com.example.mypc.stores.ui.main.fragment.imageviewer.ImageViewFragment;
 import com.example.mypc.stores.ui.main.fragment.imageviewer.ImvView;
 import com.example.mypc.stores.ui.main.fragment.listpost.ListPostView;
-import com.example.mypc.stores.ui.main.usermanager.UserManagerView;
+import com.example.mypc.stores.ui.main.fragment.usermanager.UserManagerView;
 import com.example.mypc.stores.ui.register.RegisView;
 import com.example.mypc.stores.ui.storedetail.StoreDetailView;
 import com.example.mypc.stores.ui.main.fragment.cmt.CmtFragmentView;
@@ -21,6 +22,7 @@ import dagger.Provides;
  */
 @Module
 public class ViewModule {
+    BaseActivityView baseActivityView;
     MainView mainView;
     NewPostView newPostView;
     CmtFragmentView cmtFragmentView;
@@ -31,6 +33,10 @@ public class ViewModule {
     UserManagerView userManagerView;
     EditPostview editPostview;
     ImvView imvView;
+
+    public ViewModule(BaseActivityView baseActivityView) {
+        this.baseActivityView = baseActivityView;
+    }
 
     public ViewModule(ImvView imvView) {
         this.imvView = imvView;
@@ -71,6 +77,12 @@ public class ViewModule {
 
     public ViewModule(EditPostview editPostview) {
         this.editPostview = editPostview;
+    }
+
+
+    @Provides
+    public BaseActivityView getBaseActivityView() {
+        return baseActivityView;
     }
 
     @Provides

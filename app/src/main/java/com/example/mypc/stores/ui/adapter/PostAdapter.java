@@ -1,6 +1,7 @@
 package com.example.mypc.stores.ui.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +15,14 @@ import com.example.mypc.stores.R;
 import com.example.mypc.stores.data.model.IsLike;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.events.PostAdapterClickListener;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import me.relex.photodraweeview.PhotoDraweeView;
 
 /**
  * Created by MyPC on 02/08/2017.
@@ -70,13 +73,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         holder.tvPostContent.setText(post.getPostContent() + "");
         Glide.with(mContext).load(post.getPostStoreAvatar()).into(holder.imvAvatarPostStore);
         if (post.getPostImage() != null) {
-            Glide.with(mContext).load(post.getPostImage()).into(holder.imvPostImage);
+//            holder.imvPostImage.setImageURI(Uri.parse(post.getPostImage()));
+         Glide.with(mContext).load(post.getPostImage()).into(holder.imvPostImage);
         }
         holder.imvAvatarPostStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.onClickImvAvatarPostStore(post.getPostStoreId());
-
             }
         });
         holder.tvPostCmt.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +91,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         holder.tvPostLove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onClickBtnLike(post.getPostId(), position);
+                mListener.onClickBtnLike(post.getPostId(), position,holder.viewheartPost);
             }
         });
         holder.btnMenu.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +109,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         holder.imvPostImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onClickImvPost(post);
+                mListener.onClickImvPost(post,position);
+            }
+        });
+        holder.imvPostImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                mListener.onClickBtnLike(post.getPostId(), position,holder.viewheartPost);
+                return true;
+            }
+        });
+        holder.btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onClickBtnShare(post.getPostImage());
             }
         });
 //        //set màu cho like
@@ -133,9 +149,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
 
     public class PostviewHoder extends RecyclerView.ViewHolder {
         @BindView(R.id.btn_menu)
-        TextView btnMenu;
+        Button btnMenu;
         @BindView(R.id.imv_post_image)
-        ImageView imvPostImage;
+        SimpleDraweeView imvPostImage;
         @BindView(R.id.imv_avatar_post_store)
         CircleImageView imvAvatarPostStore;
         @BindView(R.id.tv_store_name)
@@ -150,6 +166,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         Button btnShare;
         @BindView(R.id.tv_post_content)
         TextView tvPostContent;
+        @BindView(R.id.view_heart_post)
+        View viewheartPost;
 
 
         public PostviewHoder(View itemView) {

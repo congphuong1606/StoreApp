@@ -50,7 +50,7 @@ public class NewPostPresenter {
     }
 
     private void onFail(Throwable throwable) {
-        mPostView.onFail(String.valueOf(throwable));
+        mPostView.onRequestFailure(String.valueOf(throwable));
     }
 
     public void uploadPic(byte[] picByte) {
@@ -67,7 +67,7 @@ public class NewPostPresenter {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                mPostView.onFail(String.valueOf(exception));
+                mPostView.onRequestFailure(String.valueOf(exception));
             }
         });
     }

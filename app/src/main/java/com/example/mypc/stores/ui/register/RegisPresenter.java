@@ -44,6 +44,6 @@ public class RegisPresenter {
     }
 
     private void onSavaFail(Throwable throwable) {
-        mRegisView.onFail("đăng ký không thành công");
+        mRegisView.onRequestFailure("đăng ký không thành công");
     }
 }

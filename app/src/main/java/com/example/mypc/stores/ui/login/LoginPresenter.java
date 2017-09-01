@@ -1,10 +1,16 @@
 package com.example.mypc.stores.ui.login;
 
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.mypc.stores.data.model.Account;
 import com.example.mypc.stores.network.ApiService;
 import com.example.mypc.stores.utils.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
@@ -33,31 +39,32 @@ public class LoginPresenter {
     private DatabaseReference reference;
 
     @Inject
-    public LoginPresenter(FirebaseAuth mAuth,DatabaseReference reference,CompositeDisposable mDisposable,
+    public LoginPresenter(FirebaseAuth mAuth, DatabaseReference reference, CompositeDisposable mDisposable,
                           ApiService apiService,
                           LoginView mView) {
-        this.mAuth=mAuth;
-        this.reference=reference;
+        this.mAuth = mAuth;
+        this.reference = reference;
         this.mDisposable = mDisposable;
         this.mApiService = apiService;
         this.mView = mView;
     }
 
     public void onLogin(String accName, String accPass) {
-        mAccName=accName;
-        mAccPass=accPass;
+        mAccName = accName;
+        mAccPass = accPass;
         mApiService.getAccounts().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onSuccess, this::onFail);
 
     }
+
     private void onFail(Throwable throwable) {
         mView.onFail(String.valueOf(throwable));
     }
 
     private void onSuccess(ArrayList<Account> accounts) {
         int cout = accounts.size();
-        i=0;
+        i = 0;
         for (Account account : accounts) {
             i++;
             if ((account.getAccName()).equals(mAccName) &&
@@ -71,12 +78,21 @@ public class LoginPresenter {
             mView.onFail("tài khỏan hoặc mật khẩu không chính xác !");
         }
     }
+
     public void onDestroy() {
         mDisposable.dispose();
     }
 
     public void onloginFirebase() {
-        mAuth.signInAnonymously();
+        String email="Anonymously@gmail.com";
+        String pass="aaa";
+        mAuth.signInWithEmailAndPassword(email,pass).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("aaa",String.valueOf(e) );
+            }
+        });
+
     }
 
     public void updateIsOnine(long accId) {

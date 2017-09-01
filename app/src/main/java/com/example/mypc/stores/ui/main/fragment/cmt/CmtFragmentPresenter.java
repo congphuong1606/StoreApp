@@ -38,16 +38,18 @@ public class CmtFragmentPresenter {
     }
 
     private void onError(Throwable throwable) {
-        mView.onFail(String.valueOf(throwable));
+        mView.onRequestFailure(String.valueOf(throwable));
     }
 
     private void onSuccess(ArrayList<Comment> comments) {
         mView.onLoadCmtSuccess(comments);
     }
-    public void onDestroy(){
+
+    public void onDestroy() {
         mDisposable.dispose();
     }
-    public void onUploadNewCmt(Comment cmt){
+
+    public void onUploadNewCmt(Comment cmt) {
         mDisposable.add(mApiService.saveNewCmt(cmt).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onUpCmtSuccess, this::onError));

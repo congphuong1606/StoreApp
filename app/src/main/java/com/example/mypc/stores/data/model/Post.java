@@ -5,8 +5,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Post implements Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
+public class Post extends RealmObject implements Serializable {
+    @PrimaryKey
     @SerializedName("postId")
     @Expose
     private long postId;
@@ -37,7 +40,6 @@ public class Post implements Serializable {
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public Post() {
     }
@@ -60,7 +62,7 @@ public class Post implements Serializable {
         this.postStoreId = postStoreId;
         this.postStoreAvatar = postStoreAvatar;
         this.postComment = postComment;
-            this.postImage=postImage;
+        this.postImage = postImage;
     }
 
     public String getPostImage() {

@@ -6,7 +6,7 @@
     android:background="#fff"
     android:clipToPadding="false"
     android:paddingTop="?actionBarSize"
-    tools:context="com.example.mypc.stores.ui.main.usermanager.UserManagerFragment">
+    tools:context=".ui.main.fragment.usermanager.UserManagerFragment">
 
     <ScrollView
         android:layout_width="match_parent"

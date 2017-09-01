@@ -74,7 +74,13 @@ public interface ApiService {
     @POST("/islike/liked")
     Observable<Integer> uploadIsLike(@Body IsLike isLike);
 
+    @PUT("/islike/{islikeId}/{i}")
+    Observable<Integer> putLikePost(@Path("islikeId") long islikeId,@Body IsLike isLike,@Path("i") int i);
     @DELETE("/islike/{islikeId}")
     Observable<Integer> deleteIsLikePost(@Path("islikeId") long islikeId);
+    @GET("/isconnect")
+    Observable<Integer> deleteIsLikePost();
+
+
 
 }

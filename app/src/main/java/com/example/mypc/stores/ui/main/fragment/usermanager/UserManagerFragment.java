@@ -1,4 +1,4 @@
-package com.example.mypc.stores.ui.main.usermanager;
+package com.example.mypc.stores.ui.main.fragment.usermanager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +21,7 @@ import com.example.mypc.stores.ui.login.LoginActivity;
 import com.example.mypc.stores.ui.main.MainActivity;
 import com.example.mypc.stores.ui.main.utils.BitmapUtils;
 import com.example.mypc.stores.utils.Constants;
+import com.example.mypc.stores.utils.RealmUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -35,6 +36,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.realm.Realm;
 
 
 public class UserManagerFragment extends BaseFragment implements UserManagerView, OnMapReadyCallback {
@@ -92,6 +94,7 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
     private long accId;
     private String accName;
     private String accNumber;
+    private Realm realm;
 
 
     @Override
@@ -138,6 +141,7 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
 
     @Override
     protected void initData() {
+        this.realm = RealmUtils.with(this).getRealm();
         getAcc();
         setView(accType);
         Glide.with(this).load(accAvatar).into(imvAvatar);
@@ -215,6 +219,7 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
             case R.id.btn_setting:
                 break;
             case R.id.btn_sign_out:
+                RealmUtils.with(this).deleteBooks();
                 editor.remove(Constants.PREF_TOKEN).commit();
                 startActivity(new Intent(getContext(), LoginActivity.class));
                 ((MainActivity) getActivity()).finish();
@@ -229,6 +234,11 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
         lat = location.getLocationLat();
         lng = location.getLocationLng();
         mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onRequestFailure(String msg) {
+        onShowErorr(msg);
     }
 
 

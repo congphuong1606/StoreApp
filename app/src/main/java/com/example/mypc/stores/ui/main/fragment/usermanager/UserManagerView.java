@@ -1,4 +1,4 @@
-package com.example.mypc.stores.ui.main.usermanager;
+package com.example.mypc.stores.ui.main.fragment.usermanager;
 
 import com.example.mypc.stores.data.model.Location;
 
@@ -8,4 +8,5 @@ import com.example.mypc.stores.data.model.Location;
 
 public interface UserManagerView {
     void onLoadLocationSuccess(Location location);
+    void onRequestFailure(String msg);
 }

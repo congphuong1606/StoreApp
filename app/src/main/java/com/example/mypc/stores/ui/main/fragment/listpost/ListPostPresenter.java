@@ -3,7 +3,6 @@ package com.example.mypc.stores.ui.main.fragment.listpost;
 import com.example.mypc.stores.data.model.IsLike;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.network.ApiService;
-import com.example.mypc.stores.ui.main.MainView;
 
 import java.util.ArrayList;
 
@@ -24,7 +23,7 @@ public class ListPostPresenter {
 
     @Inject
     public ListPostPresenter(ListPostView view, ApiService apiService,
-                         CompositeDisposable mDisposable) {
+                             CompositeDisposable mDisposable) {
         this.mApiService = apiService;
         this.mListPostView = view;
         this.mDisposable = mDisposable;
@@ -32,14 +31,14 @@ public class ListPostPresenter {
 
 
     public void getPost() {
-       mApiService.getListAllPost()
+        mApiService.getListAllPost()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onSuccess, this::onError);
     }
 
     private void onError(Throwable throwable) {
-        mListPostView.onFail(String.valueOf(throwable));
+        mListPostView.onRequestFailure(String.valueOf(throwable));
     }
 
     private void onSuccess(ArrayList<Post> posts) {
@@ -53,7 +52,7 @@ public class ListPostPresenter {
 
 
     public void updateCountPostLove(long postId, int i) {
-        mApiService.updatePostLove(postId,i).subscribeOn(Schedulers.io())
+        mApiService.updatePostLove(postId, i).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updatePostLoveSuccsess, this::onError);
     }
@@ -64,14 +63,14 @@ public class ListPostPresenter {
 
 
     public void uploadIsLikePost(Long islikeId, long accId, long postId) {
-        IsLike isLike=new IsLike(islikeId,accId,postId);
-       mApiService.uploadIsLike(isLike).subscribeOn(Schedulers.io())
+        IsLike isLike = new IsLike(islikeId, accId, postId);
+        mApiService.uploadIsLike(isLike).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::uploadIsLikeSuccsess, this::onError);
     }
 
     private void uploadIsLikeSuccsess(Integer integer) {
-        if(integer==1){
+        if (integer == 1) {
             mListPostView.onUploadIsLikeSuccess();
         }
 
@@ -84,7 +83,7 @@ public class ListPostPresenter {
     }
 
     private void isLikeSuccsess(Integer integer) {
-            mListPostView.islikeSuccess(integer);
+        mListPostView.islikeSuccess(integer);
     }
 
     public void deleteIsLikePost(long islikeId) {
@@ -94,12 +93,8 @@ public class ListPostPresenter {
     }
 
     private void deleteIsLikeSuccsess(Integer integer) {
-mListPostView.onDeleteIsLikePostSuccess();
+        mListPostView.onDeleteIsLikePostSuccess();
     }
-
-
-
-
 
 
 }

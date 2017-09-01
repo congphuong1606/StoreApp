@@ -10,7 +10,10 @@ import java.util.ArrayList;
 
 public interface CmtFragmentView {
     void onLoadCmtSuccess(ArrayList<Comment> comments);
-    void onFail(String s);
+
+    void onRequestFailure(String s);
+
     void onUploadNewCmtSuccess(Comment cmt);
+
     void onUpdateCountPostCmtSuccess(Integer countPostCmt);
 }

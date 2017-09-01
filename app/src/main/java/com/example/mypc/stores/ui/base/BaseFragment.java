@@ -2,14 +2,18 @@ package com.example.mypc.stores.ui.base;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import com.example.mypc.stores.R;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -69,6 +73,22 @@ public abstract class BaseFragment extends Fragment {
             }else  inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         }
+    }
+
+    public void onShowErorr(String msg) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("lỗi");
+        builder.setMessage(msg);
+        builder.setIcon(R.drawable.logo_app);
+        builder.setCancelable(true);
+        final AlertDialog dialog = builder.create();
+        builder.setNegativeButton("ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
 

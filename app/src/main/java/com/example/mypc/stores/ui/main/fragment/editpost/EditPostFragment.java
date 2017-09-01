@@ -89,12 +89,12 @@ public class EditPostFragment extends BaseFragment implements EditPostview,BtnSa
 
     @Override
     public void onRequestFailure(String s) {
-
+onShowErorr(s);
     }
 
     @Override
     public void onUpdatePostSuccess(Post post) {
-
+        ((MainActivity) getActivity()).onBackPressed();
     }
 
     @Override

@@ -1,14 +1,11 @@
 package com.example.mypc.stores.ui.login;
 
 import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 
 import com.example.mypc.stores.MyApplication;
 import com.example.mypc.stores.R;
@@ -19,12 +16,10 @@ import com.example.mypc.stores.ui.main.MainActivity;
 import com.example.mypc.stores.ui.register.RegisActivity;
 import com.example.mypc.stores.utils.Constants;
 import com.example.mypc.stores.utils.UtilDatas;
-import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements LoginView {
@@ -63,20 +58,12 @@ public class LoginActivity extends BaseActivity implements LoginView {
     }
 
     @Override
-    protected void injectDependence() {
-        MyApplication.get().getAppComponent()
-                .plus(new ViewModule(this))
-                .injectTo(this);
-    }
-
-    @Override
     protected int getContentLayoutID() {
         return R.layout.activity_login;
     }
 
     @Override
     protected void initData() {
-
         if (!mPreferences.getString(Constants.PREF_TOKEN, "").isEmpty()) {
             onStartActivity(MainActivity.class);
             finish();
@@ -91,7 +78,6 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @Override
     protected void initView() {
-
         if (!mPreferences.getString(Constants.LOGIN_NAME, "").isEmpty()) {
             rempasswordcheckbox.setChecked(true);
         }
@@ -119,7 +105,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @Override
     public void onFail(String msg) {
         mPresenter.onDestroy();
-        onShowBuider(msg);
+        onShowErorr(msg);
     }
 
     @OnClick({R.id.btn_quit, R.id.rempasswordcheckbox, R.id.btn_register, R.id.btn_login})
@@ -154,7 +140,6 @@ public class LoginActivity extends BaseActivity implements LoginView {
             accPass = edtInputPass.getText().toString().trim();
             mPresenter.onLogin(accName, accPass);
             mPresenter.onloginFirebase();
-
         }
     }
 

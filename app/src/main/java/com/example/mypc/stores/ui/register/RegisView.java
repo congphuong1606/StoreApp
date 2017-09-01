@@ -6,5 +6,5 @@ package com.example.mypc.stores.ui.register;
 
 public interface RegisView {
     void onSigupSuccess();
-    void onFail(String msg);
+    void onRequestFailure(String msg);
 }

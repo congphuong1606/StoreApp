@@ -11,4 +11,6 @@ import java.util.ArrayList;
 public interface StoreDetailView {
     void onLoadDataSuccess(ArrayList<Post> posts);
     void onFail(String msg);
+
+    void onRequestFailure(String s);
 }

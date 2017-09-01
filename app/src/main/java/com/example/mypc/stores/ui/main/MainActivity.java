@@ -1,14 +1,13 @@
 package com.example.mypc.stores.ui.main;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -26,8 +25,9 @@ import com.example.mypc.stores.ui.main.fragment.cmt.CmtFragment;
 import com.example.mypc.stores.ui.main.fragment.editpost.EditPostFragment;
 import com.example.mypc.stores.ui.main.fragment.listpost.ListPostFragment;
 import com.example.mypc.stores.ui.main.fragment.newpost.NewPostFragment;
-import com.example.mypc.stores.ui.main.usermanager.UserManagerFragment;
+import com.example.mypc.stores.ui.main.fragment.usermanager.UserManagerFragment;
 import com.example.mypc.stores.ui.main.utils.KeyBoardUtils;
+import com.example.mypc.stores.utils.Constants;
 
 import javax.inject.Inject;
 
@@ -49,13 +49,19 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
     @BindView(R.id.layout_fragment)
     FrameLayout layoutFragment;
 
-    @Inject
-    MainPresenter mainPresenter;
+
     @BindView(R.id.btn_save)
     Button btnSave;
     @BindView(R.id.tv_toolbar_title)
     TextView tvToolbarTitle;
     private AppBarLayout.LayoutParams params;
+    private boolean isOpenImageView = false;
+    @Inject
+    SharedPreferences mPreferences;
+    @Inject
+    MainPresenter mainPresenter;
+    private String accType;
+
 
     public void setClickSaveListener(BtnSaveClickListenner mListener) {
         this.mListener = mListener;
@@ -83,15 +89,32 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
         getSupportActionBar().setTitle(null);
         btnBack.setVisibility(View.GONE);
         setNewFragment(new ListPostFragment());
+        setViewForAcc();
 
+    }
+
+    private void setViewForAcc() {
+       accType=mPreferences.getString(Constants.PREF_ACC_TYPE,"");
+        if(accType.equals("user")){
+            fabNewPost.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onBackPressed() {
         if (isOpenFragment) {
             unInitViewFragment();
+            if(isOpenImageView){
+
+                btnBack.setVisibility(View.VISIBLE);
+                fabNewPost.setVisibility(View.GONE);
+                cimvAccAvatar.setVisibility(View.GONE);
+            }
         } else {
-            finish();
+            if (isOpenImageView) {
+                unInitViewFragment();
+                isOpenImageView=false;
+            } else finish();
         }
     }
 
@@ -101,8 +124,12 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
         btnSave.setVisibility(View.GONE);
         btnBack.setVisibility(View.GONE);
         toolbar.setVisibility(View.VISIBLE);
-        fabNewPost.setVisibility(View.VISIBLE);
         cimvAccAvatar.setVisibility(View.VISIBLE);
+        if(accType.equals("user")){
+            fabNewPost.setVisibility(View.GONE);
+        }else {
+            fabNewPost.setVisibility(View.VISIBLE);
+        }
         super.onBackPressed();
     }
 
@@ -141,24 +168,25 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
         editPostFragment.setArguments(bundle);
     }
 
+    @Override
+    public void onClickSavePostHistory(long postId) {
+
+    }
+
+    @Override
+    public void onClickRePortPost(Post post) {
+
+    }
+
     public static void onShowDialogFail(String msg) {
-//        onShowBuider(msg);
+//        onShowErorr(msg);
     }
 
-    public void deletePost(Post post) {
-        onShowBuiderDelete(this, post);
+    public void deletePost(Post post, int type) {
+        onShowBuiderPostPotion(this, post, type);
     }
 
-    public void showFragmentCmt(Post post, int adapterPosition) {
-        toolbar.setVisibility(View.GONE);
-        initFragment();
-        CmtFragment cmtFragment = new CmtFragment();
-        setNewFragment(cmtFragment);
-        Bundle bundle = new Bundle();
-        bundle.putLong("postId", post.getPostId());
-        bundle.putInt("postPosition", adapterPosition);
-        cmtFragment.setArguments(bundle);
-    }
+
     public void showFagmentSaveHistory() {
 
     }
@@ -214,20 +242,32 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
         onShowDialogFail(s);
     }
 
-
-    public void showFragmentImaeViewer(Post post) {
+    public void showFragmentCmt(Post post, int adapterPosition) {
+        toolbar.setVisibility(View.GONE);
         initFragment();
+        CmtFragment cmtFragment = new CmtFragment();
+        setNewFragment(cmtFragment);
+        Bundle bundle = new Bundle();
+        bundle.putLong("postId", post.getPostId());
+        bundle.putInt("postPosition", adapterPosition);
+        cmtFragment.setArguments(bundle);
+    }
 
+    public void showFragmentImaeViewer(Post post, int position) {
+        initFragment();
         params.setScrollFlags(0);
         tvToolbarTitle.setText("Stores");
         ImageViewFragment imageViewFragment = new ImageViewFragment();
         setNewFragment(imageViewFragment);
         Bundle bundle = new Bundle();
         bundle.putSerializable("post", post);
+        bundle.putInt("position", position);
         imageViewFragment.setArguments(bundle);
     }
 
-
+    public void setOpenFragment() {
+        isOpenImageView = true;
+    }
 
 
 }

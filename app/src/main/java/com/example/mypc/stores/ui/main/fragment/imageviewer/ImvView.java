@@ -5,4 +5,13 @@ package com.example.mypc.stores.ui.main.fragment.imageviewer;
  */
 
 public interface ImvView {
+
+    void onIsLikeSuccess(Integer integer);
+
+    void onRequestFailure(String smg);
+
+    void onUpdateCountLikeSuccess(Integer countLove);
+
+    void onUpdateIslikeSuccess(Integer integer);
+
 }

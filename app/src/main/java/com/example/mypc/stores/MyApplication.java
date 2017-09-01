@@ -3,12 +3,17 @@ package com.example.mypc.stores;
 import android.app.Application;
 
 import com.example.mypc.stores.di.component.AppComponent;
+
 import com.example.mypc.stores.di.component.DaggerAppComponent;
 import com.example.mypc.stores.di.module.AppModule;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.common.util.ByteConstants;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 
 /**
  * Created by MyPC on 02/08/2017.
@@ -21,8 +26,19 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        myApplication=this;
-        appComponent= DaggerAppComponent.builder().appModule(new AppModule(this))
+        Realm.init(this);
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
+                .name("postRealm.realm")
+                .schemaVersion(0)
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(realmConfiguration);
+
+
+
+
+        myApplication = this;
+        appComponent = DaggerAppComponent.builder().appModule(new AppModule(this))
                 .build();
 
 
@@ -41,13 +57,14 @@ public class MyApplication extends Application {
                 .build();
 
 
-        Fresco.initialize(this,config);
-        appComponent= DaggerAppComponent.builder().appModule(new AppModule(this))
+        Fresco.initialize(this, config);
+        appComponent = DaggerAppComponent.builder().appModule(new AppModule(this))
                 .build();
 
 
     }
-    public AppComponent getAppComponent(){
+
+    public AppComponent getAppComponent() {
         return appComponent;
     }
 

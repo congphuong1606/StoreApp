@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public interface ListPostView {
     void onLoadPostsSuccess(ArrayList<Post> posts);
-    void onFail(String msg);
+    void onRequestFailure(String msg);
     void onUpdatePostLoveSuccess(Integer postLove);
     void onDeletePostSuccess(Long postId);
     void islikeSuccess(Integer integer);

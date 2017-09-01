@@ -98,7 +98,7 @@ public class RegisActivity extends BaseActivity implements RegisView {
     }
 
     @Override
-    public void onFail(String msg) {
+    public void onRequestFailure(String msg) {
         Log.i("a:","not được");
     }
 }

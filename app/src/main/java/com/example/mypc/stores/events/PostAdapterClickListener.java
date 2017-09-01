@@ -1,6 +1,7 @@
 package com.example.mypc.stores.events;
 
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.mypc.stores.data.model.Post;
 
@@ -11,10 +12,12 @@ import com.example.mypc.stores.data.model.Post;
 public interface PostAdapterClickListener {
     void onClickImvAvatarPostStore(long postStoreId);
     void onClickBtnCmt(Post post, int adapterPosition);
-    void onClickBtnLike(long postId, int position);
+    void onClickBtnLike(long postId, int position, View viewheartPost);
 
     void onclickBtnMenu(Post post, int position);
-    void onClickImvPost(Post post);
+    void onClickImvPost(Post post,int position);
+
+    void onClickBtnShare(String postImage);
    /* boolean isCheckIsLikePost();
 
     void checkLike(long islikeId);*/

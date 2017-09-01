@@ -119,8 +119,8 @@ public class NewPostFragment extends BaseFragment implements NewPostView, BtnSav
     }
 
     @Override
-    public void onFail(String s) {
-        Log.i("TAG onFail: ", s);
+    public void onRequestFailure(String s) {
+       onShowErorr(s);
 
     }
 

@@ -59,31 +59,30 @@ public class CmtFragment extends BaseFragment implements CmtFragmentView {
 
     @Override
     protected void initData() {
-        showKeyboard(edtNewCmt,true);
+        showKeyboard(edtNewCmt, true);
         comments = new ArrayList<>();
         mAdapter = new CmtAdapter(comments);
         rcvCmt.setAdapter(mAdapter);
         cmtPostId = getArguments().getLong("postId");
         mPostPosition = getArguments().getInt("postPosition");
         mPresenter.onLoadPostCmts(cmtPostId);
-        cmtAccName=mPreferences.getString(Constants.PREF_ACC_FULLNAME,"");
+        cmtAccName = mPreferences.getString(Constants.PREF_ACC_FULLNAME, "");
 
 
     }
+
     @Override
     public void onUploadNewCmtSuccess(Comment comment) {
         comments.add(comment);
         mAdapter.notifyDataSetChanged();
         mPresenter.onUpdatePost(cmtPostId);
-        rcvCmt.smoothScrollToPosition(comments.size()-1);
+        rcvCmt.smoothScrollToPosition(comments.size() - 1);
     }
 
     @Override
     public void onUpdateCountPostCmtSuccess(Integer countPostCmt) {
-        ListPostFragment.updateCountPostCmt(countPostCmt,cmtPostId,mPostPosition);
+        ListPostFragment.updateCountPostCmt(countPostCmt, cmtPostId, mPostPosition);
     }
-
-
 
 
     @Override
@@ -105,28 +104,29 @@ public class CmtFragment extends BaseFragment implements CmtFragmentView {
 
     @Override
     public void onLoadCmtSuccess(ArrayList<Comment> cmts) {
-        comments.addAll(cmts);
-        mAdapter.notifyDataSetChanged();
-        rcvCmt.smoothScrollToPosition(comments.size()-1);
+        if(cmts!=null){
+            comments.addAll(cmts);
+            mAdapter.notifyDataSetChanged();
+            rcvCmt.smoothScrollToPosition(comments.size() - 1);
+        }
+
 
     }
 
     @Override
-    public void onFail(String s) {
-
+    public void onRequestFailure(String s) {
+        onShowErorr(s);
     }
-
-
 
 
     @OnClick(R.id.btn_sent_cmt)
     public void onViewClicked() {
         initNewCmt();
         Comment cmt = new Comment(cmtId, cmtAccId, cmtAccAvatar, cmtPostId,
-                cmtContent, cmtTime,cmtAccName);
+                cmtContent, cmtTime, cmtAccName);
         mPresenter.onUploadNewCmt(cmt);
         edtNewCmt.setText("");
-        showKeyboard(edtNewCmt,false);
+        showKeyboard(edtNewCmt, false);
 
     }
 

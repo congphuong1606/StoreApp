@@ -40,7 +40,7 @@ public class StoreDetailPresenter {
     }
 
     private void onError(Throwable throwable) {
-
+mStoreDetailView.onRequestFailure(String.valueOf(throwable));
     }
 
 

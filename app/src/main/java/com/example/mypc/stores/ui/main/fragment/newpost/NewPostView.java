@@ -8,6 +8,6 @@ import com.example.mypc.stores.data.model.Post;
 
 public interface NewPostView {
     void onLoadPostSuccess(Post post);
-    void onFail(String s);
+    void onRequestFailure(String s);
     void onUploadPicSuccess(String picUrl);
 }
