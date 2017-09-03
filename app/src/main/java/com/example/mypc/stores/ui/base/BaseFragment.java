@@ -76,19 +76,33 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void onShowErorr(String msg) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("lỗi");
-        builder.setMessage(msg);
-        builder.setIcon(R.drawable.logo_app);
-        builder.setCancelable(true);
-        final AlertDialog dialog = builder.create();
-        builder.setNegativeButton("ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialog.dismiss();
+        if(msg.equals(getResources().getString(R.string.isempity))){
+        }else {
+            String error=msg;
+            try{
+                error = msg.split(" /")[0];
+            }catch (Exception e){
             }
-        });
-        dialog.show();
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("lỗi");
+            if(error.equals(getResources().getString(R.string.loiketnoi))){
+                builder.setMessage(getResources().getString(R.string.connectfail));
+            }else if(error.equals(getResources().getString(R.string.nointernet))){
+                builder.setMessage(getResources().getString(R.string.chedokhonginternet));
+            } else{
+                builder.setMessage(error);
+            }
+            builder.setIcon(R.drawable.logo_app);
+            builder.setCancelable(true);
+            final AlertDialog dialog = builder.create();
+            builder.setNegativeButton("ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
     }
 
 

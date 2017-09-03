@@ -8,5 +8,9 @@
     <color name="red">#ff0084</color>
     <color name="text">#696868</color>
     <color name="lighbrown">#f4f3f3</color>
+    <color name="text_color_black">#696868</color>
+    <color name="text_color_pink">#fc6a6a</color>
+    <color name="a">#82bdf9</color>
+    <color name="text_name_acount">#000</color>
 
 </resources>

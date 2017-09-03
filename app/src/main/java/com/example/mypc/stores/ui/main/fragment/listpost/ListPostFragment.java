@@ -1,10 +1,11 @@
 package com.example.mypc.stores.ui.main.fragment.listpost;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.mypc.stores.MyApplication;
 import com.example.mypc.stores.R;
@@ -14,9 +15,9 @@ import com.example.mypc.stores.di.module.ViewModule;
 import com.example.mypc.stores.events.PostAdapterClickListener;
 import com.example.mypc.stores.ui.adapter.PostAdapter;
 import com.example.mypc.stores.ui.base.BaseFragment;
+import com.example.mypc.stores.ui.login.LoginActivity;
 import com.example.mypc.stores.ui.main.MainActivity;
 import com.example.mypc.stores.ui.main.utils.PostItemUtils;
-import com.example.mypc.stores.ui.storedetail.StoreDetailActivity;
 import com.example.mypc.stores.utils.Constants;
 import com.example.mypc.stores.utils.RealmUtils;
 
@@ -27,7 +28,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import io.realm.Realm;
 import io.realm.RealmResults;
-import io.realm.annotations.PrimaryKey;
 
 
 public class ListPostFragment extends BaseFragment implements ListPostView, PostAdapterClickListener {
@@ -41,13 +41,17 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
     @Inject
     SharedPreferences mPreferences;
     @Inject
-    ListPostPresenter listPostPresenter;
+    ListPostPresenter mListPostPresenter;
     private long mPostId;
     private int mPosition;
-    private long accid;
+    private long accId;
     private Long islikeId;
     private boolean isCheck;
     private Realm realm;
+    private View v;
+    private int typeList;
+    private long storeId;
+
 
     @Override
     protected void initView(View view) {
@@ -57,25 +61,57 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
 
     @Override
     protected void initData() {
+        accId=mPreferences.getLong(Constants.PREF_ACC_ID,0);
+        typeList = getArguments().getInt("typeList");
         this.realm = RealmUtils.with(this).getRealm();
-        accid = mPreferences.getLong(Constants.PREF_ACC_ID, 0);
         posts = new ArrayList<>();
         getReaml(posts);
         mAdapter = new PostAdapter(posts);
-        rcvPost.setAdapter(mAdapter);
-//        listPostPresenter.getIsLike(accid);
-        listPostPresenter.getPost();
         mAdapter.setPostAdapter(this);
+        rcvPost.setAdapter(mAdapter);
+        getPosts();
+        onScrollRcvListener();
     }
-//lấy toàn bộ post từ realm
-    private void getReaml(ArrayList<Post> posts) {
-        RealmUtils.with(this).refresh();
-        if(RealmUtils.with(this).hasPost()){
-            RealmResults<Post> list= RealmUtils.with(this).getPosts();
-            posts.addAll(list);
+
+    private void getPosts() {
+        if (typeList == Constants.LIST_ALL_POST) {
+            mListPostPresenter.getPosts(accId);
+        } else if (typeList == Constants.LIST_POST_STORE) {
+            storeId = getArguments().getLong("id");
+            mListPostPresenter.getStorePosts(accId,storeId);
+
         }
+    }
+
+    private void onScrollRcvListener() {
+        rcvPost.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Toast.makeText(getContext(), String.valueOf(rcvPost.computeVerticalScrollOffset()), Toast.LENGTH_LONG).show();
+
+            }
+        });
 
     }
+
+    //lấy toàn bộ post từ realm
+    private void getReaml(ArrayList<Post> posts) {
+        boolean isConnect = LoginActivity.isConnect();
+        if (isConnect) {
+            RealmUtils.with(this).deleteBooks();
+        } else {
+            RealmUtils.with(this).refresh();
+            if (RealmUtils.with(this).hasPost()) {
+                RealmResults<Post> list = RealmUtils.with(this).getPosts();
+                posts.addAll(list);
+            }
+        }
+
+
+    }
+
+
     @Override
     protected int getLayoutID() {
         return R.layout.fragment_list_post;
@@ -105,6 +141,7 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
 
 
     }
+
     private void addRealmList(ArrayList<Post> posts) {
         for (Post p : posts) {
             realm.executeTransaction(new Realm.Transaction() {
@@ -118,71 +155,56 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
 
     @Override
     public void onRequestFailure(String msg) {
-        MainActivity.onShowDialogFail(msg);
+        ((MainActivity) getActivity()).onRequestFailure(msg);
     }
 
     @Override
-    public void onUpdatePostLoveSuccess(Integer postLove) {
+    public void onUpdatePostLoveSuccess(Integer countLike) {
+
         for (Post p : posts) {
             if (mPostId == p.getPostId()) {
-                p.setPostLove(postLove + "");
+                if (countLike > p.getPostCountLike()) {
+                    mListPostPresenter.addLikePost(islikeId, accId, mPostId);
+                    p.setIsLike(1);
+                } else {
+                    mListPostPresenter.deleteLikePost(islikeId);
+                    p.setIsLike(0);
+                }
+                p.setPostCountLike(countLike);
+
             }
         }
         mAdapter.notifyItemChanged(mPosition);
     }
 
-    @Override
-    public void onDeletePostSuccess(Long postId) {
-        int mPostion = 0;
-        int dem = -1;
-        boolean isCheck = false;
-        for (Post p : posts) {
-            dem++;
-            if (p.getPostId() == postId) {
-                mPostion = dem;
-                isCheck = true;
-            }
-        }
-        if (isCheck) {
-            posts.remove(mPostion);
-        }
-        mAdapter.notifyDataSetChanged();
-    }
 
     @Override
     public void islikeSuccess(Integer integer) {
         if (integer == 1) {
-            listPostPresenter.deleteIsLikePost(islikeId);
+            mListPostPresenter.updateCountPostLove(mPostId, 1);
+
         } else if (integer == 0) {
-            listPostPresenter.uploadIsLikePost(islikeId, accid, mPostId);
+            mListPostPresenter.updateCountPostLove(mPostId, 0);
+
         }
     }
 
     @Override
-    public void onUploadIsLikeSuccess() {
-        listPostPresenter.updateCountPostLove(mPostId, 0);
+    public void onUpdateIsLikeSuccess(Integer integer) {
+        if (integer == 1) {
+            PostItemUtils.showAnimationHeart(getActivity(), v);
+        }
     }
 
     @Override
-    public void onDeleteIsLikePostSuccess() {
-        listPostPresenter.updateCountPostLove(mPostId, 1);
+    public void onLoadPostsStoreSuccess(ArrayList<Post> posts) {
+        this.posts.addAll(posts);
+        mAdapter.notifyDataSetChanged();
     }
-
-    @Override
-    public void isLikePostsSuccess(boolean islike) {
-        isCheck = islike;
-    }
-
-//    @Override
-//    public void onGetAllIsLikeByAccSuccsess(ArrayList<IsLike> isLikes) {
-//        this.isLikes.addAll(isLikes);
-//    }
 
     @Override
     public void onClickImvAvatarPostStore(long postStoreId) {
-        Intent intent = new Intent(getContext(), StoreDetailActivity.class);
-        intent.putExtra("storeId", postStoreId);
-        startActivity(intent);
+        ((MainActivity) getActivity()).showDetailStoreFragment(postStoreId);
     }
 
     @Override
@@ -191,12 +213,13 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
     }
 
     @Override
-    public void onClickBtnLike(long postId, int position, View viewheartPost) {
+    public void onClickBtnLike(long postId, int position, Button viewheartPost) {
+        v = viewheartPost;
         mPostId = postId;
         mPosition = position;
-        islikeId = Long.valueOf(String.valueOf(accid).concat(String.valueOf(postId)));
-        listPostPresenter.isLike(islikeId);
-        PostItemUtils.showAnimationHeart(getActivity(), viewheartPost);
+        islikeId = Long.valueOf(String.valueOf(accId).concat(String.valueOf(postId)));
+        mListPostPresenter.isLike(islikeId);
+
     }
 
 
@@ -205,9 +228,9 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
         mPostId = post.getPostId();
         long storeId = mPreferences.getLong(Constants.PREF_ACC_ID, 0);
         if (storeId == post.getPostStoreId()) {
-            ((MainActivity) getActivity()).deletePost(post, Constants.ME);
+            ((MainActivity) getActivity()).postOptions(post, Constants.ME);
         } else {
-            ((MainActivity) getActivity()).deletePost(post, Constants.ANOTHER);
+            ((MainActivity) getActivity()).postOptions(post, Constants.ANOTHER);
         }
     }
 
@@ -216,8 +239,10 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
 //        Intent intent=new Intent(getContext(), ImageViewActivity.class);
 //        intent.putExtra("urlPostImage",postImage);
 //        startActivity(intent);
-//        startActivity(new Intent());
+//        startActivity(new Intent())
+
         ((MainActivity) getActivity()).showFragmentImaeViewer(post, position);
+
     }
 
     @Override
@@ -233,7 +258,7 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
 //
 //    @Override
 //    public void checkLike(long islikeId) {
-//        listPostPresenter.isLikePosts(islikeId);
+//        mListPostPresenter.isLikePosts(islikeId);
 //    }
 
     public void setNewPost(Post post) {
@@ -246,7 +271,7 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
     public static void updateCountPostCmt(Integer countPostCmt, long cmtPostId, int mPostPosition) {
         for (Post p : posts) {
             if (p.getPostId() == cmtPostId) {
-                p.setPostComment(countPostCmt + "");
+                p.setPostCoutComment(countPostCmt);
             }
         }
         mAdapter.notifyItemChanged(mPostPosition);
@@ -271,7 +296,6 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
 
     public static void notifyPostPosition(Post mPost, int mPosition) {
         for (Post p : posts) {
-
             if (p.getPostId() == mPost.getPostId()) {
                 p = mPost;
             }

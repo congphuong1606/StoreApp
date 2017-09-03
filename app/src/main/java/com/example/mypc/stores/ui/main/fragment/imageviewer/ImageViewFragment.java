@@ -74,11 +74,11 @@ public class ImageViewFragment extends BaseFragment implements ImvView {
     }
 
     private void setView() {
-        if (Integer.valueOf(post.getPostComment()) > 0) {
-            tvCountCmtImage.setText(post.getPostComment() + " comment");
+        if (Integer.valueOf(post.getPostCountComment()) > 0) {
+            tvCountCmtImage.setText(post.getPostCountComment() +" "+ getResources().getString(R.string.binhluan));
         }
-        if (Integer.valueOf(post.getPostLove()) > 0) {
-            tvCountLikePost.setText(post.getPostLove() + " yêu thích");
+        if (Integer.valueOf(post.getPostCountLike()) > 0) {
+            tvCountLikePost.setText(post.getPostCountLike() +" "+ getResources().getString(R.string.yeuthich));
         }
         tvPostContentImage.setText(post.getPostContent());
         urlImage = post.getPostImage();
@@ -107,7 +107,7 @@ public class ImageViewFragment extends BaseFragment implements ImvView {
                 break;
             case R.id.btn_cmt_image:
                 ((MainActivity) getActivity()).showFragmentCmt(post, mPosition);
-                ((MainActivity) getActivity()).setOpenFragment();
+                ((MainActivity) getActivity()).setOpenFragmentImageView();
                 break;
             case R.id.btn_share_image:
                 PostItemUtils.sendImageToFriendFaceBook(getActivity(), post.getPostImage());
@@ -131,13 +131,13 @@ public class ImageViewFragment extends BaseFragment implements ImvView {
     public void onUpdateCountLikeSuccess(Integer countLove) {
         if (countLove == 0) {
             tvCountLikePost.setText("");
-        } else tvCountLikePost.setText(countLove + " yêu thích");
-        if (countLove > Integer.valueOf(post.getPostLove())) {
+        } else tvCountLikePost.setText(countLove +" " + getResources().getString(R.string.yeuthich));
+        if (countLove > post.getPostCountLike()) {
             mImvPresenter.addLikePost(post.getPostId());
         } else {
             mImvPresenter.deleteLikePost(post.getPostId());
         }
-        post.setPostLove(String.valueOf(countLove));
+        post.setPostCountLike(countLove);
 
     }
 
@@ -146,12 +146,12 @@ public class ImageViewFragment extends BaseFragment implements ImvView {
     public void onUpdateIslikeSuccess(Integer integer) {
         if (integer == 1) {
             showAnimationLove();
+            btnLikeImage.setBackgroundResource(R.drawable.ic_like_red);
             ListPostFragment.notifyPostPosition(post, mPosition);
         } else if (integer == 0) {
             ListPostFragment.notifyPostPosition(post, mPosition);
         }
     }
-
     private void showAnimationLove() {
         PostItemUtils.showAnimationHeart(getActivity(), viewHeart);
     }

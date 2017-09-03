@@ -107,7 +107,10 @@ public class CmtFragment extends BaseFragment implements CmtFragmentView {
         if(cmts!=null){
             comments.addAll(cmts);
             mAdapter.notifyDataSetChanged();
-            rcvCmt.smoothScrollToPosition(comments.size() - 1);
+            if(cmts!=null){
+                rcvCmt.smoothScrollToPosition(comments.size() - 1);
+            }
+
         }
 
 

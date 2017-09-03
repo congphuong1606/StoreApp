@@ -20,13 +20,17 @@ import com.example.mypc.stores.di.module.ViewModule;
 import com.example.mypc.stores.events.BtnSaveClickListenner;
 import com.example.mypc.stores.events.OnEventclickListener;
 import com.example.mypc.stores.ui.base.BaseActivity;
+import com.example.mypc.stores.ui.login.LoginActivity;
 import com.example.mypc.stores.ui.main.fragment.imageviewer.ImageViewFragment;
 import com.example.mypc.stores.ui.main.fragment.cmt.CmtFragment;
 import com.example.mypc.stores.ui.main.fragment.editpost.EditPostFragment;
 import com.example.mypc.stores.ui.main.fragment.listpost.ListPostFragment;
 import com.example.mypc.stores.ui.main.fragment.newpost.NewPostFragment;
+import com.example.mypc.stores.ui.main.fragment.posthistory.PostHistoryFragment;
 import com.example.mypc.stores.ui.main.fragment.usermanager.UserManagerFragment;
 import com.example.mypc.stores.ui.main.utils.KeyBoardUtils;
+import com.example.mypc.stores.ui.main.fragment.detailstorefragment.DetailStoreFragment;
+import com.example.mypc.stores.ui.main.utils.ToolBarUtils;
 import com.example.mypc.stores.utils.Constants;
 
 import javax.inject.Inject;
@@ -37,7 +41,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends BaseActivity implements MainView, OnEventclickListener {
     private BtnSaveClickListenner mListener;
-    boolean isOpenFragment = false;
+    private ToolBarUtils mToolBarUtils;
+    private AppBarLayout.LayoutParams params;
+    private boolean isOpenFragment = false;
+    private boolean isOpenImageView = false;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.cimv_acc_avatar)
@@ -48,14 +55,11 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
     FloatingActionButton fabNewPost;
     @BindView(R.id.layout_fragment)
     FrameLayout layoutFragment;
-
-
     @BindView(R.id.btn_save)
     Button btnSave;
     @BindView(R.id.tv_toolbar_title)
     TextView tvToolbarTitle;
-    private AppBarLayout.LayoutParams params;
-    private boolean isOpenImageView = false;
+
     @Inject
     SharedPreferences mPreferences;
     @Inject
@@ -69,7 +73,8 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
 
     @Override
     protected void injectDependence() {
-        MyApplication.get().getAppComponent().plus(new ViewModule(this)).injectTo(this);
+        MyApplication.get().getAppComponent()
+                .plus(new ViewModule(this)).injectTo(this);
     }
 
     @Override
@@ -80,54 +85,58 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
     @Override
     protected void initData() {
         params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
-        mainPresenter.setAvatarUser();
     }
 
     @Override
     protected void initView() {
+        setUserAvatar();
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
+        mToolBarUtils = new ToolBarUtils(this);
+        mToolBarUtils.setToolbar(toolbar, btnBack, tvToolbarTitle, cimvAccAvatar, btnSave);
         btnBack.setVisibility(View.GONE);
-        setNewFragment(new ListPostFragment());
         setViewForAcc();
-
+        showFragmentListPost(mPreferences.getLong(Constants.PREF_ACC_ID, 0), Constants.LIST_ALL_POST);
     }
 
     private void setViewForAcc() {
-       accType=mPreferences.getString(Constants.PREF_ACC_TYPE,"");
-        if(accType.equals("user")){
+        accType = mPreferences.getString(Constants.PREF_ACC_TYPE, "");
+        if (accType.equals("user")) {
             fabNewPost.setVisibility(View.GONE);
+        } else if (accType.equals(("store"))) {
+            fabNewPost.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void onBackPressed() {
+        KeyBoardUtils.hideKeyboard(this);
         if (isOpenFragment) {
             unInitViewFragment();
-            if(isOpenImageView){
-
-                btnBack.setVisibility(View.VISIBLE);
+            if (isOpenImageView) {
+                mToolBarUtils.setToolBarMain();
                 fabNewPost.setVisibility(View.GONE);
-                cimvAccAvatar.setVisibility(View.GONE);
             }
+
         } else {
             if (isOpenImageView) {
                 unInitViewFragment();
-                isOpenImageView=false;
-            } else finish();
+                isOpenImageView = false;
+
+            } else {
+                LoginActivity.loginActivity.finish();
+                finish();
+
+            }
         }
     }
 
     private void unInitViewFragment() {
-        tvToolbarTitle.setText("Stores");
         isOpenFragment = false;
-        btnSave.setVisibility(View.GONE);
-        btnBack.setVisibility(View.GONE);
-        toolbar.setVisibility(View.VISIBLE);
-        cimvAccAvatar.setVisibility(View.VISIBLE);
-        if(accType.equals("user")){
+        mToolBarUtils.setToolBarMain();
+        if (accType.equals("user")) {
             fabNewPost.setVisibility(View.GONE);
-        }else {
+        } else {
             fabNewPost.setVisibility(View.VISIBLE);
         }
         super.onBackPressed();
@@ -138,8 +147,17 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction().addToBackStack(null);
         transaction.add(R.id.layout_fragment, fragment);
-//        transaction.addToBackStack(tagFragment);
         transaction.commit();
+    }
+
+    @Override
+    public void onDeletePostSuccess(Long postId) {
+        ListPostFragment.notifyPostAdapter(postId);
+    }
+
+    @Override
+    public void onRequestFailure(String s) {
+        onShowErorr(s);
     }
 
 
@@ -154,19 +172,6 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
         mainPresenter.deletePost(postId);
     }
 
-    @Override
-    public void onClickEdit(Post post) {
-        initFragment();
-        EditPostFragment editPostFragment = new EditPostFragment();
-        setNewFragment(editPostFragment);
-
-        tvToolbarTitle.setText("Edit Text");
-        btnSave.setVisibility(View.VISIBLE);
-        btnBack.setVisibility(View.GONE);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("post", post);
-        editPostFragment.setArguments(bundle);
-    }
 
     @Override
     public void onClickSavePostHistory(long postId) {
@@ -178,96 +183,131 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
 
     }
 
-    public static void onShowDialogFail(String msg) {
-//        onShowErorr(msg);
-    }
 
-    public void deletePost(Post post, int type) {
+    public void postOptions(Post post, int type) {
         onShowBuiderPostPotion(this, post, type);
     }
 
-
-    public void showFagmentSaveHistory() {
-
+    @Override
+    public void onClickEdit(Post post) {
+        showFragmentEditPost(post);
     }
 
 
-    @OnClick({R.id.cimv_acc_avatar, R.id.btn_back, R.id.fab_new_post, R.id.btn_save})
+    @OnClick({R.id.cimv_acc_avatar, R.id.btn_back,
+            R.id.fab_new_post, R.id.btn_save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_save:
-                mListener.onclick();
+                mListener.onClickBtnSaveLisener();
                 break;
             case R.id.cimv_acc_avatar:
-                setNewFragment(new UserManagerFragment());
-                tvToolbarTitle.setText("about");
-                initFragment();
+                showFragmentUserManager();
                 break;
             case R.id.btn_back:
-                KeyBoardUtils.hideKeyboard(this);
-                tvToolbarTitle.setText("stores");
-
                 onBackPressed();
                 break;
             case R.id.fab_new_post:
-
-                params.setScrollFlags(0);
-                setNewFragment(new NewPostFragment());
-                btnSave.setVisibility(View.VISIBLE);
-                tvToolbarTitle.setText("New Post");
-                initFragment();
+                showFragmentNewPost();
                 break;
         }
     }
 
-    private void initFragment() {
-        isOpenFragment = true;
-        fabNewPost.setVisibility(View.GONE);
-        cimvAccAvatar.setVisibility(View.GONE);
-        btnBack.setVisibility(View.VISIBLE);
+    private void showFragmentUserManager() {
+        setNewFragment(new UserManagerFragment());
+        mToolBarUtils.setToolBarFragmentUsermanager();
+        setOpenFragment();
     }
 
-    @Override
-    public void onGetAvatarUserSuccess(String avatarUser) {
-        Glide.with(getApplicationContext()).load(avatarUser).into(cimvAccAvatar);
+    private void showFragmentNewPost() {
+        params.setScrollFlags(0);
+        toolbar.setLayoutParams(params);
+        setNewFragment(new NewPostFragment());
+        setOpenFragment();
+        mToolBarUtils.setToolBarFragmentNewPost();
     }
 
-    @Override
-    public void onDeletePostSuccess(Long postId) {
-        ListPostFragment.notifyPostAdapter(postId);
-    }
 
-    @Override
-    public void onRequestFailure(String s) {
-        onShowDialogFail(s);
-    }
 
     public void showFragmentCmt(Post post, int adapterPosition) {
-        toolbar.setVisibility(View.GONE);
-        initFragment();
         CmtFragment cmtFragment = new CmtFragment();
         setNewFragment(cmtFragment);
         Bundle bundle = new Bundle();
         bundle.putLong("postId", post.getPostId());
         bundle.putInt("postPosition", adapterPosition);
         cmtFragment.setArguments(bundle);
+        mToolBarUtils.setToolBarFragmentComment();
+        setOpenFragment();
     }
 
     public void showFragmentImaeViewer(Post post, int position) {
-        initFragment();
-        params.setScrollFlags(0);
-        tvToolbarTitle.setText("Stores");
-        ImageViewFragment imageViewFragment = new ImageViewFragment();
+        ImageViewFragment imageViewFragment =
+                new ImageViewFragment();
         setNewFragment(imageViewFragment);
         Bundle bundle = new Bundle();
         bundle.putSerializable("post", post);
         bundle.putInt("position", position);
         imageViewFragment.setArguments(bundle);
+        mToolBarUtils.setToolBarFragmentImageView();
+        fabNewPost.setVisibility(View.GONE);
+        setOpenFragment();
+    }
+
+    public void showFagmentSaveHistory() {
+        setOpenFragment();
+        PostHistoryFragment postHistoryFragment =
+                new PostHistoryFragment();
+        setNewFragment(postHistoryFragment);
+        mToolBarUtils.setToolbarFragmentHistory();
+    }
+
+    public void showDetailStoreFragment(long postStoreId) {
+        DetailStoreFragment detailStoreFragment = new DetailStoreFragment();
+        setNewFragment(detailStoreFragment);
+        Bundle bundle = new Bundle();
+        bundle.putLong("storeId", postStoreId);
+        detailStoreFragment.setArguments(bundle);
+        mToolBarUtils.setToolBarFragmentDetailStore();
+        setOpenFragment();
+    }
+
+
+    public void showFragmentListPost(long id, int typeList) {
+        ListPostFragment listPostFragment = new ListPostFragment();
+        setNewFragment(listPostFragment);
+        Bundle bundle = new Bundle();
+        bundle.putInt("typeList", typeList);
+        bundle.putLong("id", id);
+        listPostFragment.setArguments(bundle);
+        if (typeList == Constants.LIST_POST_STORE) {
+            mToolBarUtils.setToolBarListPostStore();
+
+        }
+
+    }
+
+    private void showFragmentEditPost(Post post) {
+        EditPostFragment editPostFragment = new EditPostFragment();
+        setNewFragment(editPostFragment);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("post", post);
+        editPostFragment.setArguments(bundle);
+        mToolBarUtils.setToolBarFragmentEditPost();
+        setOpenFragment();
     }
 
     public void setOpenFragment() {
-        isOpenImageView = true;
+        isOpenFragment = true;
+        fabNewPost.setVisibility(View.GONE);
+    }
+    public void setUserAvatar() {
+        Glide.with(this)
+                .load(mPreferences.getString(Constants.PREF_ACC_AVATAR, ""))
+                .error(getResources().getDrawable(R.drawable.ic_noavatar))
+                .into(cimvAccAvatar);
     }
 
-
+    public void setOpenFragmentImageView() {
+        isOpenImageView=true;
+    }
 }

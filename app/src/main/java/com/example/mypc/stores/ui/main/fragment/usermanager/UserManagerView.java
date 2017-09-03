@@ -7,6 +7,5 @@ import com.example.mypc.stores.data.model.Location;
  */
 
 public interface UserManagerView {
-    void onLoadLocationSuccess(Location location);
     void onRequestFailure(String msg);
 }

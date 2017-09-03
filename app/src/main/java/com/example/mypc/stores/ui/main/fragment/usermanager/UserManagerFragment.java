@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -39,7 +40,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.realm.Realm;
 
 
-public class UserManagerFragment extends BaseFragment implements UserManagerView, OnMapReadyCallback {
+public class UserManagerFragment extends BaseFragment
+        implements UserManagerView {
     @Inject
     SharedPreferences mPreferences;
     @Inject
@@ -59,14 +61,10 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
     EditText edtEditAccName;
     @BindView(R.id.btn_edit_acc_name)
     Button btnEditAccName;
-    @BindView(R.id.tv_location)
-    TextView tvLocation;
     @BindView(R.id.btn_edit_acc_location)
     Button btnEditAccLocation;
     @BindView(R.id.layout_store)
-    LinearLayout layoutStore;
-    @BindView(R.id.btn_store_folow)
-    Button btnStoreFolow;
+    RelativeLayout layoutStore;
     @BindView(R.id.btn_save_post_history)
     Button btnSavePostHistory;
     @BindView(R.id.layout_user)
@@ -79,15 +77,14 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
     Button btnSaveNumber;
     @BindView(R.id.btn_save_acc_name)
     Button btnSaveAccName;
+    @BindView(R.id.btn_save_acc_location)
+    Button btnSaveAccLocation;
 
 
     //map
-
-    private GoogleMap mMap;
     double lat;
     double lng;
 
-    private SupportMapFragment mapFragment;
     private String accFullname;
     private String accAvatar;
     private String accType;
@@ -99,44 +96,23 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
 
     @Override
     protected void initView(View view) {
-        mapFragment = (SupportMapFragment) this.getChildFragmentManager()
-                .findFragmentById(R.id.store_map);
         btnSaveAccName.setVisibility(View.GONE);
         btnSaveNumber.setVisibility(View.GONE);
 
 
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
 
-
-        mMap = googleMap;
-        LatLng latLng = new LatLng(lat, lng);
-
-        Glide.with(getActivity().getApplicationContext())
-                .load(accAvatar)
-                .asBitmap()
-                .into(new SimpleTarget<Bitmap>(40, 40) {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        Bitmap bitmap = BitmapUtils.getRoundedCornerBitmap(resource, 150);
-                        mMap.addMarker(new MarkerOptions().position(latLng)
-                                .title(accFullname)
-                                .icon(BitmapDescriptorFactory.fromBitmap(bitmap))).showInfoWindow();
-                    }
-                });
-        CameraPosition mCameraPosition = new CameraPosition.Builder().target(latLng).zoom(15).bearing(40).tilt(30).build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
-
-    }
 
 
     private void setView(String accType) {
         if (accType.equals("user")) {
+            layoutStore.setVisibility(View.GONE);
+            layoutUser.setVisibility(View.VISIBLE);
+        } else {
+            layoutUser.setVisibility(View.GONE);
             layoutStore.setVisibility(View.VISIBLE);
-
-        } else layoutUser.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -148,8 +124,6 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
         edtEditAccNumber.setText(accNumber);
         tvAccName.setText(accName);
         edtEditAccName.setText(accFullname);
-
-        mPresenter.getLocationStore(accId);
 
 
     }
@@ -181,22 +155,21 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
 
 
     @OnClick({R.id.btn_edit_number, R.id.btn_edit_acc_name,
-            R.id.btn_edit_acc_location, R.id.btn_store_folow,
+            R.id.btn_edit_acc_location,
             R.id.btn_save_post_history, R.id.btn_setting, R.id.btn_sign_out,
-            R.id.btn_save_number,R.id.btn_save_acc_name
+            R.id.btn_save_number, R.id.btn_save_acc_name
     })
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case  R.id.btn_save_number:
-
+            case R.id.btn_save_number:
                 btnEditNumber.setVisibility(View.VISIBLE);
-                showKeyboard(edtEditAccNumber,false);
+                showKeyboard(edtEditAccNumber, false);
                 btnSaveNumber.setVisibility(View.GONE);
                 break;
             case R.id.btn_save_acc_name:
                 btnEditAccName.setVisibility(View.VISIBLE);
                 btnSaveAccName.setVisibility(View.GONE);
-                showKeyboard(edtEditAccName,false);
+                showKeyboard(edtEditAccName, false);
                 break;
             case R.id.btn_edit_number:
                 showKeyboard(edtEditAccNumber, true);
@@ -209,9 +182,6 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
                 btnSaveAccName.setVisibility(View.VISIBLE);
                 break;
             case R.id.btn_edit_acc_location:
-
-                break;
-            case R.id.btn_store_folow:
                 break;
             case R.id.btn_save_post_history:
                 ((MainActivity) getActivity()).showFagmentSaveHistory();
@@ -229,12 +199,6 @@ public class UserManagerFragment extends BaseFragment implements UserManagerView
     }
 
 
-    @Override
-    public void onLoadLocationSuccess(Location location) {
-        lat = location.getLocationLat();
-        lng = location.getLocationLng();
-        mapFragment.getMapAsync(this);
-    }
 
     @Override
     public void onRequestFailure(String msg) {

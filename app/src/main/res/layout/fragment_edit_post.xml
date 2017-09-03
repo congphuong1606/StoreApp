@@ -2,10 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:orientation="vertical"
-    android:paddingTop="?actionBarSize"
+
     android:background="#fff"
+    android:clipToPadding="false"
+    android:paddingTop="?actionBarSize"
+    android:orientation="vertical"
+
     tools:context="com.example.mypc.stores.ui.main.fragment.editpost.EditPostFragment">
 
     <RelativeLayout

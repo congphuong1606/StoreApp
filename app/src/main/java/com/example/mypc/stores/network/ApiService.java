@@ -49,11 +49,13 @@ public interface ApiService {
 
     @GET("/posts/{postStoreId}")
     Observable<ArrayList<Post>> getListPostStore(@Path("postStoreId") long postStoreId);
+    @GET("/posts/all/{accId}")
+    Observable<ArrayList<Post>> getListPost(@Path("accId") long accId);
 
     @PUT("/posts/coundCmt/{postId}")
     Observable<Integer> updatePostCmt(@Path("postId") long postId);
 
-    @PUT("/posts/coundlove/{postId}")
+    @PUT("/posts/coundlike/{postId}")
     Observable<Integer> updatePostLove(@Path("postId") long postId, @Body int i);
 
     @DELETE("/posts/{postId}")
@@ -75,12 +77,18 @@ public interface ApiService {
     Observable<Integer> uploadIsLike(@Body IsLike isLike);
 
     @PUT("/islike/{islikeId}/{i}")
-    Observable<Integer> putLikePost(@Path("islikeId") long islikeId,@Body IsLike isLike,@Path("i") int i);
+    Observable<Integer> putLikePost(@Path("islikeId") long islikeId, @Body IsLike isLike, @Path("i") int i);
+
     @DELETE("/islike/{islikeId}")
     Observable<Integer> deleteIsLikePost(@Path("islikeId") long islikeId);
+
     @GET("/isconnect")
-    Observable<Integer> deleteIsLikePost();
+    Observable<Integer> isConnect();
 
-
-
+    @GET("/accs/{accId}")
+    Observable<Account> getDetailAcc(@Path("accId") long storeId);
+    @GET("/posts/history/{accMyId}")
+    Observable<ArrayList<Post>> getPostHistorys(@Path("accMyId") long accMyId);
+    @GET("/posts/all/{accId}/{storeId}")
+    Observable<ArrayList<Post>> getStorePosts(@Path("accId") long accId,@Path("storeId") long storeId);
 }

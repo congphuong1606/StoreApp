@@ -98,7 +98,7 @@ onShowErorr(s);
     }
 
     @Override
-    public void onclick() {
+    public void onClickBtnSaveLisener() {
         TimeControler timeControler = new TimeControler();
         String postTime = timeControler.getCurentTime() + "";
         String postContent=edtEditPostContent.getText().toString().trim();

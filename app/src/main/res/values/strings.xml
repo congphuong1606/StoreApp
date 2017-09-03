@@ -20,4 +20,21 @@
     <string name="action_delete">xóa</string>
     <string name="newposttitle">Add new post</string>
     <string name="token">logined</string>
+    <string name="connectfail">kiểm tra kết nối mạng !!</string>
+    <string name="isempity">java.lang.IllegalArgumentException: Invalid target position</string>
+    <string name="text_color">#fff</string>
+    <string name="title_toolbar_historyfragment">bài viết đã lưu</string>
+    <string name="binhluan">bình luận</string>
+    <string name="yeuthich">lượt thích</string>
+    <string name="stringRes">kéo lên để xem chi tiết</string>
+    <string name="title_toolBar_Store">Bài viết cửa hàng</string>
+    <string name="title_toolBar_Main">Online stores</string>
+    <string name="title_toolBar_FragmentImageView">Chi tiết sản phẩm</string>
+    <string name="title_toolBar_FragmentUsermanager">Thông tin cá nhân</string>
+    <string name="title_toolBar_FragmentNewPost">Thêm bài viết</string>
+    <string name="title_toolBar_FragmentEditPost">Chỉnh sửa bài viết</string>
+    <string name="nointernet">java.lang.IllegalStateException: Cannot modify managed objects outside of a write transaction.</string>
+    <string name="chedokhonginternet">bạn không thể thực hiện chức năng này khi mất mạng</string>
+    <string name="loiketnoi">java.net.ConnectException: Failed to connect to</string>
+    <string name="contentShouldNotScrollTag">com.example.mypc.stores.ui.main.utils.MyScrollBehavior</string>
 </resources>

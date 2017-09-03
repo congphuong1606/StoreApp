@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements LoginView {
-
+public static LoginActivity loginActivity;
     @BindView(R.id.edt_input_acc)
     EditText edtInputAcc;
     @BindView(R.id.tvInput)
@@ -50,11 +50,19 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     private String accName;
     private String accPass;
+    private static boolean isConnect=false;
 
 
     @Override
     protected void onDestroyComposi() {
 
+    }
+
+    @Override
+    protected void injectDependence() {
+        MyApplication.get().getAppComponent()
+                .plus(new ViewModule(this))
+                .injectTo(this);
     }
 
     @Override
@@ -64,10 +72,8 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @Override
     protected void initData() {
-        if (!mPreferences.getString(Constants.PREF_TOKEN, "").isEmpty()) {
-            onStartActivity(MainActivity.class);
-            finish();
-        }
+        loginActivity=this;
+        mPresenter.isConnect();
         edtInputAcc.setText(mPreferences
                 .getString(Constants.LOGIN_NAME, ""));
         edtInputPass.setText(mPreferences
@@ -108,6 +114,17 @@ public class LoginActivity extends BaseActivity implements LoginView {
         onShowErorr(msg);
     }
 
+    @Override
+    public void onIsConnect(boolean b) {
+        isConnect=b;
+        if (!mPreferences.getString(Constants.PREF_TOKEN, "").isEmpty()) {
+            onStartActivity(MainActivity.class);
+        }
+    }
+    public static boolean isConnect() {
+        return  isConnect;
+    }
+
     @OnClick({R.id.btn_quit, R.id.rempasswordcheckbox, R.id.btn_register, R.id.btn_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -142,5 +159,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
             mPresenter.onloginFirebase();
         }
     }
+
+
 
 }

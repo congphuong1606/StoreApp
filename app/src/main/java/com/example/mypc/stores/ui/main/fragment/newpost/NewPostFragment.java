@@ -196,7 +196,7 @@ public class NewPostFragment extends BaseFragment implements NewPostView, BtnSav
     }
 
     @Override
-    public void onclick() {
+    public void onClickBtnSaveLisener() {
         showKeyboard(edtNewPost,false);
         if (picByte == null) {
             senPost();

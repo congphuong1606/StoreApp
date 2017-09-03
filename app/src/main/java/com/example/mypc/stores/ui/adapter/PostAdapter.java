@@ -1,18 +1,15 @@
 package com.example.mypc.stores.ui.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mypc.stores.R;
-import com.example.mypc.stores.data.model.IsLike;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.events.PostAdapterClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -22,7 +19,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-import me.relex.photodraweeview.PhotoDraweeView;
 
 /**
  * Created by MyPC on 02/08/2017.
@@ -42,7 +38,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
 
     public PostAdapter(ArrayList<Post> posts) {
         this.posts = posts;
-
 
 
     }
@@ -68,30 +63,36 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         Post post = posts.get(position);
         holder.tvStoreName.setText(post.getPostStoreName() + "");
         holder.tvPostTime.setText(post.getPostTime() + "");
-        holder.tvPostLove.setText(post.getPostLove() + " yêu thích");
-        holder.tvPostCmt.setText(post.getPostComment() + " comment");
+        holder.tvPostCountLike.setText(post.getPostCountLike() + " "
+                + mContext.getResources().getString(R.string.yeuthich));
+        holder.tvPostCountCmt.setText(post.getPostCountComment() + " "
+                + mContext.getApplicationContext().getString(R.string.binhluan));
         holder.tvPostContent.setText(post.getPostContent() + "");
         Glide.with(mContext).load(post.getPostStoreAvatar()).into(holder.imvAvatarPostStore);
         if (post.getPostImage() != null) {
 //            holder.imvPostImage.setImageURI(Uri.parse(post.getPostImage()));
-         Glide.with(mContext).load(post.getPostImage()).into(holder.imvPostImage);
+            Glide.with(mContext).load(post.getPostImage()).into(holder.imvPostImage);
         }
+        //set Color btn like
+        setColorBtnLike(post.getIsLike(), holder.btnLikePost);
+
+
         holder.imvAvatarPostStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.onClickImvAvatarPostStore(post.getPostStoreId());
             }
         });
-        holder.tvPostCmt.setOnClickListener(new View.OnClickListener() {
+        holder.btnCommentPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.onClickBtnCmt(post, position);
             }
         });
-        holder.tvPostLove.setOnClickListener(new View.OnClickListener() {
+        holder.btnLikePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onClickBtnLike(post.getPostId(), position,holder.viewheartPost);
+                mListener.onClickBtnLike(post.getPostId(), position, holder.btnLikePost);
             }
         });
         holder.btnMenu.setOnClickListener(new View.OnClickListener() {
@@ -109,13 +110,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
         holder.imvPostImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onClickImvPost(post,position);
+                mListener.onClickImvPost(post, position);
             }
         });
         holder.imvPostImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                mListener.onClickBtnLike(post.getPostId(), position,holder.viewheartPost);
+                mListener.onClickBtnLike(post.getPostId(), position, holder.btnLikePost);
                 return true;
             }
         });
@@ -146,37 +147,48 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
 
     }
 
+    private void setColorBtnLike(Integer isLike, Button btnLike) {
+        if (isLike == 1) {
+            btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like_redxml, 0, 0, 0);
+            btnLike.setTextColor(mContext.getResources().getColor(R.color.text_color_pink));
+
+        } else {
+            btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like_whitexml, 0, 0, 0);
+            btnLike.setTextColor(mContext.getResources().getColor(R.color.text_color_black));
+        }
+    }
+
 
     public class PostviewHoder extends RecyclerView.ViewHolder {
-        @BindView(R.id.btn_menu)
-        Button btnMenu;
-        @BindView(R.id.imv_post_image)
-        SimpleDraweeView imvPostImage;
+        @BindView(R.id.view_heart_post)
+        View viewheartPost;
         @BindView(R.id.imv_avatar_post_store)
         CircleImageView imvAvatarPostStore;
         @BindView(R.id.tv_store_name)
         TextView tvStoreName;
         @BindView(R.id.tv_post_time)
         TextView tvPostTime;
-        @BindView(R.id.tv_post_love)
-        TextView tvPostLove;
-        @BindView(R.id.tv_post_cmt)
-        TextView tvPostCmt;
-        @BindView(R.id.btn_share)
-        Button btnShare;
+        @BindView(R.id.btn_menu)
+        Button btnMenu;
         @BindView(R.id.tv_post_content)
         TextView tvPostContent;
-        @BindView(R.id.view_heart_post)
-        View viewheartPost;
-
+        @BindView(R.id.imv_post_image)
+        SimpleDraweeView imvPostImage;
+        @BindView(R.id.tv_post_count_Like)
+        TextView tvPostCountLike;
+        @BindView(R.id.btn_like_post)
+        Button btnLikePost;
+        @BindView(R.id.btn_comment_post)
+        Button btnCommentPost;
+        @BindView(R.id.tv_post_count_cmt)
+        TextView tvPostCountCmt;
+        @BindView(R.id.btn_share)
+        Button btnShare;
 
         public PostviewHoder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-//            btnShare.setOnClickListener(this);
-//            btnCmt.setOnClickListener(this);
-//            btnLove.setOnClickListener(this);
-////            imvAvatarPostStore.setOnClickListener(this);
+
 
         }
 

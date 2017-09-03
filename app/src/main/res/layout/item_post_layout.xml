@@ -36,7 +36,8 @@
                 android:gravity="bottom"
                 android:singleLine="true"
                 android:text="CƠ KHÍ MINH ÁI"
-                android:textColor="#000"
+                android:textStyle="bold"
+                android:textColor="@color/text_name_acount"
                 android:textSize="16sp" />
 
             <TextView
@@ -72,7 +73,7 @@
             android:layout_margin="5dp"
             android:ellipsize="end"
             android:maxLines="4"
-            android:text="abifbibcfobc\nfvrffrev\nf\nfecvf\ndfvfev\n\nsc\n\cdb" />
+            android:text="a\nb" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -86,22 +87,23 @@
                 android:background="@null">
 
             </View>
+
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/imv_post_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:viewAspectRatio="1"
-                app:placeholderImage="@drawable/ic_no_image"
                 android:padding="2dp"
-                app:actualImageScaleType="fitCenter"
-                app:fadeDuration="300" />
+                app:actualImageScaleType="centerInside"
+                app:fadeDuration="300"
+                app:placeholderImage="@drawable/ic_no_image"
+                app:viewAspectRatio="1" />
             <!--<me.relex.photodraweeview.PhotoDraweeView-->
-                <!--android:id="@+id/imv_post_image"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--app:actualImageScaleType="fitCenter"-->
-                <!--app:placeholderImage="@drawable/ic_no_image"-->
-                <!--app:placeholderImageScaleType="fitCenter" />-->
+            <!--android:id="@+id/imv_post_image"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:actualImageScaleType="fitCenter"-->
+            <!--app:placeholderImage="@drawable/ic_no_image"-->
+            <!--app:placeholderImageScaleType="fitCenter" />-->
             <!--<ImageView-->
             <!--android:id="@+id/imv_post_image"-->
             <!--android:layout_width="match_parent"-->
@@ -111,54 +113,48 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#e6e1e1"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp" />
-    </LinearLayout>
 
     <LinearLayout
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp">
+        android:paddingTop="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
 
-            android:layout_weight="0.9"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <!--<Button-->
-            <!--android:gravity="left|center_vertical"-->
-            <!--android:drawablePadding="6dp"-->
-            <!--android:drawableLeft="@drawable/ic_love"-->
-            <!--android:id="@+id/btn_love"-->
-            <!--android:text="12 like"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-
-            <!--/>-->
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_post_love"
+                android:id="@+id/tv_post_count_Like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_likexml"
-                android:drawablePadding="5dp"
+                android:layout_marginLeft="25dp"
+                android:text="12 lượt thích"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#abaaaa" />
+
+            <Button
+                android:id="@+id/btn_like_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:background="@null"
+                android:drawableLeft="@drawable/ic_like_whitexml"
+                android:drawablePadding="3dp"
                 android:gravity="left|center_vertical"
-                android:text="112 like"
+                android:paddingRight="5dp"
+                android:text=" like"
+                android:textAllCaps="false"
                 android:textColor="@color/text"
 
                 />
@@ -169,24 +165,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:gravity="center">
-
-            <!--<Button-->
-            <!--android:id="@+id/btn_cmt"-->
-            <!--android:layout_width="25dp"-->
-            <!--android:layout_height="25dp"-->
-            <!--android:background="@drawable/ic_comment" />-->
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_post_cmt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
+                android:layout_marginLeft="5dp"
+                android:text="12 "
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <View
+                android:id="@+id/tv_post_cmt"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="5dp"
+                android:background="#abaaaa" />
+
+            <Button
+                android:id="@+id/btn_comment_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@null"
                 android:drawableLeft="@drawable/ic_commentxml"
-                android:drawablePadding="5dp"
-                android:gravity="left|center_vertical"
-                android:text="commnet"
+                android:drawablePadding="3dp"
+                android:text="comment"
+                android:textAllCaps="false"
                 android:textColor="@color/text" />
 
 
@@ -196,16 +202,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/tv_post_count_cmt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"
+                android:text="45 bình luận"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_marginRight="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="5dp"
+                android:background="#abaaaa" />
+
             <Button
+                android:layout_marginRight="15dp"
                 android:id="@+id/btn_share"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/ic_sha" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="@null"
+                android:drawableLeft="@drawable/ic_sendxml"
+                android:text="share"
+                android:textAllCaps="false"
+                android:textColor="@color/text" />
 
         </LinearLayout>
     </LinearLayout>

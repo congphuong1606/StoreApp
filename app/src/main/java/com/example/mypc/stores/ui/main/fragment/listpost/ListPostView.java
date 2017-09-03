@@ -13,11 +13,7 @@ public interface ListPostView {
     void onLoadPostsSuccess(ArrayList<Post> posts);
     void onRequestFailure(String msg);
     void onUpdatePostLoveSuccess(Integer postLove);
-    void onDeletePostSuccess(Long postId);
     void islikeSuccess(Integer integer);
-    void onUploadIsLikeSuccess();
-
-    void onDeleteIsLikePostSuccess();
-    void isLikePostsSuccess(boolean islike);
-//    void onGetAllIsLikeByAccSuccsess(ArrayList<IsLike> isLikes);
+    void onUpdateIsLikeSuccess(Integer integer);
+    void onLoadPostsStoreSuccess(ArrayList<Post> posts);
 }

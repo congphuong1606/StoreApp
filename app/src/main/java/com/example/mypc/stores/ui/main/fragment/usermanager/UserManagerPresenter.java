@@ -16,23 +16,23 @@ import io.reactivex.schedulers.Schedulers;
 public class UserManagerPresenter {
     UserManagerView userManagerView;
     ApiService apiService;
-    CompositeDisposable mDisposable;
+
     @Inject
-    public UserManagerPresenter(UserManagerView userManagerView, ApiService apiService, CompositeDisposable mDisposable) {
+    public UserManagerPresenter(UserManagerView userManagerView, ApiService apiService) {
         this.userManagerView = userManagerView;
         this.apiService = apiService;
-        this.mDisposable = mDisposable;
+
     }
 
 
     public void getLocationStore(Long accId) {
-        mDisposable.add(apiService.getLocation(accId).subscribeOn(Schedulers.io())
+       apiService.getLocation(accId).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this:: onLoadLocationSuccess,this::onloadFail));
+                .subscribe(this:: onLoadLocationSuccess,this::onloadFail);
     }
 
     private void onLoadLocationSuccess(Location location) {
-        userManagerView.onLoadLocationSuccess(location);
+
     }
 
     private void onloadFail(Throwable throwable) {

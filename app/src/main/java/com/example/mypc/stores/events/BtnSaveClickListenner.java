@@ -5,5 +5,5 @@ package com.example.mypc.stores.events;
  */
 
 public interface BtnSaveClickListenner {
-    void onclick();
+    void onClickBtnSaveLisener();
 }

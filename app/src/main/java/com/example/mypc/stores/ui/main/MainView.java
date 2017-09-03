@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 
 public interface MainView {
-    void onGetAvatarUserSuccess(String avatarUser);
     void onDeletePostSuccess(Long postId);
     void onRequestFailure(String s);
+
 }

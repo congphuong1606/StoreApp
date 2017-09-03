@@ -34,32 +34,21 @@ import butterknife.Unbinder;
  * Created by MyPC on 02/08/2017.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements BaseActivityView {
+public abstract class BaseActivity extends AppCompatActivity  {
     private Unbinder mUnbinder;
     private ProgressDialog dialog;
-    @Inject
-    private BaseActivityPresenter mPresenter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentLayoutID());
         mUnbinder = ButterKnife.bind(this);
-        mPresenter.isConnect();
         injectDependence();
         initView();
         initData();
     }
 
-    @Override
-    public void onRequestFail(String stringConectFail) {
-
-    }
-
-    @Override
-    public void onIsConnectSuccess() {
-
-    }
 
     @Override
     protected void onDestroy() {
@@ -78,15 +67,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
 
     protected abstract void initView();
 
-    protected void injectDependence(){
-        try{
-            MyApplication.get().getAppComponent().plus(new ViewModule(this)).injectTo(this);
-        }catch (Exception e){
+    protected abstract void injectDependence();
 
-        }
-    }
 
-    @Override
     public void onShowLoading() {
         if (dialog != null) {
             if (dialog.isShowing()) dialog.dismiss();
@@ -97,7 +80,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
                 .show(this, "", "Loading. Please wait...", true);
     }
 
-    @Override
+
     public void onHideLoading() {
         if (dialog != null && dialog.isShowing())
             dialog.dismiss();
@@ -136,22 +119,38 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
         dialog.show();
     }
 
-    @Override
+
     public void onShowErorr(String msg) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("lỗi");
-        builder.setMessage(msg);
-        builder.setIcon(R.drawable.logo_app);
-        builder.setCancelable(true);
-        final AlertDialog dialog = builder.create();
-        builder.setNegativeButton("ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialog.dismiss();
+        if(msg.equals(getResources().getString(R.string.isempity))){
+
+        }else {
+            String error=msg;
+            try{
+                error = msg.split(" /")[0];
+            }catch (Exception e){
             }
-        });
-        dialog.show();
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("lỗi");
+            if(error.equals("java.net.ConnectException: Failed to connect to")){
+                builder.setMessage(getResources().getString(R.string.connectfail));
+            }else {
+                builder.setMessage(error);
+            }
+            builder.setIcon(R.drawable.logo_app);
+            builder.setCancelable(true);
+            final AlertDialog dialog = builder.create();
+            builder.setNegativeButton("ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+
     }
+
+
 
 
     /*public void onShowErorr(final String item1, final String item2, final OnEventclickListener eventClick) {
