@@ -26,12 +26,9 @@ public class LoginActivity extends BaseActivity implements LoginView {
 public static LoginActivity loginActivity;
     @BindView(R.id.edt_input_acc)
     EditText edtInputAcc;
-    @BindView(R.id.tvInput)
-    TextInputLayout tvInput;
     @BindView(R.id.edt_input_pass)
     EditText edtInputPass;
-    @BindView(R.id.tvInput2)
-    TextInputLayout tvInput2;
+
     @BindView(R.id.rempasswordcheckbox)
     CheckBox rempasswordcheckbox;
     @BindView(R.id.btn_login)
@@ -72,6 +69,7 @@ public static LoginActivity loginActivity;
 
     @Override
     protected void initData() {
+        mPresenter.onloginFirebase();
         loginActivity=this;
         mPresenter.isConnect();
         edtInputAcc.setText(mPreferences
@@ -156,7 +154,7 @@ public static LoginActivity loginActivity;
             accName = edtInputAcc.getText().toString().trim();
             accPass = edtInputPass.getText().toString().trim();
             mPresenter.onLogin(accName, accPass);
-            mPresenter.onloginFirebase();
+
         }
     }
 

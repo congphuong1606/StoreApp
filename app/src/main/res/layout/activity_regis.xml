@@ -35,61 +35,52 @@
         android:layout_marginRight="30dp"
         android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
+
+        <EditText
+            android:id="@+id/edt_input_acc"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:hint="tên tài khoản"
+            android:maxLength="15"
+            android:maxLines="1" />
 
-            <EditText
-                android:id="@+id/edt_input_acc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="tên tài khoản"
-                android:maxLength="15"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <EditText
+            android:id="@+id/edt_input_number"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:hint="số diện thoại"
+            android:maxLines="1" />
 
-            <EditText
-                android:id="@+id/edt_input_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="số diện thoại"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <EditText
+            android:id="@+id/edt_input_pass"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="0dp">
+            android:layout_height="wrap_content"
+            android:hint="mật khẩu"
+            android:inputType="textPassword"
+            android:maxLines="1" />
 
-            <EditText
-                android:id="@+id/edt_input_pass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="mật khẩu"
-                android:inputType="textPassword"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
             <CheckBox
-                android:layout_weight="1"
                 android:id="@+id/ck_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/user" />
+
             <CheckBox
 
-                android:layout_weight="1"
                 android:id="@+id/ck_store"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:text="@string/store" />
         </LinearLayout>
 
@@ -100,7 +91,8 @@
             android:layout_marginTop="10dp"
             android:background="@color/colorAccent"
             android:text="Đăng ký"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"

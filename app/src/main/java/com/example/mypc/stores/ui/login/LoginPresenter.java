@@ -84,26 +84,10 @@ public class LoginPresenter {
     }
 
     public void onloginFirebase() {
-        String email="Anonymously@gmail.com";
-        String pass="aaa";
-        mAuth.signInWithEmailAndPassword(email,pass).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e("aaa",String.valueOf(e) );
-            }
-        });
+        mAuth.signInAnonymously();
 
     }
 
-    public void updateIsOnine(long accId) {
-        mApiService.updateIsOnline(accId).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onlineSuccess, this::onFail);
-    }
-
-    private void onlineSuccess(Account account) {
-
-    }
 
     public void isConnect() {
         mDisposable.add(mApiService.isConnect().subscribeOn(Schedulers.io())

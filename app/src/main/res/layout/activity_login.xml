@@ -39,24 +39,17 @@
         android:layout_centerHorizontal="true"
         android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tvInput"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="50dp">
+
 
             <EditText
+                android:layout_marginTop="50dp"
                 android:id="@+id/edt_input_acc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nhập tài khoản"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+                android:maxLines="1" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tvInput2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
 
             <EditText
                 android:id="@+id/edt_input_pass"
@@ -64,9 +57,9 @@
                 android:layout_height="wrap_content"
                 android:hint="nhập mật khẩu"
                 android:inputType="textPassword"
-                android:singleLine="true"
-                android:textColorHint="@color/black" />
-        </android.support.design.widget.TextInputLayout>
+                android:maxLines="1"
+                android:textColorHint="@color/text" />
+
 
         <CheckBox
             android:id="@+id/rempasswordcheckbox"

@@ -28,10 +28,6 @@ import retrofit2.http.Query;
  */
 
 public interface ApiService {
-    @GET("/posts/all")
-    Observable<ArrayList<Post>> getListAllPost();
-
-
     @GET("/cmts/{cmtPostId}")
     Observable<ArrayList<Comment>> getPostCmts(@Path("cmtPostId") long cmtPostId);
 
@@ -47,10 +43,13 @@ public interface ApiService {
     @POST("/cmts/add")
     Observable<Comment> saveNewCmt(@Body Comment cmt);
 
-    @GET("/posts/{postStoreId}")
-    Observable<ArrayList<Post>> getListPostStore(@Path("postStoreId") long postStoreId);
-    @GET("/posts/all/{accId}")
-    Observable<ArrayList<Post>> getListPost(@Path("accId") long accId);
+    @GET("/posts/{postStoreId}/{myAccId}/{currentPage}")
+    Observable<ArrayList<Post>> getListPostStore(@Path("postStoreId") long postStoreId, @Path("myAccId")
+            long myAccId, @Path("currentPage") int currentPage);
+
+
+    @GET("/posts/all/{accId}/{curentPage}")
+    Observable<ArrayList<Post>> getListPost(@Path("accId") long accId, @Path("curentPage") int curentPage);
 
     @PUT("/posts/coundCmt/{postId}")
     Observable<Integer> updatePostCmt(@Path("postId") long postId);
@@ -61,11 +60,10 @@ public interface ApiService {
     @DELETE("/posts/{postId}")
     Observable<Long> deletePost(@Path("postId") long postId);
 
-    @GET("locations/{locationStoreId}")
-    Observable<Location> getLocation(@Path("locationStoreId") long accId);
+    @GET("locations/{accId}")
+    Observable<Location> getLocation(@Path("accId") long accId);
 
-    @PUT("/accs/{accId}")
-    Observable<Account> updateIsOnline(@Path("accId") long accId);
+
 
     @PUT("/posts/update")
     Observable<Post> updatePost(@Body Post post);
@@ -87,8 +85,16 @@ public interface ApiService {
 
     @GET("/accs/{accId}")
     Observable<Account> getDetailAcc(@Path("accId") long storeId);
+
     @GET("/posts/history/{accMyId}")
     Observable<ArrayList<Post>> getPostHistorys(@Path("accMyId") long accMyId);
+
     @GET("/posts/all/{accId}/{storeId}")
-    Observable<ArrayList<Post>> getStorePosts(@Path("accId") long accId,@Path("storeId") long storeId);
+    Observable<ArrayList<Post>> getStorePosts(@Path("accId") long accId, @Path("storeId") long storeId);
+
+    @PUT("/accs/update")
+    Observable<Integer> updateAcc(@Body Account account);
+
+    @POST("locations/add")
+    Observable<Location> updateLocation(@Body Location location);
 }

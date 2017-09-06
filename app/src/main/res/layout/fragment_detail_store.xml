@@ -160,6 +160,7 @@
                             android:layout_toRightOf="@+id/imv_post_one">
 
                           <android.support.v7.widget.RecyclerView
+
                               android:padding="5dp"
                               android:id="@+id/rcv_post_store"
                               android:layout_width="match_parent"
@@ -197,7 +198,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:overScrollMode="always"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -205,6 +206,7 @@
         app:tabTextColor="@android:color/white">
 
         <fragment
+            tools:layout="@android:layout/simple_gallery_item"
             android:id="@+id/store_map_detail"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"

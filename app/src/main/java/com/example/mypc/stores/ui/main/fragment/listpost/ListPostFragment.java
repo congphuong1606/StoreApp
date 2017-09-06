@@ -5,11 +5,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.mypc.stores.MyApplication;
 import com.example.mypc.stores.R;
-import com.example.mypc.stores.data.model.IsLike;
+
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.di.module.ViewModule;
 import com.example.mypc.stores.events.PostAdapterClickListener;
@@ -35,9 +34,8 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
     @BindView(R.id.rcv_post)
     RecyclerView rcvPost;
 
-    private static ArrayList<Post> posts;
-    private static ArrayList<IsLike> isLikes;
-    private static PostAdapter mAdapter;
+    private ArrayList<Post> posts;
+    private  PostAdapter mAdapter;
     @Inject
     SharedPreferences mPreferences;
     @Inject
@@ -46,60 +44,68 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
     private int mPosition;
     private long accId;
     private Long islikeId;
-    private boolean isCheck;
     private Realm realm;
     private View v;
     private int typeList;
     private long storeId;
-
+    private ListPostFragment listPost;
 
     @Override
     protected void initView(View view) {
-        rcvPost.setLayoutManager(new GridLayoutManager(view.getContext(), 1));
+        listPost=this;
+        rcvPost.setLayoutManager(new GridLayoutManager(getContext(), 1));
         rcvPost.setHasFixedSize(true);
     }
 
     @Override
     protected void initData() {
-        accId=mPreferences.getLong(Constants.PREF_ACC_ID,0);
+        accId = mPreferences.getLong(Constants.PREF_ACC_ID, 0);
         typeList = getArguments().getInt("typeList");
+        storeId = getArguments().getLong("id");
         this.realm = RealmUtils.with(this).getRealm();
-        posts = new ArrayList<>();
-        getReaml(posts);
-        mAdapter = new PostAdapter(posts);
+        this.posts = new ArrayList<>();
+        mAdapter = new PostAdapter(this.posts);
         mAdapter.setPostAdapter(this);
         rcvPost.setAdapter(mAdapter);
         getPosts();
-        onScrollRcvListener();
+        getReaml(posts);
+        loadNextPage();
     }
 
-    private void getPosts() {
-        if (typeList == Constants.LIST_ALL_POST) {
-            mListPostPresenter.getPosts(accId);
-        } else if (typeList == Constants.LIST_POST_STORE) {
-            storeId = getArguments().getLong("id");
-            mListPostPresenter.getStorePosts(accId,storeId);
-
-        }
-    }
-
-    private void onScrollRcvListener() {
-        rcvPost.setOnScrollListener(new RecyclerView.OnScrollListener() {
+    private void loadNextPage() {
+        rcvPost.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                Toast.makeText(getContext(), String.valueOf(rcvPost.computeVerticalScrollOffset()), Toast.LENGTH_LONG).show();
+            public void onLoadMore(int nextPage) {
+                if (typeList == Constants.LIST_ALL_POST) {
+                    mListPostPresenter.getPosts(accId,nextPage-1);
 
+                } else if (typeList == Constants.LIST_POST_STORE) {
+                    mListPostPresenter.getStorePosts(accId, storeId,nextPage-1);
+                }
             }
         });
 
     }
 
+    private void getPosts() {
+        if (typeList == Constants.LIST_ALL_POST) {
+            posts.clear();
+            mListPostPresenter.getPosts(accId,0);
+        } else if (typeList == Constants.LIST_POST_STORE) {
+            posts.clear();
+            RealmUtils.with(this).deletePosts();
+            mListPostPresenter.getStorePosts(accId, storeId,0);
+
+        }
+    }
+
+
+
     //lấy toàn bộ post từ realm
     private void getReaml(ArrayList<Post> posts) {
         boolean isConnect = LoginActivity.isConnect();
         if (isConnect) {
-            RealmUtils.with(this).deleteBooks();
+            RealmUtils.with(this).deletePosts();
         } else {
             RealmUtils.with(this).refresh();
             if (RealmUtils.with(this).hasPost()) {
@@ -115,6 +121,10 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
     @Override
     protected int getLayoutID() {
         return R.layout.fragment_list_post;
+
+    }
+    public ListPostFragment getFragment(){
+        return listPost;
     }
 
     @Override
@@ -261,14 +271,14 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
 //        mListPostPresenter.isLikePosts(islikeId);
 //    }
 
-    public void setNewPost(Post post) {
-        posts.add(0, post);
+    public  void setNewPost(Post post) {
+        posts.add(posts.size(), post);
         mAdapter.notifyDataSetChanged();
-        rcvPost.smoothScrollToPosition(0);
+        rcvPost.scrollToPosition(posts.size()-1);
 
     }
 
-    public static void updateCountPostCmt(Integer countPostCmt, long cmtPostId, int mPostPosition) {
+    public  void updateCountPostCmt(Integer countPostCmt, long cmtPostId, int mPostPosition) {
         for (Post p : posts) {
             if (p.getPostId() == cmtPostId) {
                 p.setPostCoutComment(countPostCmt);
@@ -277,7 +287,7 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
         mAdapter.notifyItemChanged(mPostPosition);
     }
 
-    public static void notifyPostAdapter(Long postId) {
+    public  void notifyPostAdapter(Long postId) {
         boolean isCheck = false;
         int mPostition = 0;
         int dem = -1;
@@ -294,7 +304,7 @@ public class ListPostFragment extends BaseFragment implements ListPostView, Post
         mAdapter.notifyDataSetChanged();
     }
 
-    public static void notifyPostPosition(Post mPost, int mPosition) {
+    public  void notifyPostPosition(Post mPost, int mPosition) {
         for (Post p : posts) {
             if (p.getPostId() == mPost.getPostId()) {
                 p = mPost;

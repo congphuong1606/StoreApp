@@ -62,7 +62,7 @@ public class RealmUtils {
     }
 
     //clear all objects from Post
-    public void deleteBooks() {
+    public void deletePosts() {
 
         realm.beginTransaction();
         realm.delete(Post.class);

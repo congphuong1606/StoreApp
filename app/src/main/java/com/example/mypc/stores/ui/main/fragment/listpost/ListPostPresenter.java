@@ -30,8 +30,8 @@ public class ListPostPresenter {
     }
 
 
-    public void getPosts(long accid) {
-        mApiService.getListPost(accid)
+    public void getPosts(long accid,int curentPage) {
+        mApiService.getListPost(accid,curentPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onSuccess, this::onError);
@@ -93,8 +93,8 @@ public class ListPostPresenter {
                 .subscribe(this::updateIsLikeSuccess, this::onError);
     }
 
-    public void getStorePosts(long accId, long storeId) {
-        mApiService.getStorePosts(accId,storeId)
+    public void getStorePosts(long accId, long storeId, int i) {
+        mApiService.getListPostStore(accId,storeId,i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onGetStorePostsSuccess, this::onError);
