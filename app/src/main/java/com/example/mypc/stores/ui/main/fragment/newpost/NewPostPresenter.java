@@ -36,9 +36,8 @@ public class NewPostPresenter {
         this.mDisposable = compositeDisposable;
     }
     public void onUploadPost(long accId, String accAvatar, String accFullName, String postContent,String postImage) {
-        long postId = accId + timeControler.getLongCurentTime();
         String postTime = timeControler.getCurentTime() + "";
-        Post post = new Post(postId, postContent, postTime, 0, 0, accId, accFullName, accAvatar,postImage);
+        Post post = new Post(postContent, postTime, 0, 0, accId, accFullName, accAvatar,postImage);
         mDisposable.add(mApiService.saveNewPost(post)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

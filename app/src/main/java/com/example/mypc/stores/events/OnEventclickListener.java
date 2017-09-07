@@ -8,7 +8,7 @@ import com.example.mypc.stores.data.model.Post;
 
 public interface OnEventclickListener {
     void onClickDelete(long postId );
-    void onClickEdit(Post post);
+    void onClickEdit(Post post, int position);
     void onClickSavePostHistory(long postId);
     void onClickRePortPost(Post post);
 }

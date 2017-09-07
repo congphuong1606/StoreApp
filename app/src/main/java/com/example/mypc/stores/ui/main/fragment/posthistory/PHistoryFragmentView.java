@@ -11,4 +11,6 @@ import java.util.ArrayList;
 public interface PHistoryFragmentView {
     void onRequestFailure(String s);
     void onLoadPostsSuccess(ArrayList<Post> posts);
+
+    void onDeleteSuccess(Long postId);
 }

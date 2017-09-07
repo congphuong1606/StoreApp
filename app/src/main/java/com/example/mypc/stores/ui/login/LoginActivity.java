@@ -13,6 +13,7 @@ import com.example.mypc.stores.data.model.Account;
 import com.example.mypc.stores.di.module.ViewModule;
 import com.example.mypc.stores.ui.base.BaseActivity;
 import com.example.mypc.stores.ui.main.MainActivity;
+import com.example.mypc.stores.ui.main.utils.DialogUtils;
 import com.example.mypc.stores.ui.register.RegisActivity;
 import com.example.mypc.stores.utils.Constants;
 import com.example.mypc.stores.utils.UtilDatas;
@@ -28,7 +29,6 @@ public static LoginActivity loginActivity;
     EditText edtInputAcc;
     @BindView(R.id.edt_input_pass)
     EditText edtInputPass;
-
     @BindView(R.id.rempasswordcheckbox)
     CheckBox rempasswordcheckbox;
     @BindView(R.id.btn_login)
@@ -50,10 +50,7 @@ public static LoginActivity loginActivity;
     private static boolean isConnect=false;
 
 
-    @Override
-    protected void onDestroyComposi() {
 
-    }
 
     @Override
     protected void injectDependence() {
@@ -91,7 +88,6 @@ public static LoginActivity loginActivity;
 
     @Override
     public void onLoginSuccess(Account account) {
-
         editor.putLong(Constants.PREF_ACC_ID, account.getAccId())
                 .putString(Constants.PREF_ACC_TYPE, account.getAccType())
                 .putString(Constants.PREF_ACC_NUMBER, account.getAccNumber())
@@ -107,9 +103,9 @@ public static LoginActivity loginActivity;
     }
 
     @Override
-    public void onFail(String msg) {
+    public void onRequestFail(String msg) {
         mPresenter.onDestroy();
-        onShowErorr(msg);
+        DialogUtils.showErorr(this,msg);
     }
 
     @Override
@@ -123,21 +119,16 @@ public static LoginActivity loginActivity;
         return  isConnect;
     }
 
-    @OnClick({R.id.btn_quit, R.id.rempasswordcheckbox, R.id.btn_register, R.id.btn_login})
+    @OnClick({R.id.btn_quit, R.id.rempasswordcheckbox,
+            R.id.btn_register, R.id.btn_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-
                 actionLogin();
                 break;
             case R.id.rempasswordcheckbox:
-                if (rempasswordcheckbox.isChecked()) {
-                    editor.putString(Constants.LOGIN_NAME, accName)
-                            .putString(Constants.LOGIN_PASS, accPass)
-                            .commit();
-                } else {
-                    editor.clear().commit();
-                }
+                onClickCheckBox();
+
                 break;
             case R.id.btn_register:
                 onStartActivity(RegisActivity.class);
@@ -146,6 +137,16 @@ public static LoginActivity loginActivity;
                 finish();
                 break;
 
+        }
+    }
+
+    private void onClickCheckBox() {
+        if (rempasswordcheckbox.isChecked()) {
+            editor.putString(Constants.LOGIN_NAME, accName)
+                    .putString(Constants.LOGIN_PASS, accPass)
+                    .commit();
+        } else {
+            editor.clear().commit();
         }
     }
 

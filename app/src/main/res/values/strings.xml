@@ -37,4 +37,8 @@
     <string name="chedokhonginternet">bạn không thể thực hiện chức năng này khi mất mạng</string>
     <string name="loiketnoi">java.net.ConnectException: Failed to connect to</string>
     <string name="contentShouldNotScrollTag">com.example.mypc.stores.ui.main.utils.MyScrollBehavior</string>
+    <string name="fixScrollingFooterBehavior">com.example.mypc.stores.ui.main.utils.FixScrollingFooterBehavior</string>
+    <string name="replayavatar">Thay đổi đại diện</string>
+    <string name="nullPosition">1111</string>
+    <string name="numberError">sdt phải là 9 hoặc 10 số</string>
 </resources>

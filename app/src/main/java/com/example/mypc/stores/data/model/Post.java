@@ -50,6 +50,18 @@ public class Post extends RealmObject implements Serializable,Parcelable {
     public Post() {
     }
 
+    public Post(String postContent, String postTime, Integer postCountComment, Integer postCountLike,
+                long postStoreId, String postStoreName, String postStoreAvatar, String postImage) {
+        this.postContent = postContent;
+        this.postTime = postTime;
+        this.postCountComment = postCountComment;
+        this.postCountLike = postCountLike;
+        this.postStoreId = postStoreId;
+        this.postStoreName = postStoreName;
+        this.postStoreAvatar = postStoreAvatar;
+        this.postImage = postImage;
+    }
+
     public Post(long postId, String postContent, String postTime,
                 Integer postCountComment, Integer postCountLike, long postStoreId,
                 String postStoreName, String postStoreAvatar, String postImage, Integer isLike) {

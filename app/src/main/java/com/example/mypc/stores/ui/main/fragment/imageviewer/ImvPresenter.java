@@ -30,9 +30,8 @@ public class ImvPresenter {
 
     public void addLikePost(long postId) {
         long accId = mSharedPreferences.getLong(Constants.PREF_ACC_ID, 0);
-        long islikeId = Long.valueOf(String.valueOf(accId)
-                .concat(String.valueOf(postId)));
-        IsLike isLike = new IsLike(islikeId, accId, postId);
+        Long id=Long.valueOf(String.valueOf(accId).concat(String.valueOf(postId)));
+        IsLike isLike = new IsLike(id);
         mApiService.uploadIsLike(isLike).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::uploadIsLikeSuccess, this::fail);
@@ -68,14 +67,14 @@ public class ImvPresenter {
                 .subscribe(this::isLikeSuccess, this::fail);
     }
 
-    private void isLikeSuccess(Integer integer) {
-        mImvView.onIsLikeSuccess(integer);
+    private void isLikeSuccess(Integer check) {
+        mImvView.onIsLikeSuccess(check);
     }
 
-    public void deleteLikePost(long postId) {
+    public void deleteLikePost(long posId) {
         long accId = mSharedPreferences.getLong(Constants.PREF_ACC_ID, 0);
         long islikeId = Long.valueOf(String.valueOf(accId)
-                .concat(String.valueOf(postId)));
+                .concat(String.valueOf(posId)));
         mApiService.deleteIsLikePost(islikeId).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::deleteIsLikePostSuccess, this::fail);

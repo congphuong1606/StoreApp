@@ -11,5 +11,5 @@ import java.util.ArrayList;
 public interface MainView {
     void onDeletePostSuccess(Long postId);
     void onRequestFailure(String s);
-
+    void onSavePostHistorySuccess();
 }

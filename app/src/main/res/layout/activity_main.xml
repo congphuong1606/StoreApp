@@ -32,7 +32,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_gravity="left"
-                android:background="@drawable/ic_go_back"
+                android:background="@drawable/ic_arrow_back_black"
                 android:backgroundTint="#fff" />
 
             <TextView
@@ -55,12 +55,7 @@
                 android:backgroundTint="#fff"
                 android:visibility="gone" />
         </android.support.v7.widget.Toolbar>
-
     </android.support.design.widget.AppBarLayout>
-
-
-
-
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_new_post"

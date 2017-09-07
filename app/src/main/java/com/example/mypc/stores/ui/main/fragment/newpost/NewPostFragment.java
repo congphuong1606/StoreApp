@@ -7,7 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +25,8 @@ import com.example.mypc.stores.events.BtnSaveClickListenner;
 import com.example.mypc.stores.ui.base.BaseFragment;
 import com.example.mypc.stores.ui.main.MainActivity;
 import com.example.mypc.stores.ui.main.fragment.listpost.ListPostFragment;
+import com.example.mypc.stores.ui.main.utils.DialogUtils;
+import com.example.mypc.stores.ui.main.utils.KeyBoardUtils;
 import com.example.mypc.stores.utils.Constants;
 
 import java.io.ByteArrayOutputStream;
@@ -39,7 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static android.app.Activity.RESULT_OK;
 
 public class NewPostFragment extends BaseFragment implements NewPostView, BtnSaveClickListenner {
-
+    private ListPostFragment listPostFragment;
     @BindView(R.id.imv_store_post_avatar)
     CircleImageView imvStorePostAvatar;
     @BindView(R.id.tv_store_post)
@@ -62,7 +64,6 @@ public class NewPostFragment extends BaseFragment implements NewPostView, BtnSav
     Button btnGarely;
 
 
-
     private String avatar;
     private String accFullName;
     private String postImage = null;
@@ -81,12 +82,13 @@ public class NewPostFragment extends BaseFragment implements NewPostView, BtnSav
     @Override
     protected void initView(View view) {
         mContext = view.getContext();
-        showKeyboard(edtNewPost,true);
+        KeyBoardUtils.showKeyboard(getActivity(), edtNewPost, true);
 
     }
 
     @Override
     protected void initData() {
+        listPostFragment = ListPostFragment.getIntans();
         ((MainActivity) getActivity()).setClickSaveListener(this);
         avatar = mPreferences.getString(Constants.PREF_ACC_AVATAR, "");
         accFullName = mPreferences.getString(Constants.PREF_ACC_FULLNAME, "");
@@ -111,16 +113,15 @@ public class NewPostFragment extends BaseFragment implements NewPostView, BtnSav
     @Override
     public void onLoadPostSuccess(Post post) {
         edtNewPost.setText("");
-        getActivity().onBackPressed();
-        ListPostFragment postFragment = new ListPostFragment();
-        postFragment.setNewPost(post);
+        listPostFragment.setNewPost(post);
+        ((MainActivity) getActivity()).onBackPressed();
 
 
     }
 
     @Override
     public void onRequestFailure(String s) {
-       onShowErorr(s);
+        DialogUtils.showErorr(getContext(), s);
 
     }
 
@@ -134,9 +135,11 @@ public class NewPostFragment extends BaseFragment implements NewPostView, BtnSav
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_camera:
+                KeyBoardUtils.hideKeyboard(getActivity());
                 takePicture();
                 break;
             case R.id.btn_garely:
+                KeyBoardUtils.hideKeyboard(getActivity());
                 choosePhoto();
                 break;
         }
@@ -197,16 +200,8 @@ public class NewPostFragment extends BaseFragment implements NewPostView, BtnSav
 
     @Override
     public void onClickBtnSaveLisener() {
-        showKeyboard(edtNewPost,false);
-        if (picByte == null) {
+            KeyBoardUtils.hideKeyboard(getActivity());
             senPost();
-        } else {
-            if (postImage != null) {
-                senPost();
-            } else {
-                Toast.makeText(getContext(), "up anh len file base chua thanh cong", Toast.LENGTH_LONG).show();
-            }
-        }
     }
 
 

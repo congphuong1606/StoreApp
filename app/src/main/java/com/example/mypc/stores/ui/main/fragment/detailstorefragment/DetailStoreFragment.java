@@ -36,6 +36,7 @@ import com.example.mypc.stores.ui.adapter.ListImageAdapter;
 import com.example.mypc.stores.ui.base.BaseFragment;
 import com.example.mypc.stores.ui.main.MainActivity;
 import com.example.mypc.stores.ui.main.utils.BitmapUtils;
+import com.example.mypc.stores.ui.main.utils.DialogUtils;
 import com.example.mypc.stores.utils.Constants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -177,6 +178,7 @@ public class DetailStoreFragment extends BaseFragment implements StoreDetailView
                 break;
             case R.id.btn_email:
                 sendSMS(getContext());
+
                 break;
             case R.id.btn:
                 break;
@@ -187,6 +189,7 @@ public class DetailStoreFragment extends BaseFragment implements StoreDetailView
                         "http://maps.google.com/maps?saddr=" +
                                 " " + latCurent + "," + lngCurent + "&daddr=" + latStore + "," + lngStore));
                 startActivity(intent);
+                ((MainActivity) getActivity()).setOpenFragmentImageView();
                 break;
 
 
@@ -202,7 +205,7 @@ public class DetailStoreFragment extends BaseFragment implements StoreDetailView
 
     @Override
     public void onRequestFailure(String s) {
-        onShowErorr(s);
+        DialogUtils.showErorr(getContext(),s);
     }
 
     @Override
@@ -262,9 +265,8 @@ public class DetailStoreFragment extends BaseFragment implements StoreDetailView
         mMap.getUiSettings().setAllGesturesEnabled(true);
         mMap.getUiSettings().setIndoorLevelPickerEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-        CameraPosition mCameraPosition = new CameraPosition.Builder().target(latLng).zoom(17).bearing(40).tilt(30).build();
+        CameraPosition mCameraPosition = new CameraPosition.Builder().target(latLng).zoom(12).bearing(40).tilt(30).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
     }
 
@@ -394,19 +396,19 @@ public class DetailStoreFragment extends BaseFragment implements StoreDetailView
     }
 
     public void sendSMS(Context context) {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", acc.getAccNumber(), null)));
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", acc.getAccNumber()+"", null)));
     }
 
 
     @Override
     public void onClickBtnAllPostStore() {
         ((MainActivity) getActivity()).showFragmentListPost(acc.getAccId(), Constants.LIST_POST_STORE);
-        ((MainActivity) getActivity()).setOpenFragment();
+        ((MainActivity) getActivity()).setOpenFragmentImageView();
     }
 
     @Override
     public void onClickImvPostStore(Post post, int position) {
         ((MainActivity) getActivity()).showFragmentImaeViewer(post, position);
-        ((MainActivity) getActivity()).setOpenFragment();
+        ((MainActivity) getActivity()).setOpenFragmentImageView();
     }
 }

@@ -17,9 +17,7 @@ public class Location implements Serializable{
     @SerializedName("locationLng")
     @Expose
     private double locationLng;
-    @SerializedName("locationStoreId")
-    @Expose
-    private long locationStoreId;
+
 
     /**
      * No args constructor for use in serialization
@@ -27,11 +25,11 @@ public class Location implements Serializable{
     public Location() {
     }
 
-    public Location(long locationId, double locationLat, double locationLng, long locationStoreId) {
+    public Location(long locationId, double locationLat, double locationLng) {
         this.locationId = locationId;
         this.locationLat = locationLat;
         this.locationLng = locationLng;
-        this.locationStoreId = locationStoreId;
+
     }
 
     public long getLocationId() {
@@ -58,11 +56,5 @@ public class Location implements Serializable{
         this.locationLng = locationLng;
     }
 
-    public long getLocationStoreId() {
-        return locationStoreId;
-    }
 
-    public void setLocationStoreId(long locationStoreId) {
-        this.locationStoreId = locationStoreId;
-    }
 }

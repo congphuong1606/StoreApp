@@ -30,7 +30,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
     PostAdapterClickListener mListener;
 
 
-
     public void setPostAdapter(PostAdapterClickListener mListener) {
         this.mListener = mListener;
 
@@ -61,22 +60,39 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
     public void onBindViewHolder(PostviewHoder holder, int position) {
 
         Post post = posts.get(position);
+        setViewholer(holder,position,post);
+        //set Color btn like
+        setColorBtnLike(post.getIsLike(), holder.btnLikePost);
+
+        setOnClick(holder, post, position);
+
+
+    }
+
+    private void setViewholer(PostviewHoder holder, int position, Post post) {
         holder.tvStoreName.setText(post.getPostStoreName() + "");
         holder.tvPostTime.setText(post.getPostTime() + "");
-        holder.tvPostCountLike.setText(post.getPostCountLike() + " "
-                + mContext.getResources().getString(R.string.yeuthich));
-        holder.tvPostCountCmt.setText(post.getPostCountComment() + " "
-                + mContext.getApplicationContext().getString(R.string.binhluan));
+        if (post.getPostCountLike() == 0) {
+            holder.tvPostCountLike.setText(" ");
+        } else {
+            holder.tvPostCountLike.setText(post.getPostCountLike() + " "
+                    + mContext.getResources().getString(R.string.yeuthich));
+        }
+        if (post.getPostCountComment() == 0) {
+            holder.tvPostCountCmt.setText("");
+        } else {
+            holder.tvPostCountCmt.setText(post.getPostCountComment() + " "
+                    + mContext.getApplicationContext().getString(R.string.binhluan));
+        }
         holder.tvPostContent.setText(post.getPostContent() + "");
         Glide.with(mContext).load(post.getPostStoreAvatar()).into(holder.imvAvatarPostStore);
         if (post.getPostImage() != null) {
 //            holder.imvPostImage.setImageURI(Uri.parse(post.getPostImage()));
             Glide.with(mContext).load(post.getPostImage()).into(holder.imvPostImage);
         }
-        //set Color btn like
-        setColorBtnLike(post.getIsLike(), holder.btnLikePost);
+    }
 
-
+    private void setOnClick(PostviewHoder holder, Post post, int position) {
         holder.imvAvatarPostStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,25 +142,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostviewHoder>
                 mListener.onClickBtnShare(post.getPostImage());
             }
         });
-//        //set màu cho like
-//        int islike=holder.itemView.getContext().getResources().getColor(R.color.red);
-//        int dislike=holder.itemView.getContext().getResources().getColor(R.color.text);
-//        long islikeId = Long.valueOf(String.valueOf(accId).concat(String.valueOf(post.getPostId())));
-//        for (IsLike isLike : isLikes) {
-//            if (isLike.getIslikeId() == islikeId) {
-//                holder.tvPostLove.setTextColor(islike);
-//            }else holder.tvPostLove.setTextColor(dislike);
-//        }
-
-//      /*
-//        int islike=holder.itemView.getContext().getResources().getColor(R.color.red);
-//        int dislike=holder.itemView.getContext().getResources().getColor(R.color.text);
-//        long islikeId = Long.valueOf(String.valueOf(accId).concat(String.valueOf(post.getPostId())));
-//        mListener.checkLike(islikeId);
-//        if (mListener.isCheckIsLikePost()) {
-//            holder.tvPostLove.setTextColor(islike);
-//        }else holder.tvPostLove.setTextColor(dislike);*/
-
     }
 
     private void setColorBtnLike(Integer isLike, Button btnLike) {

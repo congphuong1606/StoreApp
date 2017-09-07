@@ -37,7 +37,7 @@
 
 
         <EditText
-            android:id="@+id/edt_input_acc"
+            android:id="@+id/edt_name_regis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
@@ -47,18 +47,18 @@
 
 
         <EditText
-            android:id="@+id/edt_input_number"
+            android:id="@+id/edt_pass_regis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="số diện thoại"
+            android:hint="mật khẩu"
             android:maxLines="1" />
 
 
         <EditText
-            android:id="@+id/edt_input_pass"
+            android:id="@+id/edt_number_regis"
+            android:hint="số diện thoại"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="mật khẩu"
             android:inputType="textPassword"
             android:maxLines="1" />
 

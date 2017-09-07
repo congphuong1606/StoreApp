@@ -40,4 +40,13 @@ public class PHistoryFragmentPresenter {
     }
 
 
+    public void deletePostHistory(long postId) {
+        mApiService.deletePostHistory(postId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::deletePostHistorysSuccess, this::fail);
+    }
+
+    private void deletePostHistorysSuccess(Long postId) {
+        mPHistoryFragmentView.onDeleteSuccess(postId);
+    }
 }

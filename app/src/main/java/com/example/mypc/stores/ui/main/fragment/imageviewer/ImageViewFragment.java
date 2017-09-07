@@ -12,17 +12,18 @@ import com.example.mypc.stores.di.module.ViewModule;
 import com.example.mypc.stores.ui.base.BaseFragment;
 import com.example.mypc.stores.ui.main.MainActivity;
 import com.example.mypc.stores.ui.main.fragment.listpost.ListPostFragment;
+import com.example.mypc.stores.ui.main.utils.DialogUtils;
 import com.example.mypc.stores.ui.main.utils.PostItemUtils;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import me.relex.photodraweeview.PhotoDraweeView;
 
 
 public class ImageViewFragment extends BaseFragment implements ImvView {
+    private ListPostFragment mListPostFragment;
     String urlImage;
     @BindView(R.id.photoDraweeView)
     PhotoDraweeView photoDraweeView;
@@ -42,10 +43,11 @@ public class ImageViewFragment extends BaseFragment implements ImvView {
     TextView tvCountLikePost;
     @BindView(R.id.view_heart)
     View viewHeart;
-    Unbinder unbinder;
+
 
     private Post post;
     private int mPosition;
+    private long isLikeId;
 
     @Override
     protected void injectDependence(View view) {
@@ -60,6 +62,7 @@ public class ImageViewFragment extends BaseFragment implements ImvView {
 
     @Override
     protected void initData() {
+        mListPostFragment=ListPostFragment.getIntans();
         post = (Post) getArguments().getSerializable("post");
         mPosition = getArguments().getInt("position");
         setView();
@@ -116,15 +119,17 @@ public class ImageViewFragment extends BaseFragment implements ImvView {
     }
 
     @Override
-    public void onIsLikeSuccess(Integer integer) {
-        if (integer == 1) {
+    public void onIsLikeSuccess(Integer check) {
+        if (check == 0) {
+            mImvPresenter.updateCountLike(post.getPostId(), 0);
+        } else{
             mImvPresenter.updateCountLike(post.getPostId(), 1);
-        } else mImvPresenter.updateCountLike(post.getPostId(), 0);
+        }
     }
 
     @Override
     public void onRequestFailure(String smg) {
-        onShowErorr(smg);
+        DialogUtils.showErorr(getContext(),smg);
     }
 
     @Override
@@ -147,9 +152,9 @@ public class ImageViewFragment extends BaseFragment implements ImvView {
         if (integer == 1) {
             showAnimationLove();
             btnLikeImage.setBackgroundResource(R.drawable.ic_like_red);
-            ListPostFragment.notifyPostPosition(post, mPosition);
+            mListPostFragment.notifyPostPosition(post, mPosition);
         } else if (integer == 0) {
-            ListPostFragment.notifyPostPosition(post, mPosition);
+            mListPostFragment.notifyPostPosition(post, mPosition);
         }
     }
     private void showAnimationLove() {

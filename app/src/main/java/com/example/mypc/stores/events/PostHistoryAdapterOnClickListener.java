@@ -7,5 +7,6 @@ import com.example.mypc.stores.data.model.Post;
  */
 
 public interface PostHistoryAdapterOnClickListener {
-    void onClick(Post post);
+    void onClick(Post post, int position);
+
 }

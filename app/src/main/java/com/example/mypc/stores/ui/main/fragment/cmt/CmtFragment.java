@@ -15,6 +15,8 @@ import com.example.mypc.stores.di.module.ViewModule;
 import com.example.mypc.stores.ui.adapter.CmtAdapter;
 import com.example.mypc.stores.ui.base.BaseFragment;
 import com.example.mypc.stores.ui.main.fragment.listpost.ListPostFragment;
+import com.example.mypc.stores.ui.main.utils.DialogUtils;
+import com.example.mypc.stores.ui.main.utils.KeyBoardUtils;
 import com.example.mypc.stores.utils.Constants;
 import com.example.mypc.stores.utils.TimeControler;
 
@@ -26,6 +28,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class CmtFragment extends BaseFragment implements CmtFragmentView {
+    private ListPostFragment listPostFragment;
     ArrayList<Comment> comments;
     @Inject
     CmtFragmentPresenter mPresenter;
@@ -59,7 +62,8 @@ public class CmtFragment extends BaseFragment implements CmtFragmentView {
 
     @Override
     protected void initData() {
-        showKeyboard(edtNewCmt, true);
+        listPostFragment=ListPostFragment.getIntans();
+        KeyBoardUtils.showKeyboard(getActivity(),edtNewCmt,true);
         comments = new ArrayList<>();
         mAdapter = new CmtAdapter(comments);
         rcvCmt.setAdapter(mAdapter);
@@ -73,15 +77,16 @@ public class CmtFragment extends BaseFragment implements CmtFragmentView {
 
     @Override
     public void onUploadNewCmtSuccess(Comment comment) {
-        comments.add(comment);
+        comments.add(comments.size(),comment);
         mAdapter.notifyDataSetChanged();
+        rcvCmt.smoothScrollToPosition(comments.size()-1);
         mPresenter.onUpdatePost(cmtPostId);
-        rcvCmt.smoothScrollToPosition(comments.size() - 1);
+
     }
 
     @Override
     public void onUpdateCountPostCmtSuccess(Integer countPostCmt) {
-        ListPostFragment.updateCountPostCmt(countPostCmt, cmtPostId, mPostPosition);
+        listPostFragment.updateCountPostCmt(countPostCmt, cmtPostId, mPostPosition);
     }
 
 
@@ -104,32 +109,25 @@ public class CmtFragment extends BaseFragment implements CmtFragmentView {
 
     @Override
     public void onLoadCmtSuccess(ArrayList<Comment> cmts) {
-        if(cmts!=null){
-            comments.addAll(cmts);
-            mAdapter.notifyDataSetChanged();
-            if(cmts!=null){
-                rcvCmt.smoothScrollToPosition(comments.size() - 1);
-            }
-
-        }
-
-
+        comments.addAll(cmts);
+        mAdapter.notifyDataSetChanged();
+        rcvCmt.smoothScrollToPosition(comments.size() - 1);
     }
 
     @Override
     public void onRequestFailure(String s) {
-        onShowErorr(s);
+        DialogUtils.showErorr(getContext(),s);
     }
 
 
     @OnClick(R.id.btn_sent_cmt)
     public void onViewClicked() {
         initNewCmt();
-        Comment cmt = new Comment(cmtId, cmtAccId, cmtAccAvatar, cmtPostId,
+        Comment cmt = new Comment(cmtAccId, cmtAccAvatar, cmtPostId,
                 cmtContent, cmtTime, cmtAccName);
         mPresenter.onUploadNewCmt(cmt);
         edtNewCmt.setText("");
-        showKeyboard(edtNewCmt, false);
+       KeyBoardUtils.hideKeyboard(getActivity());
 
     }
 
@@ -139,6 +137,5 @@ public class CmtFragment extends BaseFragment implements CmtFragmentView {
         cmtAccAvatar = mPreferences.getString(Constants.PREF_ACC_AVATAR, "");
         cmtContent = edtNewCmt.getText().toString().trim();
         cmtTime = time.getCurentTime() + "";
-        cmtId = cmtAccId + cmtPostId + time.getLongCurentTime();
     }
 }

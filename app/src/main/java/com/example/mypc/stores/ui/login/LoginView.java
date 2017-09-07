@@ -8,6 +8,6 @@ import com.example.mypc.stores.data.model.Account;
 
 public interface LoginView {
     void onLoginSuccess(Account account);
-    void onFail(String msg);
+    void onRequestFail(String msg);
     void onIsConnect(boolean b);
 }

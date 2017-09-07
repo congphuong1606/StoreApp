@@ -31,13 +31,13 @@ public class CmtFragmentPresenter {
     }
 
     public void onLoadPostCmts(long cmtPostId) {
-        Observable<ArrayList<Comment>> postCmts = mApiService.getPostCmts(cmtPostId);
-        mDisposable.add(postCmts.subscribeOn(Schedulers.io())
+         mApiService.getPostCmts(cmtPostId).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onSuccess, this::onError));
+                .subscribe(this::onSuccess, this::onError);
     }
 
     private void onError(Throwable throwable) {
+
         mView.onRequestFailure(String.valueOf(throwable));
     }
 
@@ -50,9 +50,9 @@ public class CmtFragmentPresenter {
     }
 
     public void onUploadNewCmt(Comment cmt) {
-        mDisposable.add(mApiService.saveNewCmt(cmt).subscribeOn(Schedulers.io())
+       mApiService.saveNewCmt(cmt).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onUpCmtSuccess, this::onError));
+                .subscribe(this::onUpCmtSuccess, this::onError);
 
     }
 

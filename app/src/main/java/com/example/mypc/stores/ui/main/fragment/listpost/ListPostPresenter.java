@@ -3,6 +3,7 @@ package com.example.mypc.stores.ui.main.fragment.listpost;
 import com.example.mypc.stores.data.model.IsLike;
 import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.network.ApiService;
+import com.example.mypc.stores.utils.Constants;
 
 import java.util.ArrayList;
 
@@ -18,15 +19,14 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ListPostPresenter {
     private ApiService mApiService;
-    private CompositeDisposable mDisposable;
     private ListPostView mListPostView;
 
     @Inject
-    public ListPostPresenter(ListPostView view, ApiService apiService,
-                             CompositeDisposable mDisposable) {
+    public ListPostPresenter(ListPostView view, ApiService apiService
+                             ) {
         this.mApiService = apiService;
         this.mListPostView = view;
-        this.mDisposable = mDisposable;
+
     }
 
 
@@ -46,9 +46,7 @@ public class ListPostPresenter {
     }
 
 
-    public void onDestroy() {
-        mDisposable.dispose();
-    }
+
 
 
     public void updateCountPostLove(long postId, int i) {
@@ -63,14 +61,18 @@ public class ListPostPresenter {
 
 
 
-    public void isLike(long islikeId) {
+    public void isLike(long postId, long accId) {
+        long islikeId = Long.valueOf(String.valueOf(accId)
+                .concat(String.valueOf(postId)));
         mApiService.isLike(islikeId).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::isLikeSuccsess, this::onError);
     }
 
-    private void isLikeSuccsess(Integer integer) {
-        mListPostView.islikeSuccess(integer);
+    private void isLikeSuccsess(Integer check) {
+            mListPostView.islikeSuccess(check);
+
+
     }
 
 
@@ -80,15 +82,17 @@ public class ListPostPresenter {
     }
 
 
-    public void addLikePost(Long islikeId, long accid, long mPostId) {
-        IsLike isLike = new IsLike(islikeId, accid, mPostId);
+    public void addLikePost(Long accId, long postId) {
+        Long id=Long.valueOf(String.valueOf(accId).concat(String.valueOf(postId)));
+        IsLike isLike = new IsLike(id);
         mApiService.uploadIsLike(isLike).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateIsLikeSuccess, this::onError);
     }
 
-    public void deleteLikePost(Long islikeId) {
-        mApiService.deleteIsLikePost(islikeId).subscribeOn(Schedulers.io())
+    public void deleteLikePost(long accId, Long postId) {
+        Long id=Long.valueOf(String.valueOf(accId).concat(String.valueOf(postId)));
+        mApiService.deleteIsLikePost(id).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateIsLikeSuccess, this::onError);
     }

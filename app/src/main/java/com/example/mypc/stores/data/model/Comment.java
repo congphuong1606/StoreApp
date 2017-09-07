@@ -29,8 +29,18 @@ public class Comment {
     public Comment() {
     }
 
+    public Comment(long cmtAccId, String cmtAccAvatar, long cmtPostId, String cmtContent,
+                   String cmtTime, String cmtAccName) {
+        this.cmtAccId = cmtAccId;
+        this.cmtAccAvatar = cmtAccAvatar;
+        this.cmtPostId = cmtPostId;
+        this.cmtContent = cmtContent;
+        this.cmtTime = cmtTime;
+        this.cmtAccName = cmtAccName;
+    }
+
     public Comment(long cmtId, long cmtAccId, String cmtAccAvatar,
-                   long cmtPostId, String cmtContent, String cmtTime,String cmtAccName) {
+                   long cmtPostId, String cmtContent, String cmtTime, String cmtAccName) {
         this.cmtId = cmtId;
         this.cmtAccId = cmtAccId;
         this.cmtAccAvatar = cmtAccAvatar;

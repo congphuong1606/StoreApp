@@ -8,7 +8,6 @@
     android:orientation="vertical">
 
     <RelativeLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -17,8 +16,10 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_noavatar" />
+            android:src="@drawable/ic_noavatar"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_alignBottom="@+id/linearLayout2" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -26,7 +27,8 @@
             android:layout_marginLeft="5dp"
             android:layout_toLeftOf="@+id/btn_menu"
             android:layout_toRightOf="@+id/imv_avatar_post_store"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/linearLayout2">
 
             <TextView
                 android:id="@+id/tv_store_name"
@@ -60,6 +62,13 @@
             android:textSize="20sp" />
 
     </RelativeLayout>
+    <View
+        android:layout_marginRight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="5dp"
+        android:background="#abaaaa" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -93,21 +102,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
-                app:actualImageScaleType="centerInside"
+                app:actualImageScaleType="centerCrop"
                 app:fadeDuration="300"
                 app:placeholderImage="@drawable/ic_no_image"
                 app:viewAspectRatio="1" />
-            <!--<me.relex.photodraweeview.PhotoDraweeView-->
-            <!--android:id="@+id/imv_post_image"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:actualImageScaleType="fitCenter"-->
-            <!--app:placeholderImage="@drawable/ic_no_image"-->
-            <!--app:placeholderImageScaleType="fitCenter" />-->
-            <!--<ImageView-->
-            <!--android:id="@+id/imv_post_image"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content" />-->
+
         </RelativeLayout>
 
 

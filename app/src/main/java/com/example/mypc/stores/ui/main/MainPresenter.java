@@ -2,6 +2,7 @@ package com.example.mypc.stores.ui.main;
 
 import android.content.SharedPreferences;
 
+import com.example.mypc.stores.data.model.Post;
 import com.example.mypc.stores.network.ApiService;
 import com.example.mypc.stores.utils.Constants;
 
@@ -13,21 +14,21 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainPresenter {
     MainView mainView;
-    CompositeDisposable mDisposable;
     ApiService mApiService;
+    SharedPreferences mPreferences;
 
     @Inject
-    public MainPresenter(SharedPreferences mPreferences, MainView mainView, CompositeDisposable mDisposable, ApiService mApiService) {
+    public MainPresenter(SharedPreferences mPreferences, MainView mainView, ApiService mApiService) {
         this.mainView = mainView;
-        this.mDisposable = mDisposable;
         this.mApiService = mApiService;
+        this.mPreferences=mPreferences;
     }
 
 
     public void deletePost(long postId) {
-        mDisposable.add(mApiService.deletePost(postId).subscribeOn(Schedulers.io())
+       mApiService.deletePost(postId).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onDeletePostSuccess, this::onError));
+                .subscribe(this::onDeletePostSuccess, this::onError);
     }
 
     private void onError(Throwable throwable) {
@@ -39,4 +40,16 @@ public class MainPresenter {
     }
 
 
+
+
+    public void savePostToHistory(long postId) {
+        Long accId=mPreferences.getLong(Constants.PREF_ACC_ID,0);
+        mApiService.addHistory(postId,accId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::addHistoryPostSuccess, this::onError);
+    }
+
+    private void addHistoryPostSuccess(Integer integer) {
+        mainView.onSavePostHistorySuccess();
+    }
 }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mypc.stores.MyApplication;
@@ -28,6 +29,7 @@ import com.example.mypc.stores.ui.main.fragment.listpost.ListPostFragment;
 import com.example.mypc.stores.ui.main.fragment.newpost.NewPostFragment;
 import com.example.mypc.stores.ui.main.fragment.posthistory.PostHistoryFragment;
 import com.example.mypc.stores.ui.main.fragment.usermanager.UserManagerFragment;
+import com.example.mypc.stores.ui.main.utils.DialogUtils;
 import com.example.mypc.stores.ui.main.utils.KeyBoardUtils;
 import com.example.mypc.stores.ui.main.fragment.detailstorefragment.DetailStoreFragment;
 import com.example.mypc.stores.ui.main.utils.ToolBarUtils;
@@ -40,6 +42,7 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends BaseActivity implements MainView, OnEventclickListener {
+    private ListPostFragment mListPostFragment;
     private BtnSaveClickListenner mListener;
     private ToolBarUtils mToolBarUtils;
     private AppBarLayout.LayoutParams params;
@@ -84,6 +87,7 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
 
     @Override
     protected void initData() {
+        mListPostFragment = ListPostFragment.getIntans();
         params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
     }
 
@@ -152,18 +156,18 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
 
     @Override
     public void onDeletePostSuccess(Long postId) {
-        ListPostFragment.notifyPostAdapter(postId);
+        mListPostFragment = ListPostFragment.getIntans();
+        mListPostFragment.notifyPostAdapter(postId);
     }
 
     @Override
     public void onRequestFailure(String s) {
-        onShowErorr(s);
+        DialogUtils.showErorr(this, s);
     }
 
-
     @Override
-    protected void onDestroyComposi() {
-
+    public void onSavePostHistorySuccess() {
+        Toast.makeText(this, "success!", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -175,6 +179,7 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
 
     @Override
     public void onClickSavePostHistory(long postId) {
+        mainPresenter.savePostToHistory(postId);
 
     }
 
@@ -184,13 +189,13 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
     }
 
 
-    public void postOptions(Post post, int type) {
-        onShowBuiderPostPotion(this, post, type);
+    public void postOptions(Post post, int type, int position) {
+        onShowBuiderPostPotion(this, post, type, position);
     }
 
     @Override
-    public void onClickEdit(Post post) {
-        showFragmentEditPost(post);
+    public void onClickEdit(Post post, int position) {
+        showFragmentEditPost(post, position);
     }
 
 
@@ -226,7 +231,6 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
         setOpenFragment();
         mToolBarUtils.setToolBarFragmentNewPost();
     }
-
 
 
     public void showFragmentCmt(Post post, int adapterPosition) {
@@ -286,11 +290,12 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
 
     }
 
-    private void showFragmentEditPost(Post post) {
+    private void showFragmentEditPost(Post post, int position) {
         EditPostFragment editPostFragment = new EditPostFragment();
         setNewFragment(editPostFragment);
         Bundle bundle = new Bundle();
         bundle.putSerializable("post", post);
+        bundle.putInt("position", position);
         editPostFragment.setArguments(bundle);
         mToolBarUtils.setToolBarFragmentEditPost();
         setOpenFragment();
@@ -300,6 +305,7 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
         isOpenFragment = true;
         fabNewPost.setVisibility(View.GONE);
     }
+
     public void setUserAvatar() {
         Glide.with(this)
                 .load(mPreferences.getString(Constants.PREF_ACC_AVATAR, ""))
@@ -308,6 +314,6 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
     }
 
     public void setOpenFragmentImageView() {
-        isOpenImageView=true;
+        isOpenImageView = true;
     }
 }

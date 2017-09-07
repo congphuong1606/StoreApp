@@ -14,6 +14,8 @@ import com.example.mypc.stores.di.module.ViewModule;
 import com.example.mypc.stores.events.BtnSaveClickListenner;
 import com.example.mypc.stores.ui.base.BaseFragment;
 import com.example.mypc.stores.ui.main.MainActivity;
+import com.example.mypc.stores.ui.main.fragment.listpost.ListPostFragment;
+import com.example.mypc.stores.ui.main.utils.DialogUtils;
 import com.example.mypc.stores.utils.TimeControler;
 
 import javax.inject.Inject;
@@ -24,8 +26,8 @@ import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class EditPostFragment extends BaseFragment implements EditPostview,BtnSaveClickListenner {
-
+public class EditPostFragment extends BaseFragment implements EditPostview, BtnSaveClickListenner {
+    ListPostFragment mListPostFragment;
     @BindView(R.id.imv_edit_avatar_post_store)
     CircleImageView imvEditAvatarPostStore;
     @BindView(R.id.tv_edit_store_name)
@@ -37,17 +39,11 @@ public class EditPostFragment extends BaseFragment implements EditPostview,BtnSa
     @BindView(R.id.imv_edit_post_image)
     ImageView imvEditPostImage;
     private Post post;
+    private int mPosition;
 
     @Inject
     EditPostPresenter mEditPostPresenter;
 
-
-    public static EditPostFragment newInstance() {
-        Bundle args = new Bundle();
-        EditPostFragment fragment = new EditPostFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     protected void initView(View view) {
@@ -56,8 +52,10 @@ public class EditPostFragment extends BaseFragment implements EditPostview,BtnSa
 
     @Override
     protected void initData() {
+        mListPostFragment = ListPostFragment.getIntans();
         ((MainActivity) getActivity()).setClickSaveListener(this);
         post = (Post) getArguments().getSerializable("post");
+        mPosition = getArguments().getInt("position");
         tvEditStoreName.setText(post.getPostStoreName());
         tvEditPostTime.setText(post.getPostTime());
         edtEditPostContent.setText(post.getPostContent());
@@ -83,17 +81,15 @@ public class EditPostFragment extends BaseFragment implements EditPostview,BtnSa
         MyApplication.get().getAppComponent().plus(new ViewModule(this)).injectTo(this);
     }
 
-    public static void updatePost() {
-
-    }
 
     @Override
     public void onRequestFailure(String s) {
-onShowErorr(s);
+        DialogUtils.showErorr(getContext(), s);
     }
 
     @Override
     public void onUpdatePostSuccess(Post post) {
+        mListPostFragment.notifyPostPosition(post, mPosition);
         ((MainActivity) getActivity()).onBackPressed();
     }
 
@@ -101,7 +97,7 @@ onShowErorr(s);
     public void onClickBtnSaveLisener() {
         TimeControler timeControler = new TimeControler();
         String postTime = timeControler.getCurentTime() + "";
-        String postContent=edtEditPostContent.getText().toString().trim();
+        String postContent = edtEditPostContent.getText().toString().trim();
         post.setPostTime(postTime);
         post.setPostContent(postContent);
         mEditPostPresenter.updatePost(post);

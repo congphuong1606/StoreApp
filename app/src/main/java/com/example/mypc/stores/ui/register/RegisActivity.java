@@ -1,6 +1,7 @@
 package com.example.mypc.stores.ui.register;
 
-import android.util.Log;
+import android.app.ProgressDialog;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -8,22 +9,28 @@ import android.widget.EditText;
 
 import com.example.mypc.stores.MyApplication;
 import com.example.mypc.stores.R;
+import com.example.mypc.stores.data.model.Account;
 import com.example.mypc.stores.di.module.ViewModule;
 import com.example.mypc.stores.ui.base.BaseActivity;
+import com.example.mypc.stores.ui.main.utils.DialogUtils;
+import com.example.mypc.stores.utils.UtilDatas;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class RegisActivity extends BaseActivity implements RegisView {
+    @BindView(R.id.edt_name_regis)
+    EditText edtNameRegis;
+    @BindView(R.id.edt_number_regis)
+    EditText edtNumberRegis;
+    @BindView(R.id.edt_pass_regis)
+    EditText edtPassRegis;
+    private DialogUtils mDialogUtils;
+    private ProgressDialog mDialog;
 
-    @BindView(R.id.edt_input_acc)
-    EditText edtInputAcc;
-    @BindView(R.id.edt_input_number)
-    EditText edtInputNumber;
-    @BindView(R.id.edt_input_pass)
-    EditText edtInputPass;
     @BindView(R.id.ck_user)
     CheckBox ckUser;
     @BindView(R.id.ck_store)
@@ -35,6 +42,7 @@ public class RegisActivity extends BaseActivity implements RegisView {
 
     @Inject
     RegisPresenter regisPresenter;
+    private Account newAcc;
 
     @Override
     protected void injectDependence() {
@@ -48,6 +56,7 @@ public class RegisActivity extends BaseActivity implements RegisView {
 
     @Override
     protected void initData() {
+        mDialogUtils = new DialogUtils(mDialog, this);
 
     }
 
@@ -70,14 +79,9 @@ public class RegisActivity extends BaseActivity implements RegisView {
                 ckStore.setChecked(true);
                 break;
             case R.id.btn_sigup:
-                String accType="user";
-                if(ckStore.isChecked()){
-                    accType="store";
-                }
-                String accName=edtInputAcc.getText().toString().trim();
-                String accPass=edtInputPass.getText().toString().trim();
-                String accNumber=edtInputNumber.getText().toString().trim();
-                regisPresenter.onSigup(accName,accNumber,accPass,accType);
+
+                getDataLocal();
+
                 break;
             case R.id.btn_back_login:
                 finish();
@@ -85,20 +89,38 @@ public class RegisActivity extends BaseActivity implements RegisView {
         }
     }
 
-    @Override
-    protected void onDestroyComposi() {
+    private void getDataLocal() {
+        String accType = "user";
+        if (ckStore.isChecked()) {
+            accType = "store";
+        }
+        if (UtilDatas.checkInPutRegis(edtNameRegis,edtNumberRegis, edtPassRegis, this)) {
+            String accName = edtNameRegis.getText().toString().trim();
+            String accPass = edtPassRegis.getText().toString().trim();
+            String accNumber = edtNumberRegis.getText().toString().trim();
+            newAcc = new Account(Long.valueOf(accNumber),accType, accNumber, accName, accName, accPass, "");
+            regis();
+
+        }
 
     }
 
+    private void regis() {
+        mDialogUtils.showLoading();
+        regisPresenter.onSigup(newAcc);
+    }
 
     @Override
     public void onSigupSuccess() {
-        Log.i("a:","được rồi");
+        mDialogUtils.hideLoading();
         finish();
     }
 
     @Override
     public void onRequestFailure(String msg) {
-        Log.i("a:","not được");
+        mDialogUtils.hideLoading();
+        DialogUtils.showErorr(this, msg);
     }
+
+
 }

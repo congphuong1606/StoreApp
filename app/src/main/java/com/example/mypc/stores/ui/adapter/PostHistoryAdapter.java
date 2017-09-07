@@ -53,7 +53,7 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onClick(post);
+                mListener.onClick(post,position);
             }
         });
     }
