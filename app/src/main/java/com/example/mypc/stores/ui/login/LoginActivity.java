@@ -47,7 +47,7 @@ public static LoginActivity loginActivity;
 
     private String accName;
     private String accPass;
-    private static boolean isConnect=false;
+
 
 
 
@@ -68,7 +68,7 @@ public static LoginActivity loginActivity;
     protected void initData() {
         mPresenter.onloginFirebase();
         loginActivity=this;
-        mPresenter.isConnect();
+
         edtInputAcc.setText(mPreferences
                 .getString(Constants.LOGIN_NAME, ""));
         edtInputPass.setText(mPreferences
@@ -97,7 +97,6 @@ public static LoginActivity loginActivity;
                 .putString(Constants.PREF_ACC_AVATAR, account.getAccAvatar())
                 .putString(Constants.PREF_TOKEN, getResources().getString(R.string.token))
                 .commit();
-
         onStartActivity(MainActivity.class);
         finish();
     }
@@ -108,16 +107,10 @@ public static LoginActivity loginActivity;
         DialogUtils.showErorr(this,msg);
     }
 
-    @Override
-    public void onIsConnect(boolean b) {
-        isConnect=b;
-        if (!mPreferences.getString(Constants.PREF_TOKEN, "").isEmpty()) {
-            onStartActivity(MainActivity.class);
-        }
-    }
-    public static boolean isConnect() {
-        return  isConnect;
-    }
+
+
+
+
 
     @OnClick({R.id.btn_quit, R.id.rempasswordcheckbox,
             R.id.btn_register, R.id.btn_login})

@@ -48,7 +48,6 @@ public class ToolBarUtils {
     }
 
     public void setToolBarMain() {
-
         toolbar.setVisibility(View.VISIBLE);
         tvTitleToobar.setText(context.getResources()
                 .getString(R.string.title_toolBar_Main));

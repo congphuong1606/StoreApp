@@ -3,6 +3,7 @@ package com.example.mypc.stores.ui.main;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -21,31 +22,32 @@ import com.example.mypc.stores.di.module.ViewModule;
 import com.example.mypc.stores.events.BtnSaveClickListenner;
 import com.example.mypc.stores.events.OnEventclickListener;
 import com.example.mypc.stores.ui.base.BaseActivity;
-import com.example.mypc.stores.ui.login.LoginActivity;
-import com.example.mypc.stores.ui.main.fragment.imageviewer.ImageViewFragment;
 import com.example.mypc.stores.ui.main.fragment.cmt.CmtFragment;
+import com.example.mypc.stores.ui.main.fragment.detailstorefragment.DetailStoreFragment;
 import com.example.mypc.stores.ui.main.fragment.editpost.EditPostFragment;
+import com.example.mypc.stores.ui.main.fragment.imageviewer.ImageViewFragment;
 import com.example.mypc.stores.ui.main.fragment.listpost.ListPostFragment;
 import com.example.mypc.stores.ui.main.fragment.newpost.NewPostFragment;
 import com.example.mypc.stores.ui.main.fragment.posthistory.PostHistoryFragment;
 import com.example.mypc.stores.ui.main.fragment.usermanager.UserManagerFragment;
 import com.example.mypc.stores.ui.main.utils.DialogUtils;
 import com.example.mypc.stores.ui.main.utils.KeyBoardUtils;
-import com.example.mypc.stores.ui.main.fragment.detailstorefragment.DetailStoreFragment;
 import com.example.mypc.stores.ui.main.utils.ToolBarUtils;
 import com.example.mypc.stores.utils.Constants;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends BaseActivity implements MainView, OnEventclickListener {
+    @BindView(R.id.appBarLayout)
+    AppBarLayout appBarLayout;
     private ListPostFragment mListPostFragment;
     private BtnSaveClickListenner mListener;
     private ToolBarUtils mToolBarUtils;
-    private AppBarLayout.LayoutParams params;
     private boolean isOpenFragment = false;
     private boolean isOpenImageView = false;
     @BindView(R.id.toolbar)
@@ -62,7 +64,8 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
     Button btnSave;
     @BindView(R.id.tv_toolbar_title)
     TextView tvToolbarTitle;
-
+    CoordinatorLayout.LayoutParams appBarLayoutParams;
+    AppBarLayout.LayoutParams params;
     @Inject
     SharedPreferences mPreferences;
     @Inject
@@ -88,9 +91,19 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
     @Override
     protected void initData() {
         mListPostFragment = ListPostFragment.getIntans();
-        params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+       params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        appBarLayoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
     }
-
+public  void setToolBarOffScroll(){
+    params.setScrollFlags(0);
+    appBarLayoutParams.setBehavior(null);
+    appBarLayout.setLayoutParams(appBarLayoutParams);
+}
+public void setToolBarOnScroll(){
+    params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+    appBarLayoutParams.setBehavior(new AppBarLayout.Behavior());
+    appBarLayout.setLayoutParams(appBarLayoutParams);
+}
     @Override
     protected void initView() {
         setUserAvatar();
@@ -124,26 +137,31 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
 
         } else {
             if (isOpenImageView) {
-                unInitViewFragment();
+                mToolBarUtils.setToolBarFragmentDetailStore();
+                super.onBackPressed();
                 isOpenImageView = false;
 
             } else {
-                LoginActivity.loginActivity.finish();
                 finish();
 
             }
         }
     }
 
-    private void unInitViewFragment() {
+    public void unInitViewFragment() {
         isOpenFragment = false;
         mToolBarUtils.setToolBarMain();
+        setToolBarOnScroll();
+        setFabBtn();
+        super.onBackPressed();
+    }
+
+    private void setFabBtn() {
         if (accType.equals("user")) {
             fabNewPost.setVisibility(View.GONE);
         } else {
             fabNewPost.setVisibility(View.VISIBLE);
         }
-        super.onBackPressed();
     }
 
 
@@ -156,6 +174,7 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
 
     @Override
     public void onDeletePostSuccess(Long postId) {
+        mainPresenter.deletePostHistory(mPreferences.getLong(Constants.PREF_ACC_ID, 0), postId);
         mListPostFragment = ListPostFragment.getIntans();
         mListPostFragment.notifyPostAdapter(postId);
     }
@@ -174,6 +193,7 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
     @Override
     public void onClickDelete(long postId) {
         mainPresenter.deletePost(postId);
+
     }
 
 
@@ -224,14 +244,6 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
         setOpenFragment();
     }
 
-    private void showFragmentNewPost() {
-        params.setScrollFlags(0);
-        toolbar.setLayoutParams(params);
-        setNewFragment(new NewPostFragment());
-        setOpenFragment();
-        mToolBarUtils.setToolBarFragmentNewPost();
-    }
-
 
     public void showFragmentCmt(Post post, int adapterPosition) {
         CmtFragment cmtFragment = new CmtFragment();
@@ -245,6 +257,7 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
     }
 
     public void showFragmentImaeViewer(Post post, int position) {
+        setToolBarOffScroll();
         ImageViewFragment imageViewFragment =
                 new ImageViewFragment();
         setNewFragment(imageViewFragment);
@@ -291,6 +304,7 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
     }
 
     private void showFragmentEditPost(Post post, int position) {
+        setToolBarOffScroll();
         EditPostFragment editPostFragment = new EditPostFragment();
         setNewFragment(editPostFragment);
         Bundle bundle = new Bundle();
@@ -299,6 +313,13 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
         editPostFragment.setArguments(bundle);
         mToolBarUtils.setToolBarFragmentEditPost();
         setOpenFragment();
+    }
+
+    private void showFragmentNewPost() {
+       setToolBarOffScroll();
+        setNewFragment(new NewPostFragment());
+        setOpenFragment();
+        mToolBarUtils.setToolBarFragmentNewPost();
     }
 
     public void setOpenFragment() {
@@ -316,4 +337,6 @@ public class MainActivity extends BaseActivity implements MainView, OnEventclick
     public void setOpenFragmentImageView() {
         isOpenImageView = true;
     }
+
+
 }

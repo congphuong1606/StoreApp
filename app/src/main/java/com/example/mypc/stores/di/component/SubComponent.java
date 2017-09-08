@@ -13,6 +13,7 @@ import com.example.mypc.stores.ui.main.fragment.newpost.NewPostFragment;
 import com.example.mypc.stores.ui.main.MainActivity;
 import com.example.mypc.stores.ui.login.LoginActivity;
 import com.example.mypc.stores.ui.main.fragment.detailstorefragment.DetailStoreFragment;
+import com.example.mypc.stores.ui.splash.SplashActivity;
 
 import dagger.Subcomponent;
 
@@ -32,4 +33,7 @@ public interface SubComponent {
     void injectTo(ImageViewFragment imageViewFragment);
     void injectTo(DetailStoreFragment detailStoreFragment);
     void injectTo(PostHistoryFragment postHistoryFragment);
+
+
+    void injectTo(SplashActivity splashActivity);
 }

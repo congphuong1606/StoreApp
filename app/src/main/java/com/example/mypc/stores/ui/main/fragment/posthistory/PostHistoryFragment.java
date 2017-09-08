@@ -110,12 +110,12 @@ public class PostHistoryFragment extends BaseFragment implements
 
     @Override
     public void onClickDelete() {
-        mPresenter.deletePostHistory(post.getPostId());
+        mPresenter.deletePostHistory(accMyId,post.getPostId());
     }
 
     @Override
     public void onClickView() {
-        ((MainActivity) getActivity()).showFragmentImaeViewer(post,0);
+        ((MainActivity) getActivity()).showFragmentImaeViewer(post, 0);
         ((MainActivity) getActivity()).setOpenFragmentImageView();
 
     }

@@ -223,12 +223,12 @@
         android:id="@+id/fb_direct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_gravity="bottom|right"
         android:src="@drawable/ic_directions_black"
-        app:layout_anchor="@+id/app_bar_layout"
         app:fabSize="mini"
-        app:layout_anchorGravity="bottom|right"
-        app:layout_behavior="@string/fixScrollingFooterBehavior" />
+        />
 
 
 </android.support.design.widget.CoordinatorLayout>

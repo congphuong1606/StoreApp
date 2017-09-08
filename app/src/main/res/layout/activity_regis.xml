@@ -4,25 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bacgroud"
     android:gravity="center_vertical"
     android:orientation="vertical"
     tools:context=".ui.register.RegisActivity">
 
     <LinearLayout
-
         android:id="@+id/logo"
-        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_gravity="center_vertical"
-        android:gravity="center">
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        >
+        <TextView
+            android:text="Stores"
+            android:textStyle="bold"
+            android:textSize="50sp"
+            android:textColor="@color/white"
+            android:fontFamily="cursive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@color/red"
 
-        <ImageView
-            android:id="@+id/imglogo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:fontFamily="casual"
+            android:paddingLeft="50dp"
+            android:textStyle="italic"
             android:layout_gravity="center"
-            android:src="@drawable/ic_store" />
+            android:text="Social store-uer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:id="@+id/imglogo"-->
+            <!--android:layout_width="70dp"-->
+            <!--android:layout_height="70dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/logo" />-->
     </LinearLayout>
 
     <LinearLayout
@@ -31,41 +51,60 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/logo"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:orientation="vertical">
 
 
         <EditText
             android:id="@+id/edt_name_regis"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginTop="50dp"
-            android:hint="tên tài khoản"
+            android:background="@drawable/rounded_edittext"
+            android:drawableLeft="@drawable/ic_account"
+            android:drawablePadding="10dp"
+            android:hint="@string/enterename"
             android:maxLength="15"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:paddingLeft="5dp" />
 
 
         <EditText
             android:id="@+id/edt_pass_regis"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="mật khẩu"
-            android:maxLines="1" />
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_edittext"
+            android:drawableLeft="@drawable/ic_lock"
+            android:drawablePadding="10dp"
+            android:hint="@string/enterthepss"
+            android:inputType="textPassword"
+            android:maxLines="1"
+
+            android:paddingLeft="5dp" />
 
 
         <EditText
             android:id="@+id/edt_number_regis"
-            android:hint="số diện thoại"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:maxLines="1" />
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_edittext"
+            android:drawableLeft="@drawable/ic_calll"
+            android:drawablePadding="10dp"
+            android:hint="@string/enterthenumber"
+            android:inputType="number"
+
+            android:maxLines="1"
+
+            android:paddingLeft="5dp" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <CheckBox
@@ -89,8 +128,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@color/colorAccent"
-            android:text="Đăng ký"
+            android:background="@drawable/button"
+            android:text="@string/signup"
             android:textColor="@color/white" />
 
         <View
@@ -99,15 +138,19 @@
             android:layout_marginTop="10dp"
             android:background="#2244d9" />
 
-        <Button
-            android:id="@+id/btn_back_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:paddingBottom="5dp"
-            android:text="trở về"
-            android:textAllCaps="false"
-            android:textColor="#2244d9" />
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_back_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="60dp"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:text="back"
+        android:textAllCaps="false"
+        android:textColor="@color/redd" />
 </LinearLayout>

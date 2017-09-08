@@ -146,8 +146,13 @@ public class NewPostFragment extends BaseFragment implements NewPostView, BtnSav
     }
 
     private void senPost() {
-        String postContent = edtNewPost.getText().toString().trim();
-        mPresenter.onUploadPost(accId, avatar, accFullName, postContent, postImage);
+        if (postImage == null) {
+            Toast.makeText(getContext(), getActivity().getResources().getString(R.string.notupimage), Toast.LENGTH_LONG).show();
+        } else {
+            String postContent = edtNewPost.getText().toString().trim();
+            mPresenter.onUploadPost(accId, avatar, accFullName, postContent, postImage);
+        }
+
 
     }
 
@@ -183,7 +188,7 @@ public class NewPostFragment extends BaseFragment implements NewPostView, BtnSav
         }
         if (bitmap != null) {
             ByteArrayOutputStream imageByte = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 60, imageByte);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 40, imageByte);
             picByte = imageByte.toByteArray();
             uploadToFireBase(picByte);
         }
@@ -200,8 +205,8 @@ public class NewPostFragment extends BaseFragment implements NewPostView, BtnSav
 
     @Override
     public void onClickBtnSaveLisener() {
-            KeyBoardUtils.hideKeyboard(getActivity());
-            senPost();
+        KeyBoardUtils.hideKeyboard(getActivity());
+        senPost();
     }
 
 

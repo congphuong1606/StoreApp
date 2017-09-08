@@ -52,4 +52,14 @@ public class MainPresenter {
     private void addHistoryPostSuccess(Integer integer) {
         mainView.onSavePostHistorySuccess();
     }
+
+    public void deletePostHistory(long aLong, Long postId) {
+        mApiService.deletePostHistory(aLong,postId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onDeletePostHistorySuccess, this::onError);
+    }
+
+    private void onDeletePostHistorySuccess(Long aLong) {
+
+    }
 }

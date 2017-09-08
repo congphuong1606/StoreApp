@@ -10,12 +10,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="rememberpass">ghi nhớ</string>
+    <string name="rememberpass">remember me</string>
     <string name="acc_error">Vui lòng nhập tài khoản</string>
     <string name="pass_error">Mật khẩu phải lớn hơn 6 ký tự</string>
     <string name="accc_error">Tài khoản phải lớn hơn 6 ký tự</string>
-    <string name="user">người dùng</string>
-    <string name="store">Cửa hàng</string>
+    <string name="user">user</string>
+    <string name="store">store</string>
     <string name="title_activity_maps">Map</string>
     <string name="action_delete">xóa</string>
     <string name="newposttitle">Add new post</string>
@@ -41,4 +41,11 @@
     <string name="replayavatar">Thay đổi đại diện</string>
     <string name="nullPosition">1111</string>
     <string name="numberError">sdt phải là 9 hoặc 10 số</string>
+    <string name="notupimage">xin chờ ảnh chưa được load xong do mạng của bạn chậm</string>
+    <string name="enterename">Enter the name</string>
+    <string name="enterthepss">Enter the password</string>
+    <string name="btnlogin">Sign In</string>
+    <string name="signupnow">Sign up now</string>
+    <string name="enterthenumber">Enter the number</string>
+    <string name="signup">sign up</string>
 </resources>

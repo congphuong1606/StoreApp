@@ -101,8 +101,8 @@ public interface ApiService {
     @GET("/posts/history/{accId}")
     Observable<ArrayList<Post>> getPostHistorys(@Path("accId") long accId);
 
-    @DELETE("/posts/history/{postHistoryId}")
-    Observable<Long> deletePostHistory(@Path("postHistoryId") long postHistoryId);
+    @DELETE("/posts/history/{accMyId}/{postHistoryId}")
+    Observable<Long> deletePostHistory( @Path("accMyId") Long accMyId, @Path("postHistoryId") long postHistoryId);
 
 
 }

@@ -12,6 +12,16 @@ public class Constants {
     public static final int ANOTHER = 1996;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
     public static final int MY_PERMISSIONS_REQUEST_FHONE_CALL=2;
+    public static final int LIST_POST_STORE=1;
+    public static final int LIST_ALL_POST=2;
+    public static final int REQUEST_CHOOSE_PHOTO=1;
+    public static final int REQUEST_TAKE_PHOTO=2;
+
+
+    public static final int TYPE_AVATAR=1;
+    public static final int TYPE_NUMBER=2;
+    public static final int TYPE_NAME=3;
+    public static final int TYPE_LOCATION=4;
     //SharePref..
     public static final String LOGIN_NAME = "accName";
     public static final String LOGIN_PASS = "accPass";
@@ -23,14 +33,5 @@ public class Constants {
     public static final String PREF_ACC_FULLNAME = "accFullName";
     public static final String PREF_ACC_AVATAR = "AccAvatar";
     public static final String PREF_TOKEN = "token";
-    public static final int LIST_POST_STORE=1;
-    public static final int LIST_ALL_POST=2;
-    public static final int REQUEST_CHOOSE_PHOTO=1;
-    public static final int REQUEST_TAKE_PHOTO=2;
 
-
-    public static final int TYPE_AVATAR=1;
-    public static final int TYPE_NUMBER=2;
-    public static final int TYPE_NAME=3;
-    public static final int TYPE_LOCATION=4;
 }

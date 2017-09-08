@@ -1,99 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutMainContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bacgroud"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#fff"
+
     tools:context=".ui.login.LoginActivity">
 
     <LinearLayout
-
         android:id="@+id/logo"
-        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp">
+       android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        >
+        <TextView
+            android:text="Stores"
+            android:textStyle="bold"
+            android:textSize="50sp"
+            android:textColor="@color/white"
+            android:fontFamily="cursive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@color/red"
 
-        <ImageView
-            android:id="@+id/imglogo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:fontFamily="casual"
+            android:paddingLeft="50dp"
+            android:textStyle="italic"
             android:layout_gravity="center"
-            android:src="@drawable/ic_store" />
+            android:text="Social store-uer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!--<de.hdodenhof.circleimageview.CircleImageView-->
+        <!--android:id="@+id/imglogo"-->
+        <!--android:layout_width="70dp"-->
+        <!--android:layout_height="70dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:src="@drawable/logo" />-->
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_below="@+id/logo"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
 
+        <EditText
 
-            <EditText
-                android:layout_marginTop="50dp"
-                android:id="@+id/edt_input_acc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Nhập tài khoản"
-                android:maxLines="1" />
+            android:id="@+id/edt_input_acc"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/rounded_edittext"
+            android:drawableLeft="@drawable/ic_account"
+            android:drawablePadding="10dp"
+            android:hint="@string/enterename"
+
+            android:maxLines="1"
+            android:paddingLeft="5dp" />
 
 
-
-            <EditText
-                android:id="@+id/edt_input_pass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="nhập mật khẩu"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:textColorHint="@color/text" />
+        <EditText
+            android:id="@+id/edt_input_pass"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_edittext"
+            android:drawableLeft="@drawable/ic_lock"
+            android:drawablePadding="10dp"
+            android:hint="@string/enterthepss"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:paddingLeft="5dp"
+            android:textColorHint="@color/text" />
 
 
         <CheckBox
             android:id="@+id/rempasswordcheckbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_x="23dp"
             android:layout_y="200dp"
-            android:text="@string/rememberpass" />
+            android:text="@string/rememberpass"
+            android:textColor="@color/textginho" />
 
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
-            android:background="@color/colorAccent"
-            android:text="Đăng nhập"
+            android:background="@drawable/button"
+            android:text="@string/btnlogin"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_register"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:background="#32abfa"
-            android:text="Đăng ký"
-            android:textColor="@color/white" />
+            android:background="@null"
+            android:text="@string/signupnow"
+            android:textAllCaps="false"
+            android:textColor="@color/blue" />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="15dp"
-            android:background="#ef3d3d" />
+            android:background="@color/red" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,14 +133,15 @@
             android:orientation="horizontal">
 
             <Button
+                android:layout_marginTop="20dp"
                 android:id="@+id/btn_quit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="center"
-                android:text="thoát"
+                android:text="Quit"
                 android:textAllCaps="false"
-                android:textColor="#4d7de4" />
+                android:textColor="@color/redd" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

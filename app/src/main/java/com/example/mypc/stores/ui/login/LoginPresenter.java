@@ -76,19 +76,5 @@ public class LoginPresenter {
     }
 
 
-    public void isConnect() {
-        mApiService.isConnect().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::isConnectSuccess, this::isConnectFail);
-    }
 
-    private void isConnectFail(Throwable throwable) {
-        mView.onIsConnect(false);
-    }
-
-    private void isConnectSuccess(Integer integer) {
-        if (integer == 1) {
-            mView.onIsConnect(true);
-        }
-    }
 }

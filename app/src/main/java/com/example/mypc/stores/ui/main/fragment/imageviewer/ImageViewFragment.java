@@ -1,6 +1,8 @@
 package com.example.mypc.stores.ui.main.fragment.imageviewer;
 
 import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -86,6 +88,10 @@ public class ImageViewFragment extends BaseFragment implements ImvView {
         tvPostContentImage.setText(post.getPostContent());
         urlImage = post.getPostImage();
         photoDraweeView.setPhotoUri(Uri.parse(urlImage));
+        if(post.getIsLike()==1){
+
+            btnLikeImage.setBackground(getContext().getResources().getDrawable(R.drawable.ic_like_red));
+        }
     }
 
 
@@ -139,6 +145,7 @@ public class ImageViewFragment extends BaseFragment implements ImvView {
         } else tvCountLikePost.setText(countLove +" " + getResources().getString(R.string.yeuthich));
         if (countLove > post.getPostCountLike()) {
             mImvPresenter.addLikePost(post.getPostId());
+
         } else {
             mImvPresenter.deleteLikePost(post.getPostId());
         }
@@ -151,7 +158,7 @@ public class ImageViewFragment extends BaseFragment implements ImvView {
     public void onUpdateIslikeSuccess(Integer integer) {
         if (integer == 1) {
             showAnimationLove();
-            btnLikeImage.setBackgroundResource(R.drawable.ic_like_red);
+            btnLikeImage.setBackground(getContext().getResources().getDrawable(R.drawable.ic_like_red));
             mListPostFragment.notifyPostPosition(post, mPosition);
         } else if (integer == 0) {
             mListPostFragment.notifyPostPosition(post, mPosition);

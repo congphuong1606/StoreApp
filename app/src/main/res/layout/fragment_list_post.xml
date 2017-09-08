@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ece9e9"
-               android:paddingLeft="3dp"
-        android:paddingRight="3dp">
+        >
     </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

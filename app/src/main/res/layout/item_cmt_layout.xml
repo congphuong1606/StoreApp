@@ -24,13 +24,15 @@
             android:orientation="vertical">
 
             <TextView
-                android:text="cvcvvxc"
-                android:textSize="18sp"
                 android:id="@+id/tv_cmt_acc_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left|center"
-               />
+                android:text="cvcvvxc"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:textColor="@color/text_name_acount"
+                android:textSize="@dimen/size_text_name_cmt" />
 
             <TextView
                 android:id="@+id/tv_cmt_time"
@@ -41,15 +43,13 @@
         </LinearLayout>
 
 
-
-
-
     </LinearLayout>
+
     <TextView
-        android:textColor="#454444"
+        android:textColor="@color/text"
         android:text="cvcvvxc"
         android:textSize="16sp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="60dp"
         android:id="@+id/tv_cmt_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

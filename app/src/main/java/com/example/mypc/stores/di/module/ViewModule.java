@@ -11,6 +11,7 @@ import com.example.mypc.stores.ui.main.fragment.detailstorefragment.StoreDetailV
 import com.example.mypc.stores.ui.main.fragment.cmt.CmtFragmentView;
 import com.example.mypc.stores.ui.main.fragment.newpost.NewPostView;
 import com.example.mypc.stores.ui.login.LoginView;
+import com.example.mypc.stores.ui.splash.SplashActivity;
 
 import dagger.Module;
 import dagger.Provides;
@@ -31,6 +32,7 @@ public class ViewModule {
     EditPostview editPostview;
     ImvView imvView;
     PHistoryFragmentView pHistoryFragmentView;
+    SplashActivity splashActivity;
 
     public ViewModule(PHistoryFragmentView pHistoryFragmentView) {
         this.pHistoryFragmentView = pHistoryFragmentView;
@@ -76,6 +78,14 @@ public class ViewModule {
 
     public ViewModule(EditPostview editPostview) {
         this.editPostview = editPostview;
+    }
+
+    public ViewModule(SplashActivity splashActivity) {
+        this.splashActivity = splashActivity;
+    }
+
+    public SplashActivity getSplashActivity() {
+        return splashActivity;
     }
 
     @Provides

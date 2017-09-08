@@ -13,5 +13,8 @@
     <dimen name="standard_100">100dp</dimen>
     <dimen name="standard_145">145dp</dimen>
 
+    <dimen name="size_text_name">16sp</dimen>
+    <dimen name="size_text_name_cmt">16sp</dimen>
+
 
 </resources>

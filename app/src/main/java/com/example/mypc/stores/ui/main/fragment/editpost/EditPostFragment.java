@@ -90,7 +90,6 @@ public class EditPostFragment extends BaseFragment implements EditPostview, BtnS
     @Override
     public void onUpdatePostSuccess(Post post) {
         mListPostFragment.notifyPostPosition(post, mPosition);
-        ((MainActivity) getActivity()).onBackPressed();
     }
 
     @Override

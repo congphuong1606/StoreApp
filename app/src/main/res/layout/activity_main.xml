@@ -7,6 +7,7 @@
     tools:context="com.example.mypc.stores.ui.main.MainActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -65,8 +66,8 @@
         android:layout_margin="16dp"
         android:gravity="center_vertical"
         app:fabSize="mini"
-        app:layout_behavior="com.example.mypc.stores.ui.main.utils.FixScrollingFooterBehavior"
         app:srcCompat="@drawable/ic_edit" />
+    <!--app:layout_behavior="com.example.mypc.stores.ui.main.utils.FixScrollingFooterBehavior"-->
     <FrameLayout
         android:id="@+id/layout_fragment"
         android:layout_width="match_parent"

@@ -98,7 +98,7 @@ public class ListPostPresenter {
     }
 
     public void getStorePosts(long accId, long storeId, int i) {
-        mApiService.getListPostStore(accId,storeId,i)
+        mApiService.getListPostStore(storeId,accId,i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onGetStorePostsSuccess, this::onError);

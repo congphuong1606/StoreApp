@@ -45,6 +45,7 @@ public class NewPostPresenter {
     }
 
     private void onSuccess(Post post) {
+        post.setIsLike(0);
         mPostView.onLoadPostSuccess(post);
     }
 

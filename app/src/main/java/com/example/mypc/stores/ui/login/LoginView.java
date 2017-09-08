@@ -9,5 +9,5 @@ import com.example.mypc.stores.data.model.Account;
 public interface LoginView {
     void onLoginSuccess(Account account);
     void onRequestFail(String msg);
-    void onIsConnect(boolean b);
+
 }

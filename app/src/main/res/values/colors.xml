@@ -6,11 +6,15 @@
     <color name="white">#fff</color>
     <color name="black">#000</color>
     <color name="red">#ff0084</color>
+    <color name="redd">#891214</color>
     <color name="text">#696868</color>
     <color name="lighbrown">#f4f3f3</color>
     <color name="text_color_black">#696868</color>
     <color name="text_color_pink">#fc6a6a</color>
     <color name="a">#82bdf9</color>
-    <color name="text_name_acount">#000</color>
+    <color name="text_name_acount">#616060</color>
+    <color name="color_text_time">#d6c7c7</color>
+    <color name="blue">#224070</color>
+    <color name="textginho">#61758e</color>
 
 </resources>
